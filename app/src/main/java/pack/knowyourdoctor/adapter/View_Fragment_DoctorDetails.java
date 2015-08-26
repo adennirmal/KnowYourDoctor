@@ -104,6 +104,7 @@ public class View_Fragment_DoctorDetails extends Fragment {
                 String generatedURL = url.toString().replace(" ","%20");
 
                 View_Home.urlBundle.putString("url", generatedURL);
+                View_Home.urlBundle.putString("RegNo", regNoTE.getText().toString());
 
                 //TabPagerAdapter.url = generatedURL;
 

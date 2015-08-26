@@ -50,7 +50,7 @@ public class View_Fragment_DoctorDetails_Searched extends Fragment {
     ExpandableListView listView;
     ArrayList<Model_Doctor> searchedDoctors;
     View rootView;
-    String passedURL;
+    String passedURL, searched_reg_no;
     /*
     public View_Fragment_DoctorDetails_Searched(String passedURL) {
         this.passedURL = passedURL;
@@ -74,6 +74,14 @@ public class View_Fragment_DoctorDetails_Searched extends Fragment {
         listView.setAdapter(listAdapter);
 
         passedURL = View_Home.urlBundle.get("url").toString();
+
+        try {
+            searched_reg_no = View_Home.urlBundle.get("RegNo").toString();
+        }
+        catch (Exception e){
+            searched_reg_no = "";
+        }
+
         //String passedURL = getActivity().getIntent().getStringExtra("url");
 
         //Check internet connection is available or not
@@ -241,6 +249,23 @@ public class View_Fragment_DoctorDetails_Searched extends Fragment {
             }
             else{
                 txt.setText(result);
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                alertDialog.setTitle("Registration Number (" + searched_reg_no + ") Doesn't Exist!");
+                alertDialog.setMessage("Do you want to report to SLMC?");
+                alertDialog.setPositiveButton("YES",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Fragment mFragment = new View_Fragment_ReportSend();
+                        //getFragmentManager().beginTransaction().replace(R.id.fragmentShowDoctorDetails, mFragment).commit();
+                    }
+                });
+                alertDialog.setNeutralButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alertDialog.show();
             }
         }
         protected void onProgressUpdate(Integer... progress) {
