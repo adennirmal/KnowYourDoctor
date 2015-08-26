@@ -46,7 +46,6 @@ public class View_Home extends FragmentActivity implements View.OnClickListener,
     Button aboutDevelopersBTN;
     private TabPagerAdapter mAdapter;
     private ActionBar actionBar;
-
     LocationManager locationManager ;
     Location location;
     String provider;
