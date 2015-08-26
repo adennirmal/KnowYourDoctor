@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Know Your Doctor</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_fragment__doctor_details">Fragment_DoctorDetails</string>
+    <string name="title_activity_location__finding">Location_Finding</string>
+    <string name="title_activity_fragment__slmc">Fragment_SLMC</string>
+    <string name="about_SLMC">The Ceylon Medical Council (CMC) was established by the Medical Council Ordinance No. 24 of 1924. The first meeting of the CMC was held on 22nd June 1925 at 3.00 p.m. in the Colombo Medical Library, chaired by the first president, Dr. N. Duncan Walker. The other members of the Council were Doctors J.S.R. Gunawardana, R. Pestonjee, E.A. Cooray, J.O.B. Van Langenburg, Lucian De Zilva, H.M. Peiris, P.J. Chissel, Frank Gunasekera and G. Thornton. At this meeting, Dr. Lucian De Zilva was elected the Vice President and Prof. F.O.B. Ellison, the Registrar.</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_view__show_doctor_details">View_ShowDoctorDetails</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_report_">Report_Activity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_report">Report</string>
+    <string name="app_id">1582179502036446</string>
+    <string name="report_your_name_hint"><font size = "12">Your Name</font></string>
+    <string name="report_contact_no_hint"><font size = "12">Contact No</font></string>
+    <string name="report_doc_hint"><font size = "12">Doctor\'s Name</font></string>
+    <string name="report_reg_no_hint"><font size = "12">Reg No</font></string>
+    <string name="report_hospital_name_hint"><font size = "12">Hospital Name</font></string>
+    <string name="city_hint"><font size = "12">City</font></string>
+
+    <string name="search"><font size = "12">Search</font></string>
+    <string name="current_location"><font size = "12">Current Location</font></string>
+
+
+</resources>
+

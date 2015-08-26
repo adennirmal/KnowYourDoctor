@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="registryList">
+        <item>Select</item>
+        <item>ACT 15</item>
+        <item>Dental</item>
+        <item>SEC 29</item>
+        <item>SEC 41</item>
+    </string-array>
+</resources>

@@ -1,0 +1,54 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- LDPI dimesions -->
+    <dimen name="ldpi_text_size">10sp</dimen>
+    <dimen name="ldpi_element_margin_top">25dp</dimen>
+    <dimen name="ldpi_element_height">35dp</dimen>
+    <!-- LDPI dimesions -->
+
+
+    <!-- MDPI dimesions -->
+    <dimen name="mdpi_text_size">15sp</dimen>
+    <dimen name="mdpi_element_margin_top">25dp</dimen>
+    <dimen name="mdpi_element_height">40dp</dimen>
+    <!-- MDPI dimesions -->
+
+    <!-- HDPI dimesions -->
+    <dimen name="hdpi_text_size">15sp</dimen>
+    <dimen name="hdpi_element_margin_top">25dp</dimen>
+    <dimen name="hdpi_element_height">40dp</dimen>
+    <!-- HDPI dimesions -->
+
+    <!-- XHDPI dimesions -->
+    <dimen name="xhdpi_text_size">40sp</dimen>
+    <dimen name="xhdpi_element_margin_top">25dp</dimen>
+    <dimen name="xhdpi_element_height">70dp</dimen>
+    <!-- XHDPI dimesions -->
+
+    <dimen name="layout_radius_large">192dp</dimen>
+    <dimen name="layout_radius_medium">168dp</dimen>
+    <dimen name="layout_radius_small">144dp</dimen>
+    <dimen name="layout_radius_tumblr">135dp</dimen>
+    <dimen name="layout_radius_path">140dp</dimen>
+
+    <dimen name="layout_child_offset_large">144dp</dimen>
+    <dimen name="layout_child_offset_medium">120dp</dimen>
+    <dimen name="layout_child_offset_small">96dp</dimen>
+    <dimen name="layout_child_offset_tumblr">100dp</dimen>
+    <dimen name="layout_child_offset_path">114dp</dimen>
+
+    <dimen name="item_circle_size_large">72dp</dimen>
+    <dimen name="item_circle_size_medium">48dp</dimen>
+    <dimen name="item_circle_size_small">36dp</dimen>
+    <dimen name="item_circle_size_tumblr">70dp</dimen>
+    <dimen name="item_circle_size_path">36dp</dimen>
+
+    <dimen name="item_font_size_large">32sp</dimen>
+    <dimen name="item_font_size_medium">24sp</dimen>
+    <dimen name="item_font_size_small">16sp</dimen>
+    <dimen name="item_font_size_tumblr">30sp</dimen>
+    <dimen name="item_font_size_path">18sp</dimen>
+</resources>
