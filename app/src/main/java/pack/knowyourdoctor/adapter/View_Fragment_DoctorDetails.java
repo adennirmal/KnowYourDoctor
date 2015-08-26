@@ -45,6 +45,11 @@ public class View_Fragment_DoctorDetails extends Fragment {
         final EditText nicNo = (EditText)rootView.findViewById(R.id.docNIC);
         final EditText addressTE = (EditText)rootView.findViewById(R.id.address);
 
+        //Fragment fragment_doctor_details = new Fragment();
+        //Bundle bundle = new Bundle();
+        //bundle.putString("RegNo", regNoTE.getText().toString());
+        //fragment_doctor_details.setArguments(bundle);
+
         //final LinearLayout layout = (LinearLayout)rootView.findViewById(R.id.middleSemiColon);
 
         //hide advance search options
@@ -104,6 +109,7 @@ public class View_Fragment_DoctorDetails extends Fragment {
                 String generatedURL = url.toString().replace(" ","%20");
 
                 View_Home.urlBundle.putString("url", generatedURL);
+                View_Home.urlBundle.putString("RegNo", regNoTE.getText().toString());
 
                 //TabPagerAdapter.url = generatedURL;
 
