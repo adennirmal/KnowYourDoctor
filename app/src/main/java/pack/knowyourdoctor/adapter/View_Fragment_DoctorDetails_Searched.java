@@ -74,10 +74,13 @@ public class View_Fragment_DoctorDetails_Searched extends Fragment {
         listView.setAdapter(listAdapter);
 
         passedURL = View_Home.urlBundle.get("url").toString();
-        searched_reg_no = View_Home.urlBundle.get("RegNo").toString();
 
-        //Bundle bundle = this.getArguments();
-        //searched_reg_no = bundle.getString("RegNo");
+        try {
+            searched_reg_no = View_Home.urlBundle.get("RegNo").toString();
+        }
+        catch (Exception e){
+            searched_reg_no = "";
+        }
 
         //String passedURL = getActivity().getIntent().getStringExtra("url");
 
