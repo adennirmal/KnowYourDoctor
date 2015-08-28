@@ -1,5 +1,6 @@
 package pack.knowyourdoctor.adapter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
@@ -34,6 +35,10 @@ public class View_Fragment_ReportSend extends Fragment {
                 final EditText contact = (EditText)rootView.findViewById(R.id.contact);
 
                 final EditText dreg = (EditText)rootView.findViewById(R.id.d_reg);
+
+                //String regNo = getArguments().getString("RegNo");
+                //dreg.setText(regNo);
+
                 final EditText dname = (EditText)rootView.findViewById(R.id.d_name);
                 //final EditText dnicno = (EditText)rootView.findViewById(R.id.d_nic_no);
                 //final EditText dcontact = (EditText)rootView.findViewById(R.id.d_contact);
