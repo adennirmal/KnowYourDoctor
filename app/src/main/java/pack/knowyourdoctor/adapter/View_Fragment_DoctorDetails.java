@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -51,9 +52,12 @@ public class View_Fragment_DoctorDetails extends Fragment {
 
     ArrayList<Model_Doctor> searchedDoctors;
 
-    ViewGroup linearLayoutView;
+    LinearLayout linearLayoutView;
 
     String searchedRegNo;
+
+    GetHTMLContent readHTMLPages;
+    boolean isCancelled = false;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -82,14 +86,12 @@ public class View_Fragment_DoctorDetails extends Fragment {
 
         //hide advance search options
         //TextViews
-        familyNameText.setVisibility(View.INVISIBLE);
-        otherNameText.setVisibility(View.INVISIBLE);
+        initialsText.setVisibility(View.INVISIBLE);
         nicNoText.setVisibility(View.INVISIBLE);
         addressText.setVisibility(View.INVISIBLE);
 
         //EditTexts
-        familyNameTE.setVisibility(View.INVISIBLE);
-        otherNameTE.setVisibility(View.INVISIBLE);
+        initialsTE.setVisibility(View.INVISIBLE);
         nicNo.setVisibility(View.INVISIBLE);
         addressTE.setVisibility(View.INVISIBLE);
 
@@ -104,7 +106,7 @@ public class View_Fragment_DoctorDetails extends Fragment {
                 }
 
                 ArrayList<String> urlList = new ArrayList<String>();
-                for(int i=3;i<7;i++) {
+                for (int i = 3; i < 7; i++) {
                     //Generate URL for four categories
                     StringBuilder url = new StringBuilder("http://www.srilankamedicalcouncil.org/registry.php?start=0&registry=");
                     //nothing selected in spinner
@@ -127,18 +129,22 @@ public class View_Fragment_DoctorDetails extends Fragment {
                 searchedRegNo = regNoTE.getText().toString();
 
                 //Setup part for display doctor details
-                linearLayoutView = (ViewGroup) getActivity().findViewById(R.id.mainView);
-                linearLayoutView.removeAllViews();
+                linearLayoutView = (LinearLayout) getActivity().findViewById(R.id.mainView);
+                linearLayoutView.removeAllViewsInLayout();
                 linearLayoutView.addView(View.inflate(context, R.layout.view_fragment_doctordetails_searched, null));
                 linearLayoutView.setBackgroundColor(Color.parseColor("#f1f1f1"));
 
                 //Setup search again button
-                Button searchAgainBtn = (Button)linearLayoutView.findViewById(R.id.searchAgain);
+                Button searchAgainBtn = (Button) linearLayoutView.findViewById(R.id.searchAgain);
                 searchAgainBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent i = new Intent(getActivity(), View_Home.class);
-                        startActivity(i);
+                        ViewPager pager = (ViewPager) getActivity().findViewById(R.id.pager);
+                        TabPagerAdapter mAdapter;
+                        mAdapter = new TabPagerAdapter(getActivity().getSupportFragmentManager());
+                        pager.setAdapter(mAdapter);
+                        pager.setCurrentItem(0);
+                        searchedDoctors.clear();
                     }
                 });
 
@@ -150,18 +156,18 @@ public class View_Fragment_DoctorDetails extends Fragment {
 
                 searchedDoctors = new ArrayList<Model_Doctor>();
 
-                listAdapter = new Adapter_DoctorList(context,searchedDoctors);
+                listAdapter = new Adapter_DoctorList(context, searchedDoctors);
                 listView.setAdapter(listAdapter);
 
-                if(isNetworkAvailable()) {
+                if (isNetworkAvailable()) {
                     //Start the background process
-                    new GetHTMLContent().execute(urlList);
-                }
-                else{
+                    readHTMLPages = new GetHTMLContent();
+                    readHTMLPages.execute(urlList);
+                } else {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
                     alertDialog.setTitle("Internet Connection error");
                     alertDialog.setMessage("Do you want to enable the Internet Connection?");
-                    alertDialog.setPositiveButton("YES",new DialogInterface.OnClickListener() {
+                    alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
@@ -178,7 +184,6 @@ public class View_Fragment_DoctorDetails extends Fragment {
             }
         });
 
-
         final Button advanceSearch = (Button) rootView.findViewById(R.id.advanceSearchBtn);
         advanceSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,34 +191,28 @@ public class View_Fragment_DoctorDetails extends Fragment {
                 if(advanceSearch.getText().toString().compareTo("Advanced Search")==0) {
                     //visible advance search options
                     //TextViews
-                    familyNameText.setVisibility(View.VISIBLE);
-                    otherNameText.setVisibility(View.VISIBLE);
+                    initialsText.setVisibility(View.VISIBLE);
                     nicNoText.setVisibility(View.VISIBLE);
                     addressText.setVisibility(View.VISIBLE);
 
                     //EditTexts
-                    familyNameTE.setVisibility(View.VISIBLE);
-                    otherNameTE.setVisibility(View.VISIBLE);
+                    initialsTE.setVisibility(View.VISIBLE);
                     nicNo.setVisibility(View.VISIBLE);
                     addressTE.setVisibility(View.VISIBLE);
 
-                    //layout.setVisibility(View.VISIBLE);
                     advanceSearch.setText("Hide Advance Search");
                 }else{
                     //hide advance search options
                     //TextViews
-                    familyNameText.setVisibility(View.INVISIBLE);
-                    otherNameText.setVisibility(View.INVISIBLE);
+                    initialsText.setVisibility(View.INVISIBLE);
                     nicNoText.setVisibility(View.INVISIBLE);
                     addressText.setVisibility(View.INVISIBLE);
 
                     //EditTexts
-                    familyNameTE.setVisibility(View.INVISIBLE);
-                    otherNameTE.setVisibility(View.INVISIBLE);
+                    initialsTE.setVisibility(View.INVISIBLE);
                     nicNo.setVisibility(View.INVISIBLE);
                     addressTE.setVisibility(View.INVISIBLE);
 
-                    //layout.setVisibility(View.INVISIBLE);
                     advanceSearch.setText("Advanced Search");
                 }
             }
@@ -351,13 +350,11 @@ public class View_Fragment_DoctorDetails extends Fragment {
                         alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent i = new Intent(getActivity(), View_Home.class);
-                                i.putExtra("RegNo", searchedRegNo);
-                                startActivity(i);
-                                ViewPager p=(ViewPager)getActivity().findViewById(R.id.pager);
-                                p.setCurrentItem(2);
-                                //Fragment mFragment = new View_Fragment_ReportSend();
-                                //getFragmentManager().beginTransaction().replace(R.id.fragmentShowDoctorDetails, mFragment).commit();
+                                ViewPager pager = (ViewPager) getActivity().findViewById(R.id.pager);
+                                TabPagerAdapter mAdapter;
+                                mAdapter = new TabPagerAdapter(getActivity().getSupportFragmentManager());
+                                pager.setAdapter(mAdapter);
+                                pager.setCurrentItem(2);
                             }
                         });
                         alertDialog.setNeutralButton("No", new DialogInterface.OnClickListener() {
