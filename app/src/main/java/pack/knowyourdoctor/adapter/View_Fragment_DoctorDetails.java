@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -52,12 +51,9 @@ public class View_Fragment_DoctorDetails extends Fragment {
 
     ArrayList<Model_Doctor> searchedDoctors;
 
-    LinearLayout linearLayoutView;
+    ViewGroup linearLayoutView;
 
     String searchedRegNo;
-
-    GetHTMLContent readHTMLPages;
-    boolean isCancelled = false;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -86,12 +82,14 @@ public class View_Fragment_DoctorDetails extends Fragment {
 
         //hide advance search options
         //TextViews
-        initialsText.setVisibility(View.INVISIBLE);
+        familyNameText.setVisibility(View.INVISIBLE);
+        otherNameText.setVisibility(View.INVISIBLE);
         nicNoText.setVisibility(View.INVISIBLE);
         addressText.setVisibility(View.INVISIBLE);
 
         //EditTexts
-        initialsTE.setVisibility(View.INVISIBLE);
+        familyNameTE.setVisibility(View.INVISIBLE);
+        otherNameTE.setVisibility(View.INVISIBLE);
         nicNo.setVisibility(View.INVISIBLE);
         addressTE.setVisibility(View.INVISIBLE);
 
@@ -129,8 +127,8 @@ public class View_Fragment_DoctorDetails extends Fragment {
                 searchedRegNo = regNoTE.getText().toString();
 
                 //Setup part for display doctor details
-                linearLayoutView = (LinearLayout) getActivity().findViewById(R.id.mainView);
-                linearLayoutView.removeAllViewsInLayout();
+                linearLayoutView = (ViewGroup) getActivity().findViewById(R.id.mainView);
+                linearLayoutView.removeAllViews();
                 linearLayoutView.addView(View.inflate(context, R.layout.view_fragment_doctordetails_searched, null));
                 linearLayoutView.setBackgroundColor(Color.parseColor("#f1f1f1"));
 
@@ -139,12 +137,8 @@ public class View_Fragment_DoctorDetails extends Fragment {
                 searchAgainBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ViewPager pager = (ViewPager) getActivity().findViewById(R.id.pager);
-                        TabPagerAdapter mAdapter;
-                        mAdapter = new TabPagerAdapter(getActivity().getSupportFragmentManager());
-                        pager.setAdapter(mAdapter);
-                        pager.setCurrentItem(0);
-                        searchedDoctors.clear();
+                        Intent i = new Intent(getActivity(), View_Home.class);
+                        startActivity(i);
                     }
                 });
 
@@ -161,8 +155,7 @@ public class View_Fragment_DoctorDetails extends Fragment {
 
                 if(isNetworkAvailable()) {
                     //Start the background process
-                    readHTMLPages = new GetHTMLContent();
-                    readHTMLPages.execute(urlList);
+                    new GetHTMLContent().execute(urlList);
                 }
                 else{
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
@@ -185,6 +178,7 @@ public class View_Fragment_DoctorDetails extends Fragment {
             }
         });
 
+
         final Button advanceSearch = (Button) rootView.findViewById(R.id.advanceSearchBtn);
         advanceSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,28 +186,34 @@ public class View_Fragment_DoctorDetails extends Fragment {
                 if(advanceSearch.getText().toString().compareTo("Advanced Search")==0) {
                     //visible advance search options
                     //TextViews
-                    initialsText.setVisibility(View.VISIBLE);
+                    familyNameText.setVisibility(View.VISIBLE);
+                    otherNameText.setVisibility(View.VISIBLE);
                     nicNoText.setVisibility(View.VISIBLE);
                     addressText.setVisibility(View.VISIBLE);
 
                     //EditTexts
-                    initialsTE.setVisibility(View.VISIBLE);
+                    familyNameTE.setVisibility(View.VISIBLE);
+                    otherNameTE.setVisibility(View.VISIBLE);
                     nicNo.setVisibility(View.VISIBLE);
                     addressTE.setVisibility(View.VISIBLE);
 
+                    //layout.setVisibility(View.VISIBLE);
                     advanceSearch.setText("Hide Advance Search");
                 }else{
                     //hide advance search options
                     //TextViews
-                    initialsText.setVisibility(View.INVISIBLE);
+                    familyNameText.setVisibility(View.INVISIBLE);
+                    otherNameText.setVisibility(View.INVISIBLE);
                     nicNoText.setVisibility(View.INVISIBLE);
                     addressText.setVisibility(View.INVISIBLE);
 
                     //EditTexts
-                    initialsTE.setVisibility(View.INVISIBLE);
+                    familyNameTE.setVisibility(View.INVISIBLE);
+                    otherNameTE.setVisibility(View.INVISIBLE);
                     nicNo.setVisibility(View.INVISIBLE);
                     addressTE.setVisibility(View.INVISIBLE);
 
+                    //layout.setVisibility(View.INVISIBLE);
                     advanceSearch.setText("Advanced Search");
                 }
             }
@@ -351,11 +351,13 @@ public class View_Fragment_DoctorDetails extends Fragment {
                         alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                ViewPager pager = (ViewPager) getActivity().findViewById(R.id.pager);
-                                TabPagerAdapter mAdapter;
-                                mAdapter = new TabPagerAdapter(getActivity().getSupportFragmentManager());
-                                pager.setAdapter(mAdapter);
-                                pager.setCurrentItem(2);
+                                Intent i = new Intent(getActivity(), View_Home.class);
+                                i.putExtra("RegNo", searchedRegNo);
+                                startActivity(i);
+                                ViewPager p=(ViewPager)getActivity().findViewById(R.id.pager);
+                                p.setCurrentItem(2);
+                                //Fragment mFragment = new View_Fragment_ReportSend();
+                                //getFragmentManager().beginTransaction().replace(R.id.fragmentShowDoctorDetails, mFragment).commit();
                             }
                         });
                         alertDialog.setNeutralButton("No", new DialogInterface.OnClickListener() {
