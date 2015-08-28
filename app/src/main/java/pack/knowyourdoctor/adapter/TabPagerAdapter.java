@@ -27,9 +27,9 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
             /*case 4:
                 return new View_Fragment_SLMC();
             case 5:
-                return new View_Fragment_Aboutus();*/
+                return new View_Fragment_Aboutus();
             case 4:
-                return new View_Fragment_DoctorDetails_Searched();
+                return new View_Fragment_DoctorDetails_Searched();*/
         }
         return null;
     }
@@ -37,6 +37,6 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // get item count - equal to number of tabs
-        return 5;
+        return 4;
     }
 }

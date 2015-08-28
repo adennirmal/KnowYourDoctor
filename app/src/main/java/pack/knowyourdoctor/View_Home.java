@@ -291,6 +291,7 @@ public class View_Home extends FragmentActivity implements View.OnClickListener,
 
     @Override
     public void onPageSelected(int position) {
+        getActionBar().setSelectedNavigationItem(position);
         switch (position){
             case 0:
                 viewDisplay.setCurrentItem(0);
