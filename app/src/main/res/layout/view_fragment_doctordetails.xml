@@ -1,7 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:id="@+id/fragmentDoctorDetails"
-    android:layout_height="match_parent" android:paddingLeft="0dp"
+    android:layout_height="match_parent"
+    android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="10dp"
     android:paddingBottom="0dp"
@@ -22,26 +24,6 @@
             android:weightSum="100"
             android:paddingRight="5dp">
 
-            <!--<TextView
-                android:id="@+id/appName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Search Doctor"
-                android:layout_weight="75"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_marginTop="5dp"
-                android:layout_width="fill_parent"
-                android:layout_height="2dip"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_weight="25"
-                android:background="#d3d3d3"/>
-    -->
             <Button
                 android:id="@+id/search"
                 android:layout_width="wrap_content"
@@ -53,7 +35,7 @@
                 android:textColor="#ffffff"
                 android:background="@drawable/search_button_selector"
                 android:textSize="15sp"
-                android:text="Search"/>
+                android:text="Search" />
 
             <TextView
                 android:layout_marginBottom="5dp"
@@ -62,7 +44,7 @@
                 android:layout_height="2dip"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:background="#e4e4e4"/>
+                android:background="#e4e4e4" />
 
         </LinearLayout>
 
@@ -113,7 +95,7 @@
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/regNoTextView"
@@ -134,7 +116,8 @@
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/otherNameTextView"
                         android:layout_width="0dp"
@@ -190,7 +173,8 @@
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/initialTextView"
                         android:layout_width="0dp"
@@ -210,7 +194,8 @@
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/nicNoTextView"
                         android:layout_width="0dp"
@@ -229,7 +214,8 @@
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/addressTextView"
                         android:layout_width="0dp"
@@ -242,7 +228,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="0.60"
                         android:layout_height="wrap_content"
-                        android:inputType="textPersonName"/>
+                        android:inputType="textPersonName" />
                 </LinearLayout>
 
                 <LinearLayout

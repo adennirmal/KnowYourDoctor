@@ -67,10 +67,10 @@ public class View_Fragment_DoctorDetails extends Fragment {
         context = rootView.getContext();
         //Set object of search page
         //final TextView registryText = (TextView)rootView.findViewById(R.id.registryTextView);
-        final TextView regNoText = (TextView)rootView.findViewById(R.id.regNoTextView);
+        //final TextView regNoText = (TextView)rootView.findViewById(R.id.regNoTextView);
         final TextView initialsText = (TextView)rootView.findViewById(R.id.initialTextView);
-        final TextView familyNameText = (TextView)rootView.findViewById(R.id.familyNameTextView);
-        final TextView otherNameText = (TextView)rootView.findViewById(R.id.otherNameTextView);
+        //final TextView familyNameText = (TextView)rootView.findViewById(R.id.familyNameTextView);
+        //final TextView otherNameText = (TextView)rootView.findViewById(R.id.otherNameTextView);
         final TextView nicNoText = (TextView)rootView.findViewById(R.id.nicNoTextView);
         final TextView addressText = (TextView)rootView.findViewById(R.id.addressTextView);
 
