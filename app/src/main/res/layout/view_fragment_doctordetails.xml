@@ -136,36 +136,39 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal" >
                     <TextView
-                        android:id="@+id/initialTextView"
+                        android:id="@+id/otherNameTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.40"
-                        android:text="Initials" />
+                        android:text="First Name" />
 
                     <EditText
-                        android:id="@+id/initial"
+                        android:id="@+id/otherName"
                         android:layout_width="0dp"
                         android:layout_weight="0.60"
                         android:layout_height="wrap_content"
                         android:inputType="textPersonName" />
-
                 </LinearLayout>
 
-                <!--<LinearLayout
+                <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:layout_marginTop="5dp"
-                        android:layout_width="fill_parent"
-                        android:layout_height="2dip"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginLeft="1dp"
-                        android:layout_weight="25"
-                        android:background="#a9a9a9"/>
+                        android:id="@+id/familyNameTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.40"
+                        android:text="Last Name" />
 
-                </LinearLayout>-->
+                    <EditText
+                        android:id="@+id/familyName"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.60"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -189,37 +192,19 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal" >
                     <TextView
-                        android:id="@+id/familyNameTextView"
+                        android:id="@+id/initialTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.40"
-                        android:text="Last Name" />
+                        android:text="Initials" />
 
                     <EditText
-                        android:id="@+id/familyName"
+                        android:id="@+id/initial"
                         android:layout_width="0dp"
                         android:layout_weight="0.60"
                         android:layout_height="wrap_content"
                         android:inputType="textPersonName" />
-                </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
-                    <TextView
-                        android:id="@+id/otherNameTextView"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.40"
-                        android:text="First Name" />
-
-                    <EditText
-                        android:id="@+id/otherName"
-                        android:layout_width="0dp"
-                        android:layout_weight="0.60"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPersonName"/>
                 </LinearLayout>
 
                 <LinearLayout
