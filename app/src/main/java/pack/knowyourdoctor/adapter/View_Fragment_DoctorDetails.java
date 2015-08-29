@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 import pack.knowyourdoctor.Adapter_DoctorList;
 import pack.knowyourdoctor.Model_Doctor;
@@ -53,8 +54,13 @@ public class View_Fragment_DoctorDetails extends Fragment {
     ArrayList<Model_Doctor> searchedDoctors;
 
     LinearLayout linearLayoutView;
+    EditText regNoTE;
 
-    String searchedRegNo;
+    public static String searchedRegNo;
+
+    public static String getRegNo(){
+        return searchedRegNo;
+    }
 
     GetHTMLContent readHTMLPages;
     boolean isCancelled = false;
@@ -67,6 +73,8 @@ public class View_Fragment_DoctorDetails extends Fragment {
         context = rootView.getContext();
         //Set object of search page
         //final TextView registryText = (TextView)rootView.findViewById(R.id.registryTextView);
+        //report = new View_Fragment_ReportSend();
+        //addListener(report);
         final TextView regNoText = (TextView) rootView.findViewById(R.id.regNoTextView);
         final TextView initialsText = (TextView)rootView.findViewById(R.id.initialTextView);
         //final TextView familyNameText = (TextView)rootView.findViewById(R.id.familyNameTextView);
@@ -75,7 +83,7 @@ public class View_Fragment_DoctorDetails extends Fragment {
         final TextView addressText = (TextView)rootView.findViewById(R.id.addressTextView);
 
         //final Spinner regSpinner = (Spinner)rootView.findViewById(R.id.registry);
-        final EditText regNoTE = (EditText)rootView.findViewById(R.id.regNo);
+        regNoTE = (EditText)rootView.findViewById(R.id.regNo);
         final EditText initialsTE = (EditText)rootView.findViewById(R.id.initial);
         final EditText familyNameTE = (EditText)rootView.findViewById(R.id.familyName);
         final EditText otherNameTE = (EditText)rootView.findViewById(R.id.otherName);
@@ -126,7 +134,7 @@ public class View_Fragment_DoctorDetails extends Fragment {
                     urlList.add(generatedURL);
                 }
 
-                searchedRegNo = regNoTE.getText().toString();
+
 
                 //Setup part for display doctor details
                 linearLayoutView = (LinearLayout) getActivity().findViewById(R.id.mainView);
@@ -340,6 +348,7 @@ public class View_Fragment_DoctorDetails extends Fragment {
             }
             else{
                 txt.setText("No Data Found");
+                searchedRegNo = regNoTE.getText().toString();
                 //To detect reg no is entered or not
                 if(searchedRegNo.compareTo("")!=0) {
                     //Detect fake doctor id
@@ -352,7 +361,11 @@ public class View_Fragment_DoctorDetails extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 ViewPager pager = (ViewPager) getActivity().findViewById(R.id.pager);
                                 TabPagerAdapter mAdapter;
+                                pager.setTag(searchedRegNo);
+                                //Bundle bundle = new Bundle();
+                                //bundle.putString("RegNo", searchedRegNo);
                                 mAdapter = new TabPagerAdapter(getActivity().getSupportFragmentManager());
+                               // mAdapter.getItem(2).setArguments(bundle);
                                 pager.setAdapter(mAdapter);
                                 pager.setCurrentItem(2);
                             }
