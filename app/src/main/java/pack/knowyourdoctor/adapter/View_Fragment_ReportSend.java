@@ -1,5 +1,6 @@
 package pack.knowyourdoctor.adapter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
@@ -17,24 +18,33 @@ import pack.knowyourdoctor.Validators.ContactNoValidation;
 import pack.knowyourdoctor.Validators.NICValidation;
 import pack.knowyourdoctor.Validators.RegNoValidation;
 import pack.knowyourdoctor.Validators.RequiredFieldValidation;
+import pack.knowyourdoctor.View_Home;
+import pack.knowyourdoctor.View_ShowDoctorDetails;
 
 public class View_Fragment_ReportSend extends Fragment {
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         final View rootView = inflater.inflate(R.layout.view_fragment_reportsend, container, false);
 
+        final EditText dreg = (EditText)rootView.findViewById(R.id.d_reg);
+
+        //String regNo = View_Fragment_DoctorDetails.getRegNo();
+        String regNo;
+        regNo = container.getTag().toString();
+        dreg.setText(regNo);
+
         final Button send = (Button)rootView.findViewById(R.id.btnsubmit);
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final EditText name = (EditText)rootView.findViewById(R.id.fullname);
+                final EditText name = (EditText) rootView.findViewById(R.id.fullname);
                 //final EditText nic = (EditText)rootView.findViewById(R.id.nic_no);
-                final EditText contact = (EditText)rootView.findViewById(R.id.contact);
+                final EditText contact = (EditText) rootView.findViewById(R.id.contact);
 
-                final EditText dreg = (EditText)rootView.findViewById(R.id.d_reg);
-                final EditText dname = (EditText)rootView.findViewById(R.id.d_name);
+                final EditText dname = (EditText) rootView.findViewById(R.id.d_name);
                 //final EditText dnicno = (EditText)rootView.findViewById(R.id.d_nic_no);
                 //final EditText dcontact = (EditText)rootView.findViewById(R.id.d_contact);
 
@@ -42,7 +52,7 @@ public class View_Fragment_ReportSend extends Fragment {
 
                 //Validation
                 boolean isValid = true;
-                if(RequiredFieldValidation.isEmpty(name.getText().toString())){
+                if (RequiredFieldValidation.isEmpty(name.getText().toString())) {
                     name.setError("Please enter your full name");
                     isValid = false;
                 }
@@ -52,17 +62,17 @@ public class View_Fragment_ReportSend extends Fragment {
                     isValid = false;
                 }*/
 
-                if(!ContactNoValidation.isValidContactNo(contact.getText().toString())){
+                if (!ContactNoValidation.isValidContactNo(contact.getText().toString())) {
                     contact.setError("Please enter your contact number as XXX-XXXXXXX");
                     isValid = false;
                 }
 
-                if(!RegNoValidation.isValidRegNoWithRequiredValidation(dreg.getText().toString())){
+                if (!RegNoValidation.isValidRegNoWithRequiredValidation(dreg.getText().toString())) {
                     dreg.setError("Please enter fake doctor's registration number");
                     isValid = false;
                 }
 
-                if(RequiredFieldValidation.isEmpty(dname.getText().toString())){
+                if (RequiredFieldValidation.isEmpty(dname.getText().toString())) {
                     dname.setError("Please enter fake doctor's name");
                     isValid = false;
                 }
@@ -77,7 +87,7 @@ public class View_Fragment_ReportSend extends Fragment {
                     isValid = false;
                 }*/
 
-                if(isValid) {
+                if (isValid) {
                     Thread thread = new Thread(new Runnable() {
                         @Override
                         public void run() {

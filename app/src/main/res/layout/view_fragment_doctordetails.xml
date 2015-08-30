@@ -1,7 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:id="@+id/fragmentDoctorDetails"
-    android:layout_height="match_parent" android:paddingLeft="0dp"
+    android:layout_height="match_parent"
+    android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="10dp"
     android:paddingBottom="0dp"
@@ -10,264 +12,242 @@
     tools:context="pack.knowyourdoctor.adapter.View_Fragment_DoctorDetails">
 
     <LinearLayout
+        android:id="@+id/mainView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:weightSum="100"
-        android:paddingRight="5dp">
-
-        <!--<TextView
-            android:id="@+id/appName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Search Doctor"
-            android:layout_weight="75"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_marginTop="5dp"
-            android:layout_width="fill_parent"
-            android:layout_height="2dip"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="25"
-            android:background="#d3d3d3"/>
--->
-        <Button
-            android:id="@+id/search"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="15dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:textColor="#ffffff"
-            android:background="@drawable/search_button_selector"
-            android:textSize="15sp"
-            android:text="Search"/>
-
-        <TextView
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_width="fill_parent"
-            android:layout_height="2dip"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:background="#e4e4e4"/>
-
-    </LinearLayout>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="true"
-        android:layout_marginTop="5dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:id="@+id/registryTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.40"
-                    android:text="Registry" />
-
-                <Spinner
-                    android:id="@+id/registry"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.60"
-                    android:ems="10"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/registryList"  />
-
-                <android.widget.TextView
-                    android:id="@+id/regSpinnerError"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_gravity="right"
-                    android:layout_marginTop="-20dp"
-                    android:paddingTop="0dp"
-                    android:paddingRight="5dp"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:id="@+id/regNoTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.40"
-                    android:text="Register No" />
-
-                <EditText
-                    android:id="@+id/regNo"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.60"
-                    android:ems="10"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-                <TextView
-                    android:id="@+id/initialTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.40"
-                    android:text="Initials" />
-
-                <EditText
-                    android:id="@+id/initial"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.60"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName" />
-
-            </LinearLayout>
-
-            <!--<LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:layout_marginTop="5dp"
-                    android:layout_width="fill_parent"
-                    android:layout_height="2dip"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="1dp"
-                    android:layout_weight="25"
-                    android:background="#a9a9a9"/>
-
-            </LinearLayout>-->
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right">
+            android:weightSum="100"
+            android:paddingRight="5dp">
 
             <Button
+                android:id="@+id/search"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:text="Advanced Search"
-                android:background="#00000000"
-                android:layout_marginRight="5dp"
+                android:layout_height="35dp"
                 android:layout_gravity="right"
-                android:textColor="#1e90ff"
-                android:id="@+id/advanceSearchBtn" />
-            </LinearLayout>
+                android:layout_marginRight="15dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="#ffffff"
+                android:background="@drawable/search_button_selector"
+                android:textSize="15sp"
+                android:text="Search" />
 
-            <LinearLayout
+            <TextView
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-                <TextView
-                    android:id="@+id/familyNameTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.40"
-                    android:text="Family Name" />
+                android:layout_height="2dip"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="#e4e4e4" />
 
-                <EditText
-                    android:id="@+id/familyName"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.60"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName" />
-            </LinearLayout>
+        </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-                <TextView
-                    android:id="@+id/otherNameTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.40"
-                    android:text="Other Name" />
-
-                <EditText
-                    android:id="@+id/otherName"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.60"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-                <TextView
-                    android:id="@+id/nicNoTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.40"
-                    android:text="NIC No" />
-
-                <EditText
-                    android:id="@+id/docNIC"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.60"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-                <TextView
-                    android:id="@+id/addressTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.40"
-                    android:text="Address" />
-
-                <EditText
-                    android:id="@+id/address"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.60"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName"/>
-            </LinearLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:layout_marginTop="5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp">
+                android:orientation="vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
+                <!---->
+                <!--LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/registryTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.40"
+                        android:text="Registry" />
+
+                    <Spinner
+                        android:id="@+id/registry"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.60"
+                        android:ems="10"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/registryList"  />
+
+                    <android.widget.TextView
+                        android:id="@+id/regSpinnerError"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="-20dp"
+                        android:paddingTop="0dp"
+                        android:paddingRight="5dp"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true" />
+                </LinearLayout-->
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/regNoTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.40"
+                        android:text="Register No" />
+
+                    <EditText
+                        android:id="@+id/regNo"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.60"
+                        android:ems="10"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/otherNameTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.40"
+                        android:text="First Name" />
+
+                    <EditText
+                        android:id="@+id/otherName"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.60"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/familyNameTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.40"
+                        android:text="Last Name" />
+
+                    <EditText
+                        android:id="@+id/familyName"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.60"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:text="Advanced Search"
+                        android:background="#00000000"
+                        android:layout_marginRight="5dp"
+                        android:layout_gravity="right"
+                        android:textColor="#1e90ff"
+                        android:id="@+id/advanceSearchBtn" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/initialTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.40"
+                        android:text="Initials" />
+
+                    <EditText
+                        android:id="@+id/initial"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.60"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/nicNoTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.40"
+                        android:text="NIC No" />
+
+                    <EditText
+                        android:id="@+id/docNIC"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.60"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/addressTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.40"
+                        android:text="Address" />
+
+                    <EditText
+                        android:id="@+id/address"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.60"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp">
+
+
+                </LinearLayout>
 
 
             </LinearLayout>
 
+        </ScrollView>
 
-        </LinearLayout>
-
-    </ScrollView>
+    </LinearLayout>
 
 
 </LinearLayout>
