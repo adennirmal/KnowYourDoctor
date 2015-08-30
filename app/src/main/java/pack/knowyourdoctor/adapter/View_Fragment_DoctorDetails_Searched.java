@@ -51,6 +51,7 @@ public class View_Fragment_DoctorDetails_Searched extends Fragment {
     ArrayList<Model_Doctor> searchedDoctors;
     View rootView;
     String passedURL, searched_reg_no;
+    String test;
     /*
     public View_Fragment_DoctorDetails_Searched(String passedURL) {
         this.passedURL = passedURL;
