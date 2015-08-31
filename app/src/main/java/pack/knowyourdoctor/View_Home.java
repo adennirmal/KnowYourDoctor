@@ -4,18 +4,16 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.app.ActionBar;
 import android.view.View;
 import android.view.animation.AnticipateInterpolator;
 import android.view.animation.OvershootInterpolator;
@@ -31,7 +29,7 @@ import pack.knowyourdoctor.AnimationPack.AnimatorUtils;
 import pack.knowyourdoctor.adapter.TabPagerAdapter;
 
 
-public class View_Home extends FragmentActivity implements View.OnClickListener,ViewPager.OnPageChangeListener,ActionBar.TabListener, LocationListener{
+public class View_Home extends FragmentActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, ActionBar.TabListener, LocationListener {
     private Context context;
     View mFab;
     View mMenuLayout;
@@ -46,7 +44,7 @@ public class View_Home extends FragmentActivity implements View.OnClickListener,
     Button aboutDevelopersBTN;
     private TabPagerAdapter mAdapter;
     private ActionBar actionBar;
-    LocationManager locationManager ;
+    LocationManager locationManager;
     Location location;
     String provider;
 
@@ -56,7 +54,7 @@ public class View_Home extends FragmentActivity implements View.OnClickListener,
 
     // Tab titles
     //private String[] tabs = { "Search", "Locate Doctor","Report","FB","SLMC","About Us"};
-    final int[] icons = {R.drawable.search_selector,R.drawable.location_selector,R.drawable.report_selector,R.drawable.fb_selector};
+    final int[] icons = {R.drawable.search_selector, R.drawable.location_selector, R.drawable.report_selector, R.drawable.fb_selector};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,15 +80,9 @@ public class View_Home extends FragmentActivity implements View.OnClickListener,
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         viewDisplay.setAdapter(mAdapter);
 
-        /*for (int i =0; i<tabs.length; i++){
-            actionBar.addTab(actionBar.newTab().setText(tabs[i]).setTabListener(this));
-        }*/
-
-
-        for (int i =0; i<icons.length; i++){
+        for (int i = 0; i < icons.length; i++) {
             actionBar.addTab(actionBar.newTab().setIcon(icons[i]).setTabListener(this));
         }
-        //actionBar.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
 
         context = getApplicationContext();
 
@@ -119,33 +111,30 @@ public class View_Home extends FragmentActivity implements View.OnClickListener,
         if (this.getIntent().hasExtra("SelectedDoc")) {
             Model_Doctor selectedDoctor = (Model_Doctor) this.getIntent().getSerializableExtra("SelectedDoc");
             View_Doctor_Rating ratingDialog = new View_Doctor_Rating();
-            ratingDialog.setArguments(selectedDoctor,context);
+            ratingDialog.setArguments(selectedDoctor, context);
             ratingDialog.show(getSupportFragmentManager(), null);
         }
 
-
         //Load Coordinates
-
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE); // Getting LocationManager object
 
         Criteria criteria = new Criteria();// Creating an empty criteria object
 
         provider = locationManager.getBestProvider(criteria, false);// Getting the name of the provider that meets the criteria
 
-        if(provider!=null && !provider.equals("")){
+        if (provider != null && !provider.equals("")) {
 
             // Get the location from the given provider
             location = locationManager.getLastKnownLocation(provider);
 
             locationManager.requestLocationUpdates(provider, 20000, 1, this);
 
-                if(location!=null)
-                    onLocationChanged(location);
-                else
+            if (location != null)
+                onLocationChanged(location);
+            //else
+            //Toast.makeText(context, "Location can't be retrieved", Toast.LENGTH_SHORT).show();
 
-                    Toast.makeText(context, "Location can't be retrieved", Toast.LENGTH_SHORT).show();
-
-        }else{
+        } else {
             Toast.makeText(context, "No Provider Found", Toast.LENGTH_SHORT).show();
         }
     }
@@ -158,7 +147,7 @@ public class View_Home extends FragmentActivity implements View.OnClickListener,
         }
 
         if (v instanceof Button) {
-            switch (((Button) v).getId()){
+            switch (((Button) v).getId()) {
                 case R.id.docDetailsBtn:
                     viewDisplay.setCurrentItem(0);
                     docDetailsBTN.setBackgroundResource(R.drawable.light_blue_oval_selector);
@@ -188,7 +177,7 @@ public class View_Home extends FragmentActivity implements View.OnClickListener,
         }
 
         //Hide menu if user click anywhere in the screen
-        if(v.getId() == mMenuLayout.getId()){
+        if (v.getId() == mMenuLayout.getId()) {
             hideMenu();
         }
     }
@@ -292,7 +281,7 @@ public class View_Home extends FragmentActivity implements View.OnClickListener,
     @Override
     public void onPageSelected(int position) {
         getActionBar().setSelectedNavigationItem(position);
-        switch (position){
+        switch (position) {
             case 0:
                 viewDisplay.setCurrentItem(0);
                 SelectedButtonDisplay(docDetailsBTN);
@@ -331,7 +320,7 @@ public class View_Home extends FragmentActivity implements View.OnClickListener,
 
     }
 
-    private void SelectedButtonDisplay(Button b){
+    private void SelectedButtonDisplay(Button b) {
         lastSelectedButton.setBackgroundResource(R.drawable.path_white_oval);
         b.setBackgroundResource(R.drawable.light_blue_oval_selector);
         lastSelectedButton = b;
@@ -354,11 +343,10 @@ public class View_Home extends FragmentActivity implements View.OnClickListener,
 
     @Override
     public void onLocationChanged(Location location) {
-
         Global_Values.latitude = location.getLatitude();
         Global_Values.longtitude = location.getLongitude();
 
-        Toast.makeText(context,"Loading Coordinates",Toast.LENGTH_LONG);
+        Toast.makeText(context, "Loading Coordinates", Toast.LENGTH_LONG);
 
     }
 

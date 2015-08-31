@@ -1,9 +1,7 @@
 package pack.knowyourdoctor.adapter;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,26 +13,20 @@ import android.widget.Toast;
 import pack.knowyourdoctor.GmailSender;
 import pack.knowyourdoctor.R;
 import pack.knowyourdoctor.Validators.ContactNoValidation;
-import pack.knowyourdoctor.Validators.NICValidation;
 import pack.knowyourdoctor.Validators.RegNoValidation;
 import pack.knowyourdoctor.Validators.RequiredFieldValidation;
-import pack.knowyourdoctor.View_Home;
-import pack.knowyourdoctor.View_ShowDoctorDetails;
 
 public class View_Fragment_ReportSend extends Fragment {
 
+    EditText dReg;
+    static String fakeRegNo;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         final View rootView = inflater.inflate(R.layout.view_fragment_reportsend, container, false);
 
-        final EditText dreg = (EditText)rootView.findViewById(R.id.d_reg);
-
-        //String regNo = View_Fragment_DoctorDetails.getRegNo();
-        String regNo;
-        regNo = container.getTag().toString();
-        dreg.setText(regNo);
+        dReg = (EditText) rootView.findViewById(R.id.d_reg);
 
         final Button send = (Button)rootView.findViewById(R.id.btnsubmit);
         send.setOnClickListener(new View.OnClickListener() {
@@ -67,8 +59,8 @@ public class View_Fragment_ReportSend extends Fragment {
                     isValid = false;
                 }
 
-                if (!RegNoValidation.isValidRegNoWithRequiredValidation(dreg.getText().toString())) {
-                    dreg.setError("Please enter fake doctor's registration number");
+                if (!RegNoValidation.isValidRegNoWithRequiredValidation(dReg.getText().toString())) {
+                    dReg.setError("Please enter fake doctor's registration number");
                     isValid = false;
                 }
 
@@ -95,7 +87,7 @@ public class View_Fragment_ReportSend extends Fragment {
                             //String reportUserNIC = nic.getText().toString();
                             String reportContact = contact.getText().toString();
 
-                            String reportDoctorRegNo = dreg.getText().toString();
+                            String reportDoctorRegNo = dReg.getText().toString();
                             String reportDoctorName = dname.getText().toString();
                             //String reportDoctorNICNo = dnicno.getText().toString();
                             //String reportDoctorAddress = dcontact.getText().toString();
@@ -129,5 +121,11 @@ public class View_Fragment_ReportSend extends Fragment {
             }
         });
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        dReg.setText(fakeRegNo);
     }
 }

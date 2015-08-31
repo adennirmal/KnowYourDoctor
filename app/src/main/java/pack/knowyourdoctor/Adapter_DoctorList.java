@@ -9,12 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.view.LayoutInflater;
@@ -22,13 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.maps.GoogleMap;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -60,7 +52,7 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
     Dialog ratingsDialog;
 
 
-    public Adapter_DoctorList(Context context, ArrayList<Model_Doctor> doctors){
+    public Adapter_DoctorList(Context context, ArrayList<Model_Doctor> doctors) {
         this.context = context;
         searchedDoctors = doctors;
     }
@@ -119,7 +111,7 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        Model_Doctor currentDoc = (Model_Doctor)getChild(groupPosition,childPosition);
+        Model_Doctor currentDoc = (Model_Doctor) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
@@ -145,7 +137,7 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
             public void onClick(View v) {
                 selectedDoctor = searchedDoctors.get(groupPosition);
                 ratedDoc = new Model_RatedDoctor();
-                new RatingListLoadTask().execute("http://sepandroid.esy.es/RatedDoctorsWithComments.php?doctorid="+selectedDoctor.getRegNo());
+                new RatingListLoadTask().execute("http://sepandroid.esy.es/RatedDoctorsWithComments.php?doctorid=" + selectedDoctor.getRegNo());
             }
         });
 
@@ -157,7 +149,7 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                 final AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
                 alertDialog.setTitle("Rate Doctor");
                 alertDialog.setMessage("Do you want to rate now?");
-                alertDialog.setPositiveButton("YES",new DialogInterface.OnClickListener() {
+                alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         final Dialog ratingDialog = new Dialog(context);
@@ -166,30 +158,30 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                         ratingDialog.setTitle("Rate Dr." + selectedDoctor.getFullName());
                         //Rate confirm button
                         Button ratebtn = (Button) ratingDialog.findViewById(R.id.rateBtn);
-                        ratebtn.setOnClickListener(new View.OnClickListener(){
+                        ratebtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 //Comment text view
-                                TextView commentText=(TextView)ratingDialog.findViewById(R.id.comment);
+                                TextView commentText = (TextView) ratingDialog.findViewById(R.id.comment);
                                 String comment = commentText.getText().toString();
                                 //Rating bar
-                                RatingBar numberOfStars = (RatingBar)ratingDialog.findViewById(R.id.doctorRatingBar);
+                                RatingBar numberOfStars = (RatingBar) ratingDialog.findViewById(R.id.doctorRatingBar);
                                 float rating = numberOfStars.getRating();
 
                                 StringBuilder url = new StringBuilder("http://sepandroid.esy.es/Rating.php?");
                                 url.append("doctorid=" + selectedDoctor.getRegNo());
-                                url.append("&doctorname="+selectedDoctor.getFullName());
-                                url.append("&doctoraddress="+selectedDoctor.getAddress());
-                                url.append("&docregdate="+selectedDoctor.getRegDate());
-                                url.append("&docqualification="+selectedDoctor.getQualifications());
-                                url.append("&rating="+rating);
-                                url.append("&commentofdoc="+comment);
+                                url.append("&doctorname=" + selectedDoctor.getFullName());
+                                url.append("&doctoraddress=" + selectedDoctor.getAddress());
+                                url.append("&docregdate=" + selectedDoctor.getRegDate());
+                                url.append("&docqualification=" + selectedDoctor.getQualifications());
+                                url.append("&rating=" + rating);
+                                url.append("&commentofdoc=" + comment);
 
                                 ratingDialog.dismiss();
 
                                 RatingTask ratingTask = new RatingTask();
                                 // passes values for the urls string array
-                                ratingTask.execute(url.toString().replace(" ","%20"));
+                                ratingTask.execute(url.toString().replace(" ", "%20"));
                             }
                         });
 
@@ -233,20 +225,19 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                     public void onClick(DialogInterface dialog, int which) {
 
 
-
                         StringBuilder url = new StringBuilder("http://sepandroid.esy.es/Location.php?");
                         url.append("doctorid=" + selectedDoctor.getRegNo());
-                        url.append("&doctorname="+selectedDoctor.getFullName());
-                        url.append("&doctoraddress="+selectedDoctor.getAddress());
-                        url.append("&docregdate="+selectedDoctor.getRegDate());
-                        url.append("&docqualification="+selectedDoctor.getQualifications());
-                        url.append("&latitude="+Global_Values.latitude);
-                        url.append("&longtitude="+Global_Values.longtitude);
+                        url.append("&doctorname=" + selectedDoctor.getFullName());
+                        url.append("&doctoraddress=" + selectedDoctor.getAddress());
+                        url.append("&docregdate=" + selectedDoctor.getRegDate());
+                        url.append("&docqualification=" + selectedDoctor.getQualifications());
+                        url.append("&latitude=" + Global_Values.latitude);
+                        url.append("&longtitude=" + Global_Values.longtitude);
 
 
                         JsonReadTask locationTask = new JsonReadTask();
                         // passes values for the urls string array
-                        locationTask.execute(url.toString().replace(" ","%20"));
+                        locationTask.execute(url.toString().replace(" ", "%20"));
                         //Toast.makeText(context, "Thanks for support", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -264,6 +255,7 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
 
     public class RatingListLoadTask extends AsyncTask<String, Void, String> {
         String jsonResult;
+
         @Override
         protected String doInBackground(String... params) {
             HttpClient httpclient = new DefaultHttpClient();
@@ -271,14 +263,14 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
             try {
                 HttpResponse response = httpclient.execute(httppost);
                 jsonResult = inputStreamToString(response.getEntity().getContent()).toString();
-            }
-            catch (ClientProtocolException e) {
+            } catch (ClientProtocolException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return null;
         }
+
         private StringBuilder inputStreamToString(InputStream is) {
             String rLine = "";
             StringBuilder questionString = new StringBuilder();
@@ -288,8 +280,7 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                 while ((rLine = rd.readLine()) != null) {
                     questionString.append(rLine);
                 }
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             return questionString;
@@ -344,12 +335,12 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                 ratingsDialog.setContentView(R.layout.view_ratings);
                 ratingsDialog.setTitle("Ratings : Dr. " + selectedDoctor.getFullName());
 
-                ratedDocComments = (ListView)ratingsDialog.findViewById(R.id.RatedDocList);
+                ratedDocComments = (ListView) ratingsDialog.findViewById(R.id.RatedDocList);
                 listAdapter = new Adapter_Comments(context, ratedDoc.getComments());
                 ratedDocComments.setAdapter(listAdapter);
                 ratingsDialog.show();
             } catch (JSONException e) {
-                Toast.makeText(context, "No Ratings for Dr. "+selectedDoctor.getFullName(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "No Ratings for Dr. " + selectedDoctor.getFullName(), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -393,14 +384,14 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
         }
     }// end async task
 
-    public void sendBasicNotification(Model_Doctor selectedDoc){
+    public void sendBasicNotification(Model_Doctor selectedDoc) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setAutoCancel(true);
         builder.setContentTitle("Rate Dr. " + selectedDoc.getFullName());
         builder.setContentText("Tap to rate");
         builder.setSmallIcon(R.mipmap.appiconimg);
 
-        Intent i = new Intent(this.context,View_Home.class);
+        Intent i = new Intent(this.context, View_Home.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this.context);
         stackBuilder.addParentStack(View_Home.class);
         i.putExtra("SelectedDoc", (java.io.Serializable) selectedDoc);
@@ -411,7 +402,7 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
 
         Notification notification = builder.build();
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(8,notification);
+        manager.notify(8, notification);
     }
 
     @Override

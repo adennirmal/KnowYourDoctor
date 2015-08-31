@@ -27,18 +27,16 @@ public class DBAccess extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_BOOK_TABLE = "CREATE TABLE " + table_Ratings + " ( " + comment_ID + " INTEGER PRIMARY KEY )";
         db.execSQL(CREATE_BOOK_TABLE);
-
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + table_Ratings);
         onCreate(db);
-
     }
 
     //Method to Insert a book
-    public void insertCommentID(int cid){
+    public void insertCommentID(int cid) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -50,14 +48,14 @@ public class DBAccess extends SQLiteOpenHelper {
     }
 
     //Method to get All Book Details
-    public ArrayList<Integer> getAllCommentedIds(){
+    public ArrayList<Integer> getAllCommentedIds() {
         ArrayList<Integer> commentedIDs = new ArrayList<Integer>();
 
-        String query = "SELECT * FROM "+ table_Ratings;
+        String query = "SELECT * FROM " + table_Ratings;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             Integer commentId = new Integer(cursor.getString(0));
             commentedIDs.add(commentId);
         }
@@ -70,7 +68,7 @@ public class DBAccess extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         // delete book
-        db.delete(table_Ratings, comment_ID + " = ?", new String[] { String.valueOf(cid)});
+        db.delete(table_Ratings, comment_ID + " = ?", new String[]{String.valueOf(cid)});
         db.close();
     }
 

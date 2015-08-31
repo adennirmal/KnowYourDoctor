@@ -26,11 +26,6 @@ public class View_Doctor_Rating extends DialogFragment implements View.OnClickLi
     Model_Doctor selectedDoc;
     Context context;
 
-    /*public View_Doctor_Rating(Model_Doctor selectedDoc, Context context) {
-        this.selectedDoc = selectedDoc;
-        this.context = context;
-    }*/
-
     public View_Doctor_Rating() {
     }
 
@@ -57,7 +52,7 @@ public class View_Doctor_Rating extends DialogFragment implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.rateBtn:
                 executeRatingTask(selectedDoc);
                 break;
@@ -67,7 +62,7 @@ public class View_Doctor_Rating extends DialogFragment implements View.OnClickLi
         }
     }
 
-    private void executeRatingTask(Model_Doctor selectedDoctor){
+    private void executeRatingTask(Model_Doctor selectedDoctor) {
         TextView commentText = (TextView) view.findViewById(R.id.comment);
         String comment = commentText.getText().toString();
         //Rating bar
@@ -76,7 +71,7 @@ public class View_Doctor_Rating extends DialogFragment implements View.OnClickLi
 
         StringBuilder url = new StringBuilder("http://sepandroid.esy.es/Rating.php?");
         url.append("doctorid=" + selectedDoctor.getRegNo());
-        url.append("&doctorname="+selectedDoctor.getFullName());
+        url.append("&doctorname=" + selectedDoctor.getFullName());
         url.append("&rating=" + rating);
         url.append("&commentofdoc=" + comment);
 
@@ -84,7 +79,7 @@ public class View_Doctor_Rating extends DialogFragment implements View.OnClickLi
 
         RatingTask ratingTask = new RatingTask();
         // passes values for the urls string array
-        ratingTask.execute(url.toString().replace(" ","%20"));
+        ratingTask.execute(url.toString().replace(" ", "%20"));
     }
 
     public class RatingTask extends AsyncTask<String, Void, String> {

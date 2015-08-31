@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 import pack.knowyourdoctor.Adapter_DoctorList;
@@ -51,8 +50,8 @@ public class View_Fragment_DoctorDetails_Searched extends Fragment {
     ArrayList<Model_Doctor> searchedDoctors;
     View rootView;
     String passedURL, searched_reg_no;
-    /*
-    public View_Fragment_DoctorDetails_Searched(String passedURL) {
+
+    /*public View_Fragment_DoctorDetails_Searched(String passedURL) {
         this.passedURL = passedURL;
     }*/
 
@@ -70,30 +69,28 @@ public class View_Fragment_DoctorDetails_Searched extends Fragment {
 
         listView = (ExpandableListView) rootView.findViewById(R.id.expList);
 
-        listAdapter = new Adapter_DoctorList(context,searchedDoctors);
+        listAdapter = new Adapter_DoctorList(context, searchedDoctors);
         listView.setAdapter(listAdapter);
 
         passedURL = View_Home.urlBundle.get("url").toString();
 
         try {
             searched_reg_no = View_Home.urlBundle.get("RegNo").toString();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             searched_reg_no = "";
         }
 
         //String passedURL = getActivity().getIntent().getStringExtra("url");
 
         //Check internet connection is available or not
-        if(isNetworkAvailable()) {
+        if (isNetworkAvailable()) {
             //Start the background process
             new GetHTMLContent().execute(passedURL);
-        }
-        else{
+        } else {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
             alertDialog.setTitle("Internet Connection error");
             alertDialog.setMessage("Do you want to enable the Internet Connection?");
-            alertDialog.setPositiveButton("YES",new DialogInterface.OnClickListener() {
+            alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
@@ -131,15 +128,15 @@ public class View_Fragment_DoctorDetails_Searched extends Fragment {
             publishProgress(0);
 
             //Check parsed data has table tag
-            if(doc.getElementById("r_table")!=null) {
+            if (doc.getElementById("r_table") != null) {
                 //Get number of pages
 
                 Element resultsNumTag = doc.getElementsByTag("h2").get(0);
 
                 //get numeric value from string,divide it by 20(one page contains 20 results) and store it inside the integer variable
-                int noOfResults = Integer.parseInt(resultsNumTag.text().replaceAll("[a-zA-Z() ]+",""));
+                int noOfResults = Integer.parseInt(resultsNumTag.text().replaceAll("[a-zA-Z() ]+", ""));
                 //check noOfResults equals to multiplier of 20 or not (Example like 80)
-                int noOfPages = noOfResults%20==0?noOfResults/20:(noOfResults/20)+1;
+                int noOfPages = noOfResults % 20 == 0 ? noOfResults / 20 : (noOfResults / 20) + 1;
                 //int noOfPages=1;
                 /*if(doc.getElementById("p_n_links").hasText()) {
                     Elements navigationAnchors = doc.getElementById("p_n_links").getElementsByTag("a");
@@ -152,7 +149,7 @@ public class View_Fragment_DoctorDetails_Searched extends Fragment {
 
 
                 //Iterate through webpages
-                for(int i=0;i<noOfPages;i++){
+                for (int i = 0; i < noOfPages; i++) {
                     int skipFirstRow = 0;
                     for (Element x : tableRows) {
                         //Skip first row because it contains headers of table
@@ -183,10 +180,10 @@ public class View_Fragment_DoctorDetails_Searched extends Fragment {
                         searchedDoctors.add(currentDoctor);
                         //Update Progress bar
                     }
-                    publishProgress((int) ((i / (float)noOfPages) * 100));
+                    publishProgress((int) ((i / (float) noOfPages) * 100));
                     //Replace the start value of the url to navigate to next page
-                    int nextPage = i+1;
-                    if(nextPage!=noOfPages) {
+                    int nextPage = i + 1;
+                    if (nextPage != noOfPages) {
                         url = url.replace("start=" + i, "start=" + nextPage);
                         doc = GetHTMLDocFromString(url);
                         tableContent = doc.getElementById("r_table");
@@ -195,14 +192,13 @@ public class View_Fragment_DoctorDetails_Searched extends Fragment {
                 }
                 //Update Progress bar
                 publishProgress(100);
-            }
-            else{
+            } else {
                 html = "No data found";
             }
             return html;
         }
 
-        private Document GetHTMLDocFromString(String url){
+        private Document GetHTMLDocFromString(String url) {
             HttpClient client = new DefaultHttpClient();
             HttpGet request = new HttpGet(url);
             try {
@@ -222,7 +218,7 @@ public class View_Fragment_DoctorDetails_Searched extends Fragment {
                 Document doc = Jsoup.parse(html);
 
                 //Check parsed data has table tag
-                if(doc.getElementById("r_table")!=null) {
+                if (doc.getElementById("r_table") != null) {
                     if (doc.getElementById("p_n_links").getElementsByTag("a") != null) {
                         //Elements navigationAnchors = doc.getElementById("p_n_links").getElementsByTag("a");
                         //This includes next anchor also (remove it use -1)
@@ -233,7 +229,7 @@ public class View_Fragment_DoctorDetails_Searched extends Fragment {
                     //Elements tableRows = tableContent.getElementsByTag("tr");
                 }
                 return doc;
-            }catch (IOException ex){
+            } catch (IOException ex) {
                 return null;
             }
         }
@@ -242,17 +238,16 @@ public class View_Fragment_DoctorDetails_Searched extends Fragment {
             ProgressBar pBar = (ProgressBar) rootView.findViewById(R.id.progressShow);
             pBar.setVisibility(View.INVISIBLE);
 
-            if(result.compareTo("No data found")!=0 && result.compareTo("Error")!=0) {
+            if (result.compareTo("No data found") != 0 && result.compareTo("Error") != 0) {
                 txt.setText("Number of doctors found : " + searchedDoctors.size());
                 //Collections.sort(searchedDoctors, new DoctorComparator());
                 listAdapter.notifyDataSetChanged();
-            }
-            else{
+            } else {
                 txt.setText(result);
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
                 alertDialog.setTitle("Registration Number (" + searched_reg_no + ") Doesn't Exist!");
                 alertDialog.setMessage("Do you want to report to SLMC?");
-                alertDialog.setPositiveButton("YES",new DialogInterface.OnClickListener() {
+                alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Fragment mFragment = new View_Fragment_ReportSend();
@@ -268,6 +263,7 @@ public class View_Fragment_DoctorDetails_Searched extends Fragment {
                 alertDialog.show();
             }
         }
+
         protected void onProgressUpdate(Integer... progress) {
             setProgressPercent(progress[0]);
         }
@@ -275,7 +271,7 @@ public class View_Fragment_DoctorDetails_Searched extends Fragment {
 
     private void setProgressPercent(Integer progress) {
         TextView txt = (TextView) rootView.findViewById(R.id.displayDetails);
-        txt.setText("Loading : " + progress +"% Completed");
+        txt.setText("Loading : " + progress + "% Completed");
         ProgressBar pBar = (ProgressBar) rootView.findViewById(R.id.progressShow);
         pBar.setProgress(progress);
         //listView.deferNotifyDataSetChanged();
