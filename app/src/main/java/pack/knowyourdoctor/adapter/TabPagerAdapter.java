@@ -9,8 +9,10 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 public class TabPagerAdapter extends FragmentPagerAdapter {
 
+    public String fakeRegNo;
     public TabPagerAdapter(FragmentManager fm) {
         super(fm);
+
     }
     //static String url;
     @Override

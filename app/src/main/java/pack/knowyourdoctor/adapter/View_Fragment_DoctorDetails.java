@@ -367,9 +367,8 @@ public class View_Fragment_DoctorDetails extends Fragment {
                                 ViewPager pager = (ViewPager) getActivity().findViewById(R.id.pager);
                                 TabPagerAdapter mAdapter;
                                 pager.setTag(searchedRegNo);
-                                //Bundle bundle = new Bundle();
-                                //bundle.putString("RegNo", searchedRegNo);
                                 mAdapter = new TabPagerAdapter(getActivity().getSupportFragmentManager());
+                                //mAdapter.fakeRegNo = searchedRegNo;
                                // mAdapter.getItem(2).setArguments(bundle);
                                 pager.setAdapter(mAdapter);
                                 pager.setCurrentItem(2);
@@ -378,7 +377,12 @@ public class View_Fragment_DoctorDetails extends Fragment {
                         alertDialog.setNeutralButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
+                                ViewPager pager = (ViewPager) getActivity().findViewById(R.id.pager);
+                                TabPagerAdapter mAdapter;
+                                mAdapter = new TabPagerAdapter(getActivity().getSupportFragmentManager());
+                                pager.setAdapter(mAdapter);
+                                pager.setCurrentItem(0);
+                                searchedDoctors.clear();
                             }
                         });
                         alertDialog.show();

@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Criteria;
@@ -12,10 +13,15 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
+//import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.app.ActionBar;
+import android.app.FragmentTransaction;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnticipateInterpolator;
 import android.view.animation.OvershootInterpolator;
@@ -29,6 +35,7 @@ import java.util.List;
 
 import pack.knowyourdoctor.AnimationPack.AnimatorUtils;
 import pack.knowyourdoctor.adapter.TabPagerAdapter;
+import pack.knowyourdoctor.adapter.View_Fragment_SLMC;
 
 
 public class View_Home extends FragmentActivity implements View.OnClickListener,ViewPager.OnPageChangeListener,ActionBar.TabListener, LocationListener{
@@ -149,6 +156,23 @@ public class View_Home extends FragmentActivity implements View.OnClickListener,
             Toast.makeText(context, "No Provider Found", Toast.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_view__home, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        switch (item.getItemId()){
+            case R.id.view_fragment_slmc:
+
+        }
+        return true;
+    }
+
 
     @Override
     public void onClick(View v) {
