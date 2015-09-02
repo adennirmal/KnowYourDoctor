@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context=".View_Home">
 
     <item
-        android:id="@id/view_fragment_aboutUs"
+        android:id="@id/view_fragment_slmc"
         android:title="SLMC"
         android:orderInCategory="1"
         app:showAsAction="never" />

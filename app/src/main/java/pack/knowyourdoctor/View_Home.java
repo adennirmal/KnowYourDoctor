@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -26,6 +27,7 @@ import android.view.View;
 import android.view.animation.AnticipateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ogaclejapan.arclayout.ArcLayout;
@@ -56,6 +58,7 @@ public class View_Home extends FragmentActivity implements View.OnClickListener,
     LocationManager locationManager ;
     Location location;
     String provider;
+    Dialog fragmentsDialog;
 
     Button lastSelectedButton;
 
@@ -168,7 +171,15 @@ public class View_Home extends FragmentActivity implements View.OnClickListener,
         super.onOptionsItemSelected(item);
         switch (item.getItemId()){
             case R.id.view_fragment_slmc:
-
+                fragmentsDialog = new Dialog(View_Home.this);
+                fragmentsDialog.setContentView(R.layout.view_fragment_slmc);
+                fragmentsDialog.show();
+                break;
+            case R.id.view_fragment_aboutUs:
+                fragmentsDialog = new Dialog(View_Home.this);
+                fragmentsDialog.setContentView(R.layout.view_fragment_aboutus);
+                fragmentsDialog.show();
+                break;
         }
         return true;
     }
