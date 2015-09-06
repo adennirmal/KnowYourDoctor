@@ -3,6 +3,7 @@ package pack.knowyourdoctor.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -34,11 +35,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 import pack.knowyourdoctor.Adapter_DoctorList;
 import pack.knowyourdoctor.Model_Doctor;
 import pack.knowyourdoctor.R;
 import pack.knowyourdoctor.Validators.RegNoValidation;
+import pack.knowyourdoctor.View_Home;
 
 public class View_Fragment_DoctorDetails extends Fragment {
 
@@ -53,7 +56,11 @@ public class View_Fragment_DoctorDetails extends Fragment {
     LinearLayout linearLayoutView;
     EditText regNoTE;
 
-    public String searchedRegNo;
+    public static String searchedRegNo;
+
+    public static String getRegNo(){
+        return searchedRegNo;
+    }
 
     GetHTMLContent readHTMLPages;
     boolean isCancelled = false;
@@ -82,6 +89,13 @@ public class View_Fragment_DoctorDetails extends Fragment {
         final EditText otherNameTE = (EditText)rootView.findViewById(R.id.otherName);
         final EditText nicNo = (EditText)rootView.findViewById(R.id.docNIC);
         final EditText addressTE = (EditText)rootView.findViewById(R.id.address);
+
+        //Fragment fragment_doctor_details = new Fragment();
+        //Bundle bundle = new Bundle();
+        //bundle.putString("RegNo", regNoTE.getText().toString());
+        //fragment_doctor_details.setArguments(bundle);
+
+        //final LinearLayout layout = (LinearLayout)rootView.findViewById(R.id.middleSemiColon);
 
         //hide advance search options
         //TextViews
@@ -124,6 +138,8 @@ public class View_Fragment_DoctorDetails extends Fragment {
 
                     urlList.add(generatedURL);
                 }
+
+
 
                 //Setup part for display doctor details
                 linearLayoutView = (LinearLayout) getActivity().findViewById(R.id.mainView);
@@ -215,11 +231,6 @@ public class View_Fragment_DoctorDetails extends Fragment {
             }
         });
         return rootView;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     //Method to check internet connection availability
@@ -355,9 +366,10 @@ public class View_Fragment_DoctorDetails extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 ViewPager pager = (ViewPager) getActivity().findViewById(R.id.pager);
                                 TabPagerAdapter mAdapter;
-                                //Set static variable of Report Send Fragment
-                                View_Fragment_ReportSend.fakeRegNo = searchedRegNo;
+                                pager.setTag(searchedRegNo);
                                 mAdapter = new TabPagerAdapter(getActivity().getSupportFragmentManager());
+                                //mAdapter.fakeRegNo = searchedRegNo;
+                               // mAdapter.getItem(2).setArguments(bundle);
                                 pager.setAdapter(mAdapter);
                                 pager.setCurrentItem(2);
                             }
@@ -365,7 +377,12 @@ public class View_Fragment_DoctorDetails extends Fragment {
                         alertDialog.setNeutralButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
+                                ViewPager pager = (ViewPager) getActivity().findViewById(R.id.pager);
+                                TabPagerAdapter mAdapter;
+                                mAdapter = new TabPagerAdapter(getActivity().getSupportFragmentManager());
+                                pager.setAdapter(mAdapter);
+                                pager.setCurrentItem(0);
+                                searchedDoctors.clear();
                             }
                         });
                         alertDialog.show();

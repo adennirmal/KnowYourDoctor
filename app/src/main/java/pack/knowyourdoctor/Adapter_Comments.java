@@ -66,7 +66,16 @@ public class Adapter_Comments extends BaseAdapter {
         final TextView LikesTextView = (TextView) convertView.findViewById(R.id.likes);
 
         commentTextView.setText(thisComment.getComment().toString());
-        LikesTextView.setText("Likes : " + thisComment.getNoOfLikes());
+        //LikesTextView.setText("Likes : " + thisComment.getNoOfLikes());
+        if (thisComment.getNoOfLikes() == 0){
+            LikesTextView.setText("Be the first to like this");
+        }
+        else if(thisComment.getNoOfLikes() == 1){
+            LikesTextView.setText(thisComment.getNoOfLikes() + " Like");
+        }
+        else {
+            LikesTextView.setText(thisComment.getNoOfLikes() + " people Like this");
+        }
         final Button button = (Button) convertView.findViewById(R.id.likeorUnlikeBTN);
 
         //Check Like or unlike state current comment
@@ -91,8 +100,15 @@ public class Adapter_Comments extends BaseAdapter {
                     access.deleteCommentID(thisComment.getCommentID());
                     button.setText("Like");
                 }
-                LikesTextView.setText("Likes : " + currentLikes);
-
+                if (currentLikes == 0){
+                    LikesTextView.setText("Be the first to like this");
+                }
+                else if(currentLikes == 1){
+                    LikesTextView.setText(currentLikes + " Like");
+                }
+                else {
+                    LikesTextView.setText(currentLikes + " people Like this");
+                }
                 StringBuilder url = new StringBuilder("http://sepandroid.esy.es/Like.php?commentID=");
                 //Value
                 url.append(thisComment.getCommentID());

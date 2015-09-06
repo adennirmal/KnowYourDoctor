@@ -50,11 +50,19 @@ public class View_Doctor_Rating extends DialogFragment implements View.OnClickLi
         return view;
     }
 
+    /*Doctor_RateAndComment rate_comment = new Doctor_RateAndComment();
+    TextView commentText = (TextView) view.findViewById(R.id.comment);
+    String comment = commentText.getText().toString();
+    //Rating bar
+    RatingBar numberOfStars = (RatingBar) view.findViewById(R.id.doctorRatingBar);
+    float rating = numberOfStars.getRating();*/
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rateBtn:
                 executeRatingTask(selectedDoc);
+                //rate_comment.executeRatingAndCommentTask(selectedDoc, rating,comment,context);
                 break;
             case R.id.cancelBtn:
                 getDialog().dismiss();

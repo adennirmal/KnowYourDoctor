@@ -2,7 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/view_fragment_aboutUs"
     android:weightSum="100"
+    android:background="#f1f1f1"
     tools:context="pack.knowyourdoctor.adapter.View_Fragment_Aboutus">
 
     <LinearLayout
@@ -26,60 +28,125 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="30dp"
+        android:layout_margin="20dp"
         android:weightSum="100">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Darrel Rayen"
-            android:padding="10dp"
             android:textSize="20sp"
-            android:gravity="center_vertical"/>
+            android:background="#ffffff"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:paddingTop="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="5dp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:background="#f1f1f1"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Chinthaka Suren"
-            android:padding="10dp"
             android:textSize="20sp"
-            android:gravity="center_vertical"/>
+            android:background="#ffffff"
+            android:gravity="center_vertical"
+            android:paddingTop="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="15dp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:background="#f1f1f1"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Nirmal Madasekara"
             android:textSize="20sp"
-            android:padding="10dp"
+            android:background="#ffffff"
             android:id="@+id/user_name"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:paddingTop="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="5dp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:background="#f1f1f1"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Yasini Piraba"
-            android:padding="10dp"
             android:textSize="20sp"
-            android:gravity="center_vertical"/>
-    </LinearLayout>
+            android:background="#ffffff"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:paddingTop="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="5dp" />
 
-    <TextView
-        android:id="@+id/textRating"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_gravity="center_horizontal"
-        android:text="Help us to improve KYD with your ratings!"
-        android:textSize="20sp"
-        android:textColor="#ffffff"
-        android:gravity="left"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:background="#d3d3d3"/>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:background="#f1f1f1"/>
+
+        <TextView
+            android:id="@+id/textRating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Help us to improve KYD with your ratings!"
+            android:textSize="20sp"
+            android:textColor="#2483FF"
+            android:background="#ffffff"
+            android:gravity="left"
+            android:paddingLeft="15dp"
+            android:paddingTop="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="5dp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:background="#d3d3d3"/>
+
+    </LinearLayout>
 
     <RatingBar
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp" />
+        android:layout_marginLeft="25dp" />
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="#d3d3d3"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="#f1f1f1"/>
 
     <!--Button
         android:layout_width="wrap_content"

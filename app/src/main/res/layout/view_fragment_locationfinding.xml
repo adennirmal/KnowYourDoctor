@@ -94,7 +94,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:layout_marginRight="10dp"
-                        android:background="@drawable/doctor_icon"/>
+                        android:background="@drawable/city_icon"/>
 
                     <EditText
                         android:layout_width="fill_parent"
