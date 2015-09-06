@@ -23,6 +23,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingTop="14dp"
+            android:paddingLeft="2dp"
             android:gravity="top|center"
             android:layout_weight="90">
 

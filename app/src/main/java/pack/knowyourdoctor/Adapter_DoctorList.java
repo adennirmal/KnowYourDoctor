@@ -367,7 +367,7 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                     @Override
                     public void onClick(View v) {
                         newComment =(EditText)ratingsDialog.findViewById(R.id.newComment);
-                        String comment = newComment.getText().toString();
+                        String comment = newComment.getText().toString().trim();
 
                         boolean isValid = true;
                         if (RequiredFieldValidation.isEmpty(comment)){
