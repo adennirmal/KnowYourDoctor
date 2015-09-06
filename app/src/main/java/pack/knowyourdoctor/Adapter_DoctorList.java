@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -45,6 +46,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import pack.knowyourdoctor.Validators.RequiredFieldValidation;
+
 
 /**
  * Created by Nirmal on 3/30/2015.
@@ -57,6 +60,8 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
     Model_RatedDoctor ratedDoc;
     ListView ratedDocComments;
     Adapter_Comments listAdapter;
+    EditText newComment;
+    TextView commentDoctorTextView;
     Dialog ratingsDialog;
 
 
@@ -176,7 +181,11 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                                 RatingBar numberOfStars = (RatingBar)ratingDialog.findViewById(R.id.doctorRatingBar);
                                 float rating = numberOfStars.getRating();
 
-                                StringBuilder url = new StringBuilder("http://sepandroid.esy.es/Rating.php?");
+                                Doctor_RateAndComment rate_comment = new Doctor_RateAndComment();
+                                rate_comment.executeRatingAndCommentTask(selectedDoctor,rating,comment,context,"Thanks for Rating!");
+                                ratingDialog.dismiss();
+
+                                /*StringBuilder url = new StringBuilder("http://sepandroid.esy.es/Rating.php?");
                                 url.append("doctorid=" + selectedDoctor.getRegNo());
                                 url.append("&doctorname="+selectedDoctor.getFullName());
                                 url.append("&doctoraddress="+selectedDoctor.getAddress());
@@ -189,7 +198,7 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
 
                                 RatingTask ratingTask = new RatingTask();
                                 // passes values for the urls string array
-                                ratingTask.execute(url.toString().replace(" ","%20"));
+                                ratingTask.execute(url.toString().replace(" ","%20"));*/
                             }
                         });
 
@@ -342,12 +351,41 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                 ratingsDialog = new Dialog(context);
 
                 ratingsDialog.setContentView(R.layout.view_ratings);
-                ratingsDialog.setTitle("Ratings : Dr. " + selectedDoctor.getFullName());
+                ratingsDialog.setTitle("Reviews: Dr. " + selectedDoctor.getFullName());
 
                 ratedDocComments = (ListView)ratingsDialog.findViewById(R.id.RatedDocList);
                 listAdapter = new Adapter_Comments(context, ratedDoc.getComments());
                 ratedDocComments.setAdapter(listAdapter);
+
+                commentDoctorTextView = (TextView)ratingsDialog.findViewById(R.id.comment_doctor_textView);
+                commentDoctorTextView.setText("Dr. " + selectedDoctor.getFullName());
+
                 ratingsDialog.show();
+
+                Button commentSubmitBtn = (Button)ratingsDialog.findViewById(R.id.comment_submit_btn);
+                commentSubmitBtn.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        newComment =(EditText)ratingsDialog.findViewById(R.id.newComment);
+                        String comment = newComment.getText().toString();
+
+                        boolean isValid = true;
+                        if (RequiredFieldValidation.isEmpty(comment)){
+                            newComment.setError("Please add a comment to submit");
+                            isValid = false;
+                        }
+                        //Rating bar
+                        //RatingBar numberOfStars = (RatingBar)ratingsDialog.findViewById(R.id.doctorRatingBar);
+                        //float rating = numberOfStars.getRating();
+                        if(isValid) {
+                            Doctor_RateAndComment rate_comment = new Doctor_RateAndComment();
+                            rate_comment.executeRatingAndCommentTask(selectedDoctor, 0.0f, comment, context, "Thanks for the comment!");
+                            ratingsDialog.dismiss();
+                            new RatingListLoadTask().execute("http://sepandroid.esy.es/RatedDoctorsWithComments.php?doctorid=" + selectedDoctor.getRegNo());
+                        }
+                    }
+                });
+
             } catch (JSONException e) {
                 Toast.makeText(context, "No Ratings for Dr. "+selectedDoctor.getFullName(), Toast.LENGTH_LONG).show();
             }

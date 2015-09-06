@@ -25,7 +25,7 @@
     <string name="city_hint"><font size = "12">City</font></string><string name="rate_comment">Rate &amp; </string>
     <string name="search"><font size = "12">Search</font></string>
     <string name="current_location"><font size = "12">Current Location</font></string>
-
+    <string name="view_comment_hint"><font size = "12">Your comment here..</font></string>
 
 </resources>
 
