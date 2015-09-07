@@ -63,7 +63,7 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
     EditText newComment;
     TextView commentDoctorTextView;
     Dialog ratingsDialog;
-
+    int commentsCount;
 
     public Adapter_DoctorList(Context context, ArrayList<Model_Doctor> doctors){
         this.context = context;
@@ -336,7 +336,7 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                 JSONArray commentsArray = jsonChildNode.optJSONArray("comments");
 
                 ArrayList<Model_Comment> commentsOfCurrentDoc = new ArrayList<Model_Comment>();
-                for (int j = 0; j < commentsArray.length(); j++) {
+                for (int j = commentsArray.length()-1; j > 0 ; j--) {
                     JSONObject comment = commentsArray.getJSONObject(j);
                     Model_Comment currentComment = new Model_Comment();
                     currentComment.setCommentID(Integer.parseInt(comment.optString("commentID")));
@@ -359,6 +359,9 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
 
                 commentDoctorTextView = (TextView)ratingsDialog.findViewById(R.id.comment_doctor_textView);
                 commentDoctorTextView.setText("Dr. " + selectedDoctor.getFullName());
+
+                TextView noOfComments = (TextView)ratingsDialog.findViewById(R.id.no_of_comments);
+                noOfComments.setText(ratedDocComments.getCount() + " comments");
 
                 ratingsDialog.show();
 

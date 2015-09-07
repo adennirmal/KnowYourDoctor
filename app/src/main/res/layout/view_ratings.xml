@@ -69,20 +69,19 @@
                     android:id="@+id/comment_doctor_textView"
                     android:textColor="#2483FF"
                     android:paddingLeft="25dp"
-                    android:layout_weight="85"/>
+                    android:layout_weight="75"/>
 
                 <Button
                     android:layout_width="40dp"
                     android:layout_height="30dp"
                     android:background="@drawable/search_button_selector"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
+                    android:padding="5dp"
                     android:layout_marginBottom="10dp"
                     android:layout_marginRight="10dp"
                     android:textSize="12sp"
                     android:id="@+id/comment_submit_btn"
                     android:textColor="#ffffff"
-                    android:layout_weight="15"
+                    android:layout_weight="25"
                     android:text="Submit"/>
 
             </LinearLayout>
@@ -95,14 +94,19 @@
 
     <TextView
         android:layout_width="fill_parent"
-        android:layout_height="2dip"
-        android:background="#f1f1f1"/>
+        android:layout_height="wrap_content"
+        android:background="#f1f1f1"
+        android:id="@+id/no_of_comments"
+        android:paddingTop="5dp"
+        android:paddingLeft="20dp"
+        android:text=""
+        android:textColor="#acacac"/>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/RatedDocList"
-        android:dividerHeight="0.5dp">
+        android:dividerHeight="0.1dp">
     </ListView>
 
 </LinearLayout>
