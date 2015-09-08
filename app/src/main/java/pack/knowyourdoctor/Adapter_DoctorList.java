@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.location.Criteria;
 import android.location.Location;
@@ -45,6 +46,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+
+import javax.mail.Quota;
 
 import pack.knowyourdoctor.Validators.RequiredFieldValidation;
 
@@ -371,6 +374,27 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                     public void onClick(View v) {
                         newComment =(EditText)ratingsDialog.findViewById(R.id.newComment);
                         String comment = newComment.getText().toString().trim();
+                        String[] splitComment = comment.split("\\s+");
+                        String[] wordsFromArray = context.getResources().getStringArray(R.array.wordsList);
+                        int words, result = 0;
+                        for (words = 0; words < splitComment.length; words++)
+                        {
+                            String word = splitComment[words].toLowerCase();
+                            int i;
+                            for (i = 0; i < wordsFromArray.length; i++) {
+                                if (word.contains(wordsFromArray[i])) {
+                                    splitComment[words] = "";
+                                    result = -1;
+                                }
+                            }
+                        }
+                        int i;
+                        String newSentence = "";
+                        for (i = 0; i < splitComment.length; i++) {
+                             newSentence += splitComment[i].toString() + " ";
+                        }
+                        newComment.setText(newSentence);
+                        newComment.getText().toString().trim();
 
                         boolean isValid = true;
                         if (RequiredFieldValidation.isEmpty(comment)){
@@ -380,11 +404,30 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                         //Rating bar
                         //RatingBar numberOfStars = (RatingBar)ratingsDialog.findViewById(R.id.doctorRatingBar);
                         //float rating = numberOfStars.getRating();
-                        if(isValid) {
+                        if(isValid == true && result == 0) {
                             Doctor_RateAndComment rate_comment = new Doctor_RateAndComment();
                             rate_comment.executeRatingAndCommentTask(selectedDoctor, 0.0f, comment, context, "Thanks for the comment!");
                             ratingsDialog.dismiss();
                             new RatingListLoadTask().execute("http://sepandroid.esy.es/RatedDoctorsWithComments.php?doctorid=" + selectedDoctor.getRegNo());
+                        }
+                        else if (result == -1)
+                        {
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                            // set title
+                            alertDialogBuilder.setTitle("Warning!");
+                            // set dialog message
+                            alertDialogBuilder
+                                    .setMessage("*  Please ensure your review is courteous, helpful and fair\n\n" +
+                                                "*  While we appreciate sincerity, we won’t accept reviews that contain bad language or defamatory comments\n\n" +
+                                                "Thank You!")
+                                    .setCancelable(false)
+                                    .setNegativeButton("OK",new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog,int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                            AlertDialog alertDialog = alertDialogBuilder.create();
+                            alertDialog.show();
                         }
                     }
                 });
