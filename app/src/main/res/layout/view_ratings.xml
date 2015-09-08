@@ -47,7 +47,6 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="5dp"
@@ -63,25 +62,27 @@
                 android:weightSum="100">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text=""
                     android:id="@+id/comment_doctor_textView"
                     android:textColor="#2483FF"
-                    android:paddingLeft="25dp"
-                    android:layout_weight="75"/>
+                    android:textSize="11sp"
+                    android:paddingLeft="15dp"
+                    android:layout_weight="65"/>
 
                 <Button
-                    android:layout_width="40dp"
+                    android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:background="@drawable/search_button_selector"
                     android:padding="5dp"
                     android:layout_marginBottom="10dp"
                     android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
                     android:textSize="12sp"
                     android:id="@+id/comment_submit_btn"
                     android:textColor="#ffffff"
-                    android:layout_weight="25"
+                    android:layout_weight="35"
                     android:text="Submit"/>
 
             </LinearLayout>
