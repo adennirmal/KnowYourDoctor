@@ -49,6 +49,7 @@ import java.util.ArrayList;
 
 import javax.mail.Quota;
 
+import pack.knowyourdoctor.Validators.CommentValidation;
 import pack.knowyourdoctor.Validators.RequiredFieldValidation;
 
 
@@ -374,26 +375,10 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                     public void onClick(View v) {
                         newComment =(EditText)ratingsDialog.findViewById(R.id.newComment);
                         String comment = newComment.getText().toString().trim();
-                        String[] splitComment = comment.split("\\s+");
-                        String[] wordsFromArray = context.getResources().getStringArray(R.array.wordsList);
-                        int words, result = 0;
-                        for (words = 0; words < splitComment.length; words++)
-                        {
-                            String word = splitComment[words].toLowerCase();
-                            int i;
-                            for (i = 0; i < wordsFromArray.length; i++) {
-                                if (word.contains(wordsFromArray[i])) {
-                                    splitComment[words] = "";
-                                    result = -1;
-                                }
-                            }
-                        }
-                        int i;
-                        String newSentence = "";
-                        for (i = 0; i < splitComment.length; i++) {
-                             newSentence += splitComment[i].toString() + " ";
-                        }
-                        newComment.setText(newSentence);
+
+                        String Result[] = CommentValidation.checkComment(comment, R.array.wordsList, context);
+
+                        newComment.setText(Result[1]);
                         newComment.getText().toString().trim();
 
                         boolean isValid = true;
@@ -404,13 +389,13 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                         //Rating bar
                         //RatingBar numberOfStars = (RatingBar)ratingsDialog.findViewById(R.id.doctorRatingBar);
                         //float rating = numberOfStars.getRating();
-                        if(isValid == true && result == 0) {
+                        if(isValid == true && Integer.parseInt(Result[0].toString()) == 0) {
                             Doctor_RateAndComment rate_comment = new Doctor_RateAndComment();
                             rate_comment.executeRatingAndCommentTask(selectedDoctor, 0.0f, comment, context, "Thanks for the comment!");
                             ratingsDialog.dismiss();
                             new RatingListLoadTask().execute("http://sepandroid.esy.es/RatedDoctorsWithComments.php?doctorid=" + selectedDoctor.getRegNo());
                         }
-                        else if (result == -1)
+                        else if (Integer.parseInt(Result[0].toString()) == -1)
                         {
                             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                             // set title
