@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -402,12 +403,11 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                             alertDialogBuilder.setTitle("Warning!");
                             // set dialog message
                             alertDialogBuilder
-                                    .setMessage("*  Please ensure your review is courteous, helpful and fair\n\n" +
-                                                "*  While we appreciate sincerity, we won’t accept reviews that contain bad language or defamatory comments\n\n" +
-                                                "Thank You!")
+                                    .setIcon(R.drawable.warning_icon)
+                                    .setMessage(R.string.warning_body)
                                     .setCancelable(false)
-                                    .setNegativeButton("OK",new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog,int id) {
+                                    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
                                             dialog.cancel();
                                         }
                                     });

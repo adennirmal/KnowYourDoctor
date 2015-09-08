@@ -27,5 +27,9 @@
     <string name="current_location"><font size = "12">Current Location</font></string>
     <string name="view_comment_hint"><font size = "12">Your comment here..</font></string>
 
+    <string name="warning_body"><font size = "14" color="Red"> *\tPlease ensure your review is courteous, helpful and fair\n\n
+        *\tWhile we appreciate sincerity, we won’t accept reviews that contain bad language or defamatory comments \n\n
+        Thank You!</font></string>
+
 </resources>
 
