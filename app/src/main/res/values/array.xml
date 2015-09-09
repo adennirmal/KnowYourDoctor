@@ -7,4 +7,14 @@
         <item>SEC 29</item>
         <item>SEC 41</item>
     </string-array>
+
+    <string-array name="wordsList">
+        <item>hell</item>
+        <item>book</item>
+    </string-array>
+
+    <string-array name="wordsToIgnore">
+        <item>hello</item>
+    </string-array>
+
 </resources>

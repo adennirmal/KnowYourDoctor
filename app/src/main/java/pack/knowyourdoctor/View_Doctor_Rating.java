@@ -1,6 +1,8 @@
 package pack.knowyourdoctor;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -17,6 +19,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.IOException;
+
+import pack.knowyourdoctor.Validators.CommentValidation;
 
 /**
  * Created by Home on 5/17/2015.
@@ -50,19 +54,40 @@ public class View_Doctor_Rating extends DialogFragment implements View.OnClickLi
         return view;
     }
 
-    /*Doctor_RateAndComment rate_comment = new Doctor_RateAndComment();
+    Doctor_RateAndComment rate_comment = new Doctor_RateAndComment();
     TextView commentText = (TextView) view.findViewById(R.id.comment);
     String comment = commentText.getText().toString();
     //Rating bar
     RatingBar numberOfStars = (RatingBar) view.findViewById(R.id.doctorRatingBar);
-    float rating = numberOfStars.getRating();*/
+    float rating = numberOfStars.getRating();
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rateBtn:
-                executeRatingTask(selectedDoc);
-                //rate_comment.executeRatingAndCommentTask(selectedDoc, rating,comment,context);
+                //executeRatingTask(selectedDoc);
+                String[] Result = CommentValidation.checkComment(comment, R.array.wordsList, R.array.wordsToIgnore, context);
+                commentText.setText(Result[1]);
+                commentText.getText().toString().trim();
+                if (Integer.parseInt(Result[0]) == 0) {
+                    rate_comment.executeRatingAndCommentTask(selectedDoc, rating, comment, context, "Thanks for rating!!");
+                }
+                else if (Integer.parseInt(Result[0]) == -1)
+                {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                    alertDialogBuilder.setTitle("Warning!");
+                    alertDialogBuilder
+                            .setIcon(R.drawable.warning_icon)
+                            .setMessage(R.string.warning_body)
+                            .setCancelable(false)
+                            .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                }
                 break;
             case R.id.cancelBtn:
                 getDialog().dismiss();

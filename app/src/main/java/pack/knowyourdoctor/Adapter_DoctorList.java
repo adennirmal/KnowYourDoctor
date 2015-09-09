@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.location.Criteria;
 import android.location.Location;
@@ -17,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +48,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import javax.mail.Quota;
+
+import pack.knowyourdoctor.Validators.CommentValidation;
 import pack.knowyourdoctor.Validators.RequiredFieldValidation;
 
 
@@ -181,9 +186,30 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                                 RatingBar numberOfStars = (RatingBar)ratingDialog.findViewById(R.id.doctorRatingBar);
                                 float rating = numberOfStars.getRating();
 
-                                Doctor_RateAndComment rate_comment = new Doctor_RateAndComment();
-                                rate_comment.executeRatingAndCommentTask(selectedDoctor,rating,comment,context,"Thanks for Rating!");
-                                ratingDialog.dismiss();
+                                String[] Result = CommentValidation.checkComment(comment, R.array.wordsList, R.array.wordsToIgnore, context);
+                                commentText.setText(Result[1]);
+
+                                if (Integer.parseInt(Result[0]) == 0) {
+                                    Doctor_RateAndComment rate_comment = new Doctor_RateAndComment();
+                                    rate_comment.executeRatingAndCommentTask(selectedDoctor,rating,comment,context,"Thanks for Rating!");
+                                    ratingDialog.dismiss();
+                                }
+                                else if (Integer.parseInt(Result[0]) == -1)
+                                {
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                                    alertDialogBuilder.setTitle("Warning!");
+                                    alertDialogBuilder
+                                            .setIcon(R.drawable.warning_icon)
+                                            .setMessage(R.string.warning_body)
+                                            .setCancelable(false)
+                                            .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    dialog.cancel();
+                                                }
+                                            });
+                                    AlertDialog alertDialog = alertDialogBuilder.create();
+                                    alertDialog.show();
+                                }
 
                                 /*StringBuilder url = new StringBuilder("http://sepandroid.esy.es/Rating.php?");
                                 url.append("doctorid=" + selectedDoctor.getRegNo());
@@ -372,6 +398,10 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                         newComment =(EditText)ratingsDialog.findViewById(R.id.newComment);
                         String comment = newComment.getText().toString().trim();
 
+                        String Result[] = CommentValidation.checkComment(comment, R.array.wordsList,R.array.wordsToIgnore, context);
+                        newComment.setText(Result[1]);
+                        newComment.getText().toString().trim();
+
                         boolean isValid = true;
                         if (RequiredFieldValidation.isEmpty(comment)){
                             newComment.setError("Please add a comment to submit");
@@ -380,11 +410,37 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                         //Rating bar
                         //RatingBar numberOfStars = (RatingBar)ratingsDialog.findViewById(R.id.doctorRatingBar);
                         //float rating = numberOfStars.getRating();
-                        if(isValid) {
+                        if(isValid == true && Integer.parseInt(Result[0].toString()) == 0) {
                             Doctor_RateAndComment rate_comment = new Doctor_RateAndComment();
                             rate_comment.executeRatingAndCommentTask(selectedDoctor, 0.0f, comment, context, "Thanks for the comment!");
                             ratingsDialog.dismiss();
                             new RatingListLoadTask().execute("http://sepandroid.esy.es/RatedDoctorsWithComments.php?doctorid=" + selectedDoctor.getRegNo());
+                        }
+                        else if (Integer.parseInt(Result[0].toString()) == -1)
+                        {
+                            final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                            LayoutInflater inflater = LayoutInflater.from(context);
+                            final View dialogView = inflater.inflate(R.layout.warning_alert_dialog, null);
+                            alertDialogBuilder.setView(dialogView);
+                            /*alertDialogBuilder.setTitle("Warning!");
+                            alertDialogBuilder
+                                    .setIcon(R.drawable.warning_icon)
+                                    .setMessage(R.string.warning_body)
+                                    .setCancelable(false)
+                                    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });*/
+                            final AlertDialog alertDialog = alertDialogBuilder.create();
+                            alertDialog.show();
+                            Button ok_btn = (Button)dialogView.findViewById(R.id.ok_btn);
+                            ok_btn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    alertDialog.dismiss();
+                                }
+                            });
                         }
                     }
                 });
