@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="18dp"
+        android:weightSum="100">
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="43dp"
+            android:layout_weight="5"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/warning_icon"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="65"
+            android:layout_gravity="center"
+            android:textSize="35sp"
+            android:text="Warning!"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="#00c0f0"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:weightSum="100"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="2" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/check_mark_icon"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/rule_one"
+                    android:layout_width="0dp"
+                    android:padding="10dp"
+                    android:layout_weight="98"
+                    android:inputType="textMultiLine"
+                    android:textSize="18sp"
+                    android:layout_height="wrap_content"
+                    android:textColor="#2483ff"
+                    android:text="@string/warning_body_rule_one"
+                    android:singleLine="true"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:weightSum="100"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="2" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/check_mark_icon"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/rule_two_header"
+                    android:layout_width="0dp"
+                    android:padding="10dp"
+                    android:layout_weight="98"
+                    android:inputType="textMultiLine"
+                    android:textSize="18sp"
+                    android:layout_height="wrap_content"
+                    android:textColor="#2483ff"
+                    android:text="@string/warning_body_rule_two_header"
+                    android:singleLine="true"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="20dp"
+                android:weightSum="100"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="2" >
+
+                    <TextView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:gravity="center"
+                        android:background="@drawable/x_icon"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/rule_two_a"
+                    android:layout_width="0dp"
+                    android:padding="10dp"
+                    android:inputType="textMultiLine"
+                    android:layout_weight="98"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ff0000"
+                    android:text="@string/warning_body_rule_two_a"
+                    android:singleLine="true"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="20dp"
+                android:weightSum="100"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="2" >
+
+                    <TextView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:gravity="center"
+                        android:background="@drawable/x_icon"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/rule_two_b"
+                    android:layout_width="0dp"
+                    android:padding="10dp"
+                    android:inputType="textMultiLine"
+                    android:layout_weight="98"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ff0000"
+                    android:text="@string/warning_body_rule_two_b"
+                    android:singleLine="true"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_height="2dp"
+                android:background="#b3b3b3"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="OK"
+                android:id="@+id/ok_btn"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:background="@drawable/warning_ok_button_selector"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

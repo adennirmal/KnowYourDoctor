@@ -186,9 +186,30 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                                 RatingBar numberOfStars = (RatingBar)ratingDialog.findViewById(R.id.doctorRatingBar);
                                 float rating = numberOfStars.getRating();
 
-                                Doctor_RateAndComment rate_comment = new Doctor_RateAndComment();
-                                rate_comment.executeRatingAndCommentTask(selectedDoctor,rating,comment,context,"Thanks for Rating!");
-                                ratingDialog.dismiss();
+                                String[] Result = CommentValidation.checkComment(comment, R.array.wordsList, R.array.wordsToIgnore, context);
+                                commentText.setText(Result[1]);
+
+                                if (Integer.parseInt(Result[0]) == 0) {
+                                    Doctor_RateAndComment rate_comment = new Doctor_RateAndComment();
+                                    rate_comment.executeRatingAndCommentTask(selectedDoctor,rating,comment,context,"Thanks for Rating!");
+                                    ratingDialog.dismiss();
+                                }
+                                else if (Integer.parseInt(Result[0]) == -1)
+                                {
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                                    alertDialogBuilder.setTitle("Warning!");
+                                    alertDialogBuilder
+                                            .setIcon(R.drawable.warning_icon)
+                                            .setMessage(R.string.warning_body)
+                                            .setCancelable(false)
+                                            .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    dialog.cancel();
+                                                }
+                                            });
+                                    AlertDialog alertDialog = alertDialogBuilder.create();
+                                    alertDialog.show();
+                                }
 
                                 /*StringBuilder url = new StringBuilder("http://sepandroid.esy.es/Rating.php?");
                                 url.append("doctorid=" + selectedDoctor.getRegNo());
@@ -397,10 +418,11 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                         }
                         else if (Integer.parseInt(Result[0].toString()) == -1)
                         {
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-                            // set title
-                            alertDialogBuilder.setTitle("Warning!");
-                            // set dialog message
+                            final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                            LayoutInflater inflater = LayoutInflater.from(context);
+                            final View dialogView = inflater.inflate(R.layout.warning_alert_dialog, null);
+                            alertDialogBuilder.setView(dialogView);
+                            /*alertDialogBuilder.setTitle("Warning!");
                             alertDialogBuilder
                                     .setIcon(R.drawable.warning_icon)
                                     .setMessage(R.string.warning_body)
@@ -409,9 +431,16 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                                         public void onClick(DialogInterface dialog, int id) {
                                             dialog.cancel();
                                         }
-                                    });
-                            AlertDialog alertDialog = alertDialogBuilder.create();
+                                    });*/
+                            final AlertDialog alertDialog = alertDialogBuilder.create();
                             alertDialog.show();
+                            Button ok_btn = (Button)dialogView.findViewById(R.id.ok_btn);
+                            ok_btn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    alertDialog.dismiss();
+                                }
+                            });
                         }
                     }
                 });
