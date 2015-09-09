@@ -377,8 +377,7 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                         newComment =(EditText)ratingsDialog.findViewById(R.id.newComment);
                         String comment = newComment.getText().toString().trim();
 
-                        String Result[] = CommentValidation.checkComment(comment, R.array.wordsList, context);
-
+                        String Result[] = CommentValidation.checkComment(comment, R.array.wordsList,R.array.wordsToIgnore, context);
                         newComment.setText(Result[1]);
                         newComment.getText().toString().trim();
 
