@@ -36,5 +36,7 @@
     <string name="warning_body_rule_two_a">we won’t accept reviews that contain bad language or</string>
     <string name="warning_body_rule_two_b">defamatory comments</string>
 
+    <string name="server_link">http://sepandroid.esy.es</string>
+
 </resources>
 

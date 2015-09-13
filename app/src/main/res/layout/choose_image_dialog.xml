@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:weightSum="100">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/check_options_icon"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="65"
+            android:layout_gravity="center"
+            android:textSize="23sp"
+            android:text="Options..."/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#00c0f0"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:weightSum="100"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="2" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@drawable/gallery_icon"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/option_one"
+            android:layout_width="0dp"
+            android:padding="10dp"
+            android:layout_weight="98"
+            android:textSize="15sp"
+            android:layout_height="wrap_content"
+            android:textColor="#2483ff"
+            android:gravity="left|center"
+            android:background="#00000000"
+            android:text="Choose from Gallery"
+            android:singleLine="true"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#f1f1f1"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="20dp"
+        android:weightSum="100"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="2" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@drawable/camera_icon"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/option_two"
+            android:layout_width="0dp"
+            android:padding="10dp"
+            android:layout_weight="98"
+            android:textSize="15sp"
+            android:layout_height="wrap_content"
+            android:textColor="#2483ff"
+            android:text="Take a photo"
+            android:gravity="left|center"
+            android:background="#00000000"
+            android:singleLine="true"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#f1f1f1"/>
+
+</LinearLayout>
