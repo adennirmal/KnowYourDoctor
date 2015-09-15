@@ -15,6 +15,9 @@ tools:context="pack.knowyourdoctor.adapter.View_Fragment_ReportSend">
         android:layout_height="fill_parent"
         android:orientation="vertical">
 
+
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -76,7 +79,7 @@ tools:context="pack.knowyourdoctor.adapter.View_Fragment_ReportSend">
                 android:layout_weight="2" >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:background="@drawable/doctor_icon"/>
@@ -85,18 +88,17 @@ tools:context="pack.knowyourdoctor.adapter.View_Fragment_ReportSend">
 
             <EditText
                 android:id="@+id/d_name"
-                android:layout_width="0dp"
-                android:layout_weight="68"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/report_doc_hint"
                 android:padding="10dp"
                 android:background="@drawable/edit_text_selector"
-                android:singleLine="true"/>
+                android:singleLine="true"
+                android:layout_weight="75.93" />
 
             <EditText
                 android:id="@+id/d_reg"
-                android:layout_width="0dp"
-                android:layout_weight="30"
+                android:layout_width="113dp"
                 android:hint="@string/report_reg_no_hint"
                 android:layout_marginLeft="10dp"
                 android:paddingTop="10dp"
@@ -261,6 +263,23 @@ tools:context="pack.knowyourdoctor.adapter.View_Fragment_ReportSend">
             android:textColor="#ffffff"
             android:layout_gravity="right"
             android:text="Report to SLMC"/>
+
+        <Button android:id="@+id/btnsend"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginTop="20dip"
+            android:textSize="16sp"
+            android:background="@drawable/search_button_selector"
+            android:textColor="#ffffff"
+            android:layout_gravity="right"
+            android:text="Report to Public"/>
+
+
+
+
+
 
         <!--<LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
