@@ -30,11 +30,6 @@ public class View_Doctor_Rating extends DialogFragment implements View.OnClickLi
     Model_Doctor selectedDoc;
     Context context;
 
-    /*public View_Doctor_Rating(Model_Doctor selectedDoc, Context context) {
-        this.selectedDoc = selectedDoc;
-        this.context = context;
-    }*/
-
     public View_Doctor_Rating() {
     }
 
@@ -42,7 +37,6 @@ public class View_Doctor_Rating extends DialogFragment implements View.OnClickLi
         this.selectedDoc = selectedDoc;
         this.context = context;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,21 +69,21 @@ public class View_Doctor_Rating extends DialogFragment implements View.OnClickLi
                 commentText.setText(Result[1]);
                 commentText.getText().toString().trim();
                 if (Integer.parseInt(Result[0]) == 0) {
-                    rate_comment.executeRatingAndCommentTask(selectedDoc, rating, comment, context, "Thanks for rating!!");
+                    rate_comment.executeRatingAndCommentTask(selectedDoc, rating, comment, context, getResources().getString(R.string.thanks_for_rating));
                 }
                 else if (Integer.parseInt(Result[0]) == -1)
                 {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                     alertDialogBuilder.setTitle("Warning!");
                     alertDialogBuilder
-                            .setIcon(R.drawable.warning_icon)
-                            .setMessage(R.string.warning_body)
-                            .setCancelable(false)
-                            .setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
+                        .setIcon(R.drawable.warning_icon)
+                        .setMessage(R.string.warning_body)
+                        .setCancelable(false)
+                        .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
                     AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
                 }
@@ -107,7 +101,7 @@ public class View_Doctor_Rating extends DialogFragment implements View.OnClickLi
         RatingBar numberOfStars = (RatingBar) view.findViewById(R.id.doctorRatingBar);
         float rating = numberOfStars.getRating();
 
-        StringBuilder url = new StringBuilder("http://sepandroid.esy.es/Rating.php?");
+        StringBuilder url = new StringBuilder(getResources().getString(R.string.server_link) + "/Rating.php?");
         url.append("doctorid=" + selectedDoctor.getRegNo());
         url.append("&doctorname="+selectedDoctor.getFullName());
         url.append("&rating=" + rating);
@@ -135,7 +129,7 @@ public class View_Doctor_Rating extends DialogFragment implements View.OnClickLi
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(context, "Thanks for rating!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, getResources().getString(R.string.thanks_for_rating), Toast.LENGTH_SHORT).show();
         }
     }
 }

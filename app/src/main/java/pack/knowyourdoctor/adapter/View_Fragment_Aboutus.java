@@ -66,7 +66,7 @@ public class View_Fragment_Aboutus extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which){
                             case DialogInterface.BUTTON_POSITIVE:
-                                String url = "http://sepandroid.esy.es/AppRating.php?rating="+String.valueOf(rating);
+                                String url = getResources().getString(R.string.server_link) + "/AppRating.php?rating="+String.valueOf(rating);
                                 WebService task = new WebService();
                                 // passes values for the urls string array
                                 task.execute(url);
@@ -78,11 +78,10 @@ public class View_Fragment_Aboutus extends Fragment {
                         }
                     }
                 };
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(rootView.getContext());
-                builder.setMessage("Do you like to rate Know Your Doctor?").setPositiveButton("Yes", dialogClickListener)
-                        .setNegativeButton("No", dialogClickListener).show();
-
+                builder.setMessage("Do you like to rate Know Your Doctor?")
+                    .setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
             }
         });
     }
@@ -103,8 +102,7 @@ public class View_Fragment_Aboutus extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(rootView.getContext(), "Thanks for your rating!!",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(rootView.getContext(), getResources().getString(R.string.thanks_for_rating), Toast.LENGTH_SHORT).show();
         }
     }
 

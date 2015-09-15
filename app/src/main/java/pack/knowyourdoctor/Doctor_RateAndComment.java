@@ -25,7 +25,7 @@ public class Doctor_RateAndComment {
         context = con;
         message = toastMessage;
 
-        StringBuilder url = new StringBuilder("http://sepandroid.esy.es/Rating.php?");
+        StringBuilder url = new StringBuilder(con.getResources().getString(R.string.server_link) + "/Rating.php?");
         url.append("doctorid=" + selectedDoctor.getRegNo());
         url.append("&doctorname="+selectedDoctor.getFullName());
         url.append("&doctoraddress="+selectedDoctor.getAddress());

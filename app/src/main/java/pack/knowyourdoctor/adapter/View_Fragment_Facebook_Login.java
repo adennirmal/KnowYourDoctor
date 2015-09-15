@@ -53,21 +53,18 @@ public class View_Fragment_Facebook_Login extends Fragment {
     ProfilePictureView profile_pic;
     public static String user_name;
     ArrayList<String> user_info;
-    SharedPreferences mPrefs;
     Context con;
+    SharedPreferences mPrefs;
     private static int RESULT_LOAD_IMG = 1;
     private static int RESULT_CAM_IMG = 0;
+    public static final String PREFS_NAME = "PrefsFile";
     String imgDecodableString;
     View rootView;
-    public static final String MY_PREFS_NAME = "MyPrefsFile";
     ImageView imgView;
     Boolean imageChanged = false;
     Boolean checkImage = false;
-
     private TextView userName;
-
     private UiLifecycleHelper uiHelper;
-
 
     public View_Fragment_Facebook_Login() {
         // Required empty public constructor
@@ -115,7 +112,7 @@ public class View_Fragment_Facebook_Login extends Fragment {
                     @Override
                     public void onClick(View v) {
                         profile_pic.setVisibility(View.INVISIBLE);
-                        // Create intent to Open Image applications like Gallery, Google Photos
+                        // Create intent to Open Image applications
                         Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         // Start the Intent
                         startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
@@ -151,7 +148,7 @@ public class View_Fragment_Facebook_Login extends Fragment {
                     @Override
                     public void onClick(View v) {
                         profile_pic.setVisibility(View.INVISIBLE);
-                        // Create intent to Open Image applications like Gallery, Google Photos
+                        // Create intent to Open Image applications
                         Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         // Start the Intent
                         startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
@@ -167,17 +164,16 @@ public class View_Fragment_Facebook_Login extends Fragment {
             public void onClick(View v) {
                 if (FacebookDialog.canPresentShareDialog(getActivity(), FacebookDialog.ShareDialogFeature.SHARE_DIALOG)) {
                     FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(getActivity())
-                            .setName("Know Your Doctor")
-                            .setCaption("SLMC")
-                            .setLink("http://www.srilankamedicalcouncil.org/")
-                            .setDescription("Find about your doctor")
-                            .setPicture("http://oi61.tinypic.com/2wozz3t.jpg")
-                            .build();
-                    uiHelper.trackPendingDialogCall(shareDialog.present());
-
+                        .setName(getResources().getString(R.string.fb_dialog_name))
+                        .setCaption(getResources().getString(R.string.fb_dialog_caption))
+                        .setLink(getResources().getString(R.string.fb_dialog_link))
+                        .setDescription(getResources().getString(R.string.fb_dialog_description))
+                        .setPicture(getResources().getString(R.string.fb_dialog_picture))
+                        .build();
+                        uiHelper.trackPendingDialogCall(shareDialog.present());
                 }
                 else {
-                    Toast.makeText(con, "Error.. Could not open Share Dialog Box!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(con, getResources().getString(R.string.fb_share_dialog_error), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -186,18 +182,18 @@ public class View_Fragment_Facebook_Login extends Fragment {
         tellFriendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (FacebookDialog.canPresentMessageDialog(getActivity(), FacebookDialog.MessageDialogFeature.MESSAGE_DIALOG)) {
+                if (FacebookDialog.canPresentMessageDialog(getActivity(), FacebookDialog.MessageDialogFeature.MESSAGE_DIALOG)){
                     FacebookDialog messageDialog = new FacebookDialog.MessageDialogBuilder(getActivity())
-                            .setName("Know Your Doctor")
-                            .setCaption("SLMC")
-                            .setLink("http://www.srilankamedicalcouncil.org/")
-                            .setDescription("Find about your doctor")
-                            .setPicture("http://oi61.tinypic.com/2wozz3t.jpg")
-                            .build();
-                    uiHelper.trackPendingDialogCall(messageDialog.present());
+                        .setName(getResources().getString(R.string.fb_dialog_name))
+                        .setCaption(getResources().getString(R.string.fb_dialog_caption))
+                        .setLink(getResources().getString(R.string.fb_dialog_link))
+                        .setDescription(getResources().getString(R.string.fb_dialog_description))
+                        .setPicture(getResources().getString(R.string.fb_dialog_picture))
+                        .build();
+                        uiHelper.trackPendingDialogCall(messageDialog.present());
                 }
                 else {
-                    Toast.makeText(con, "Error.. Could not open Message Dialog Box!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(con, getResources().getString(R.string.fb_message_dialog_error), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -207,15 +203,14 @@ public class View_Fragment_Facebook_Login extends Fragment {
 
     private Session.StatusCallback statusCallback = new Session.StatusCallback() {
         @Override
-        public void call(Session session, SessionState state,
-                         Exception exception) {
+        public void call(Session session, SessionState state, Exception exception) {
             onSessionStateChange(session,state,exception);
             if (state.isOpened()) {
                 buttonsEnabled(true);
-                Log.d("View_Facebook_Login", "Facebook session opened");
+                Log.d(getResources().getString(R.string.fb_log), getResources().getString(R.string.fb_session_open));
             } else if (state.isClosed()) {
                 buttonsEnabled(false);
-                Log.d("View_Facebook_Login", "Facebook session closed");
+                Log.d(getResources().getString(R.string.fb_log), getResources().getString(R.string.fb_session_close));
             }
         }
     };
@@ -229,18 +224,15 @@ public class View_Fragment_Facebook_Login extends Fragment {
         final SharedPreferences.Editor prefsEditor = mPrefs.edit();
         if (state.isOpened()) {
 
-            Log.d("Facebook_Login", "Logged in...");
-            // make request to the /me API to get Graph user
+            Log.d(getResources().getString(R.string.fb_log), getResources().getString(R.string.fb_log_login));
+            // make request to the API to get Graph user
             Request.newMeRequest(session, new Request.GraphUserCallback() {
-
                 // callback after Graph API response with user
-                // object
-
                 @Override
                 public void onCompleted(GraphUser user, Response response) {
                     if (user != null) {
                         userName.setText("Hello, " + user.getName());
-                        SharedPreferences prefs = con.getSharedPreferences(MY_PREFS_NAME, con.MODE_PRIVATE);
+                        SharedPreferences prefs = con.getSharedPreferences(PREFS_NAME, con.MODE_PRIVATE);
                         String restoredPath = prefs.getString("path", null);
                         if (restoredPath != null) {
                             String path = prefs.getString("path", "");//"" is the default value
@@ -265,20 +257,11 @@ public class View_Fragment_Facebook_Login extends Fragment {
         } else if (state.isClosed()) {
             prefsEditor.putString("FbUser", null);
             prefsEditor.commit();
-            userName.setText("You are not logged");
+            userName.setText(getResources().getString(R.string.fb_not_logged));
             profile_pic.setVisibility(View.INVISIBLE);
-            Log.d("Facebook_Login", "Logged out...");
+            Log.d(getResources().getString(R.string.fb_log), getResources().getString(R.string.fb_log_logout));
         }
     }
-
-
-    /*public void loadImagefromGallery(View view) {
-        // Create intent to Open Image applications like Gallery, Google Photos
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        // Start the Intent
-        startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
-    }*/
 
     @Override
     public void onResume() {
@@ -310,7 +293,7 @@ public class View_Fragment_Facebook_Login extends Fragment {
                     @Override
                     public void onError(FacebookDialog.PendingCall pendingCall,
                                         Exception error, Bundle data) {
-                        Toast.makeText(con, "Error occurred\nMost Common Errors:\n1. Device not connected to Internet\n2.Facebook APP Id Error", Toast.LENGTH_LONG).show();
+                        Toast.makeText(con, getResources().getString(R.string.fb_activity_result_dialog_error), Toast.LENGTH_LONG).show();
                     }
 
                     @Override
@@ -323,27 +306,21 @@ public class View_Fragment_Facebook_Login extends Fragment {
         try {
             // When an Image is picked
             if (requestCode == RESULT_LOAD_IMG && resultCode == Activity.RESULT_OK && null != data) {
-
                 // Get the Image from data
                 Uri selectedImage = data.getData();
                 String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
                 // Get the cursor
-                Cursor cursor = con.getContentResolver().query(selectedImage,
-                        filePathColumn, null, null, null);
+                Cursor cursor = con.getContentResolver().query(selectedImage,filePathColumn, null, null, null);
                 // Move to first row
                 cursor.moveToFirst();
 
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 imgDecodableString = cursor.getString(columnIndex);
                 cursor.close();
-                //profile_pic.setProfileId(BitmapFactory.decodeFile(imgDecodableString).toString());
 
                 // Set the Image in ImageView after decoding the String
                 imgView.setImageBitmap(BitmapFactory.decodeFile(imgDecodableString));
-
                 imageChanged = true;
-
                 //Save to Directory
                 imgView.buildDrawingCache();
                 Bitmap bm = imgView.getDrawingCache();
@@ -351,21 +328,19 @@ public class View_Fragment_Facebook_Login extends Fragment {
                 OutputStream fOut = null;
                 Uri outputFileUri;
                 try {
-                    File root = new File(Environment.getExternalStorageDirectory()
-                            + File.separator + "KYD Images" + File.separator);
+                    File root = new File(Environment.getExternalStorageDirectory() + File.separator + "KYD Images" + File.separator);
                     root.mkdirs();
                     String filename = imgDecodableString.substring(imgDecodableString.lastIndexOf("/")+1);
                     File sdImageMainDirectory = new File(root, filename);
                     outputFileUri = Uri.fromFile(sdImageMainDirectory);
                     fOut = new FileOutputStream(sdImageMainDirectory);
 
-                    SharedPreferences.Editor editor = con.getSharedPreferences(MY_PREFS_NAME, con.MODE_PRIVATE).edit();
+                    SharedPreferences.Editor editor = con.getSharedPreferences(PREFS_NAME, con.MODE_PRIVATE).edit();
                     editor.putString("path",outputFileUri.toString());
                     editor.putBoolean("imageChanged", imageChanged);
                     editor.commit();
-
                 } catch (Exception e) {
-                    Toast.makeText(con, "Error occured. Please try again later.",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(con, getResources().getString(R.string.fb_save_image_error),Toast.LENGTH_SHORT).show();
                 }
 
                 try
@@ -375,10 +350,8 @@ public class View_Fragment_Facebook_Login extends Fragment {
                     fOut.close();
                 } catch (Exception e) {
                 }
-
             }
             else if (requestCode == RESULT_CAM_IMG && resultCode == Activity.RESULT_OK && null != data) {
-
                 Bitmap bp = (Bitmap) data.getExtras().get("data");
                 imgView.setImageBitmap(bp);
                 String path = MediaStore.Images.Media.insertImage(con.getContentResolver(), bp, "Title", null);
@@ -392,20 +365,19 @@ public class View_Fragment_Facebook_Login extends Fragment {
                 OutputStream fOut = null;
                 Uri outputFileUri;
                 try {
-                    File root = new File(Environment.getExternalStorageDirectory()
-                            + File.separator + "KYD Images" + File.separator);
+                    File root = new File(Environment.getExternalStorageDirectory() + File.separator + "KYD Images" + File.separator);
                     root.mkdirs();
                     File sdImageMainDirectory = new File(root, filename);
                     outputFileUri = Uri.fromFile(sdImageMainDirectory);
                     fOut = new FileOutputStream(sdImageMainDirectory);
 
-                    SharedPreferences.Editor editor = con.getSharedPreferences(MY_PREFS_NAME, con.MODE_PRIVATE).edit();
+                    SharedPreferences.Editor editor = con.getSharedPreferences(PREFS_NAME, con.MODE_PRIVATE).edit();
                     editor.putString("path",outputFileUri.toString());
                     editor.putBoolean("imageChanged", imageChanged);
                     editor.commit();
 
                 } catch (Exception e) {
-                    Toast.makeText(con, "Error occured. Please try again later.",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(con, getResources().getString(R.string.fb_save_image_error), Toast.LENGTH_SHORT).show();
                 }
 
                 try
@@ -413,17 +385,14 @@ public class View_Fragment_Facebook_Login extends Fragment {
                     bm.compress(Bitmap.CompressFormat.PNG, 100, fOut);
                     fOut.flush();
                     fOut.close();
-                } catch (Exception e) {
-                }
-
+                } catch (Exception e) {}
             }
             else
             {
-                Toast.makeText(con, "You haven't picked an Image", Toast.LENGTH_LONG).show();
                 profile_pic.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
-            Toast.makeText(con, "Something went wrong", Toast.LENGTH_LONG).show();
+            Toast.makeText(con, getResources().getString(R.string.fb_something_went_wrong), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -432,5 +401,4 @@ public class View_Fragment_Facebook_Login extends Fragment {
         super.onSaveInstanceState(savedState);
         uiHelper.onSaveInstanceState(savedState);
     }
-
 }

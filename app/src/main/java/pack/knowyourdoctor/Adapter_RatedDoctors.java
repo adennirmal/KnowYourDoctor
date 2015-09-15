@@ -96,7 +96,7 @@ public class Adapter_RatedDoctors extends BaseExpandableListAdapter {
         final View finalConvertView = convertView;
         button.setOnClickListener(new ImageButton.OnClickListener() {
             public void onClick(View v) {
-                StringBuilder url = new StringBuilder("http://sepandroid.esy.es/Like.php?commentID=");
+                StringBuilder url = new StringBuilder(context.getResources().getString(R.string.server_link) + "/Like.php?commentID=");
                 //Value
                 url.append(thisComment.getCommentID());
                 new LikeCommentsTask().execute(url.toString());
@@ -104,7 +104,7 @@ public class Adapter_RatedDoctors extends BaseExpandableListAdapter {
                 thisComment.setNoOfLikes(++currentLikes);
                 LikesTextView.setText("Likes : " + currentLikes);
 
-                Toast.makeText(finalConvertView.getContext(), "Thanks for like!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(finalConvertView.getContext(), context.getResources().getString(R.string.thanks_for_like), Toast.LENGTH_SHORT).show();
             }
         });
         return convertView;
