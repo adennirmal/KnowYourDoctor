@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
 import java.util.List;
 
 public class DoctorDataAdapter extends ArrayAdapter<Doctor_Data> {
@@ -39,7 +38,6 @@ public class DoctorDataAdapter extends ArrayAdapter<Doctor_Data> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         View v = convertView;
         if (v == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -59,10 +57,7 @@ public class DoctorDataAdapter extends ArrayAdapter<Doctor_Data> {
         TextView text3 = (TextView) v.findViewById(R.id.updated_at);
         text3.setText(c.getUpdate());
 
-
-
         return v;
-
     }
 
     public List<Doctor_Data> getItemList() {

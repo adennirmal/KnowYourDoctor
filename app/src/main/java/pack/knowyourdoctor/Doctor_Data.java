@@ -6,12 +6,10 @@ import java.io.Serializable;
  * Created by Yasi on 9/8/2015.
  */
 public class Doctor_Data implements Serializable {
-
     private String id;
     private String doctor_name;
     private String doctor_id;
     private String updated_at;
-
 
     public Doctor_Data(String id, String doctor_id, String doctor_name, String updated_at) {
         super();
@@ -22,7 +20,7 @@ public class Doctor_Data implements Serializable {
 
     }
 
-//getters
+    //create getters
     public String getAutoID() {
         return id;
     }
@@ -39,7 +37,7 @@ public class Doctor_Data implements Serializable {
         return updated_at;
     }
 
-//setters
+    //create setters
     public void setAutoID(String id) {
         this.id= id;
     }

@@ -33,6 +33,7 @@ public class View_Fragment_ReportSend extends Fragment {
         regNo = container.getTag().toString();
         dreg.setText(regNo);
 
+        //Start new activity for list view and send email
         Button btnsend = (Button)rootView.findViewById(R.id.btnsend);
         btnsend.setOnClickListener(new View.OnClickListener() {
             @Override

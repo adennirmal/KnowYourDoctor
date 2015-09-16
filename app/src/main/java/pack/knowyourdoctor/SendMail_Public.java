@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import pack.knowyourdoctor.Validators.EmailValidation;
 import pack.knowyourdoctor.Validators.RegNoValidation;
 
@@ -25,10 +24,8 @@ public class SendMail_Public extends Activity {
         final EditText cc1 = (EditText)findViewById(R.id.cc1);
         final EditText cc2 = (EditText)findViewById(R.id.cc2);
         final EditText cc3 = (EditText)findViewById(R.id.cc3);
-
         final EditText bcc = (EditText)findViewById(R.id.cc);
         final EditText message_id = (EditText)findViewById(R.id.message_id);
-
         final EditText message_name = (EditText)findViewById(R.id.message_name);
         final EditText subject = (EditText)findViewById(R.id.subject);
         final EditText message_des = (EditText)findViewById(R.id.message_des);
@@ -44,18 +41,14 @@ public class SendMail_Public extends Activity {
                 boolean isValidCC = true;
 
                 if ( emailaddress.getText().toString().trim().equals("")) {
-
                     emailaddress.setError("Please Enter Email");
                     isValidText = false;
                 }
-
 
                 if (isValidText && !EmailValidation.isValidEmail(emailaddress.getText().toString())) {
                     emailaddress.setError("Invalid Email");
                     isValid = false;
                 }
-
-
 
                 if (!cc1.getText().toString().trim().equals("")) {
                     if (!EmailValidation.isValidEmail(cc1.getText().toString())) {
@@ -82,8 +75,6 @@ public class SendMail_Public extends Activity {
                         isValidCC = false;
                     }
                 }
-
-
                 if(subject.getText().toString().trim().equals(""))
                 {
                     subject.setError("Please Enter Subject");
@@ -96,20 +87,15 @@ public class SendMail_Public extends Activity {
                     subject.setError("Please Enter Doctor Name");
                     isValidText =false;
                 }
-
                 if (!RegNoValidation.isValidRegNoWithRequiredValidation(message_id.getText().toString())) {
                     message_id.setError("Please enter Doctor Id");
                     isValid = false;
                 }
-
-
                 if(message_des.getText().toString().trim().equals(""))
                 {
                     message_des.setError("Please Enter Description");
                     isValidText =false;
                 }
-
-
 
                 if (isValidText &&isValid && isValidCC) {
                     Thread thread = new Thread(new Runnable() {
@@ -123,15 +109,11 @@ public class SendMail_Public extends Activity {
                             String n2_3 = cc3.getText().toString();
                             String n3 = bcc.getText().toString();
                             String n4 = subject.getText().toString();
-
                             String n6 = message_id.getText().toString();
                             String n7 = message_name.getText().toString();
                             String n8 = message_des.getText().toString();
 
-
-
                             SenderGmail sender = new SenderGmail("knowyourdoctorslmc@gmail.com", "xc45A&qw7!b1");
-
                             String newline = System.getProperty("line.separator");
                             //String cc_results = n2_1+n2_2+n2_3;
 

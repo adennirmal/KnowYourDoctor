@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.Security;
 import java.util.Properties;
-
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.mail.Message;
@@ -61,8 +60,6 @@ public class SenderGmail extends javax.mail.Authenticator  {
         else
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient1));
         Transport.send(message);
-
-
 
         if (recipient2.indexOf(',') > 0)
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient2));

@@ -15,19 +15,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
 import pack.knowyourdoctor.Send_Details.Person;
 import pack.knowyourdoctor.Validators.RegNoValidation;
 
@@ -38,16 +35,14 @@ import pack.knowyourdoctor.Validators.RegNoValidation;
 public class SendData_Public extends Activity implements OnClickListener {
 
     TextView D_IsConnected;
-
     EditText DoctorID;
     EditText DoctorName;
     Button btnPost;
     //EditText DoctorUpdate;
     //EditText DoctorCreate;
-
     AlertDialog levelDialog;
-
     Person person;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +54,7 @@ public class SendData_Public extends Activity implements OnClickListener {
         D_IsConnected = (TextView) findViewById(R.id.D_sConnected);
         //DoctorUpdate =(EditText)findViewById(R.id.DoctorUpdate);
         //DoctorCreate =(EditText)findViewById(R.id.DoctorCreate);
-//View list.....................................................................................................................
+        //View list.....................................................................................................................
 
         Button viewlist = (Button)findViewById(R.id.viewlist);
         viewlist.setOnClickListener(new OnClickListener() {
@@ -85,8 +80,6 @@ public class SendData_Public extends Activity implements OnClickListener {
 
                                // Toast.makeText(getBaseContext(), "Enter Doctor Details Here!", Toast.LENGTH_LONG).show();
                                 //break;
-
-
                         }
                         levelDialog.dismiss();
                     }
@@ -96,9 +89,9 @@ public class SendData_Public extends Activity implements OnClickListener {
 
             }
         });
-//.................................................................................................................................
+     //.................................................................................................................................
 
-// share data.......................................................................................................................
+    // share data.......................................................................................................................
         View.OnClickListener handler = new View.OnClickListener() {
             public void onClick(View v) {
                 switch (v.getId()) {
@@ -133,10 +126,10 @@ public class SendData_Public extends Activity implements OnClickListener {
 
         findViewById(R.id.btnsendpublic).setOnClickListener(handler);
 
-//.............................................................................................................................
+        //.............................................................................................................................
 
 
-//Send data to list.......................................................................................................
+       //Send data to list.......................................................................................................
 
         if(isConnected()){
             D_IsConnected.setText("You are connected");
@@ -147,7 +140,7 @@ public class SendData_Public extends Activity implements OnClickListener {
 
         btnPost.setOnClickListener(this);
 
-    }
+        }
 
     public static String POST(String url, Person person){
         InputStream inputStream = null;
@@ -236,9 +229,6 @@ public class SendData_Public extends Activity implements OnClickListener {
                     };
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setMessage("Are you sure want to submit?") .setPositiveButton("Yes", dialogClickListener) .setNegativeButton("No", dialogClickListener).show();
-
-
-
 
                 }
         }

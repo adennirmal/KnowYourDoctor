@@ -5,11 +5,9 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ListView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -31,7 +29,7 @@ public class Doctor_Listview extends Activity {
 
         lView.setAdapter(adpt);
 
-        // Exec async load task
+        // Execute async load task
         (new AsyncListViewLoader()).execute("http://yasi24.esy.es/doctor/public/doctors");
     }
 
@@ -67,7 +65,7 @@ public class Doctor_Listview extends Activity {
                 conn.connect();
                 InputStream is = conn.getInputStream();
 
-                // Read the stream
+                // Reading the output stream
                 byte[] b = new byte[1024];
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -90,12 +88,10 @@ public class Doctor_Listview extends Activity {
         }
 
         private Doctor_Data convertContact(JSONObject obj) throws JSONException {
-
             String id = obj.getString("id");
             String doctor_name = obj.getString("doctor_name");
             String doctor_id = obj.getString("doctor_id");
             String updated_at = obj.getString("updated_at");
-
 
             return new Doctor_Data(id,doctor_id,doctor_name,updated_at);
         }
