@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -26,7 +27,6 @@ public class Adapter_Comments extends BaseAdapter {
     private ArrayList<Model_Comment> comments;
     private Context context;
     DBAccess access;
-
     public Adapter_Comments(Context context, ArrayList<Model_Comment> ratedDocComments) {
         comments = ratedDocComments;
         this.context = context;
@@ -54,7 +54,7 @@ public class Adapter_Comments extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        access = new DBAccess(context, "", null, 0);
+        access = new DBAccess(context,"",null,0);
         ArrayList<Integer> commentedIds = access.getAllCommentedIds();
         final Model_Comment thisComment = (Model_Comment) comments.get(position);
 
@@ -67,9 +67,9 @@ public class Adapter_Comments extends BaseAdapter {
         final TextView LikesTextView = (TextView) convertView.findViewById(R.id.likes);
 
         commentTextView.setText(thisComment.getComment().toString());
-        //LikesTextView.setText("Likes : " + thisComment.getNoOfLikes());
+        ////LikesTextView.setText("Likes : " + thisComment.getNoOfLikes());
         if (thisComment.getNoOfLikes() == 0){
-            LikesTextView.setText("Be the first to like this");
+            LikesTextView.setText(context.getResources().getString(R.string.first_to_like));
         }
         else if(thisComment.getNoOfLikes() == 1){
             LikesTextView.setText(thisComment.getNoOfLikes() + " Like");
@@ -80,9 +80,12 @@ public class Adapter_Comments extends BaseAdapter {
         final Button button = (Button) convertView.findViewById(R.id.likeorUnlikeBTN);
 
         //Check Like or unlike state current comment
-        if (commentedIds.contains(thisComment.getCommentID())) {
+        if(commentedIds.contains(thisComment.getCommentID()))
+        {
             button.setText("UnLike");
-        } else {
+        }
+        else
+        {
             button.setText("Like");
         }
 
@@ -91,18 +94,18 @@ public class Adapter_Comments extends BaseAdapter {
             public void onClick(View v) {
                 int currentLikes = thisComment.getNoOfLikes();
                 //Check button text is like or not and set no of likes accordingly
-                if (button.getText().equals("Like")) {
+                if(button.getText().equals("Like")) {
                     thisComment.setNoOfLikes(++currentLikes);
                     access.insertCommentID(thisComment.getCommentID());
                     button.setText("UnLike");
-                    Toast.makeText(finalConvertView.getContext(), "Thanks for like!", Toast.LENGTH_SHORT).show();
-                } else {
+                    Toast.makeText(finalConvertView.getContext(), context.getResources().getString(R.string.thanks_for_like), Toast.LENGTH_SHORT).show();
+                }else {
                     thisComment.setNoOfLikes(--currentLikes);
                     access.deleteCommentID(thisComment.getCommentID());
                     button.setText("Like");
                 }
                 if (currentLikes == 0){
-                    LikesTextView.setText("Be the first to like this");
+                    LikesTextView.setText(context.getResources().getString(R.string.first_to_like));
                 }
                 else if(currentLikes == 1){
                     LikesTextView.setText(currentLikes + " Like");
@@ -110,10 +113,10 @@ public class Adapter_Comments extends BaseAdapter {
                 else {
                     LikesTextView.setText(currentLikes + " people Like this");
                 }
-                StringBuilder url = new StringBuilder("http://sepandroid.esy.es/Like.php?commentID=");
+                StringBuilder url = new StringBuilder(context.getResources().getString(R.string.server_link) + "/Like.php?commentID=");
                 //Value
                 url.append(thisComment.getCommentID());
-                url.append("&nOfLikes=" + currentLikes);
+                url.append("&nOfLikes="+currentLikes);
                 new LikeCommentsTask().execute(url.toString());
             }
         });

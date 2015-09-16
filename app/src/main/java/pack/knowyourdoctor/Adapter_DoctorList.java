@@ -155,7 +155,7 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
             public void onClick(View v) {
                 selectedDoctor = searchedDoctors.get(groupPosition);
                 ratedDoc = new Model_RatedDoctor();
-                new RatingListLoadTask().execute("http://sepandroid.esy.es/RatedDoctorsWithComments.php?doctorid="+selectedDoctor.getRegNo());
+                new RatingListLoadTask().execute(context.getResources().getString(R.string.server_link) + "/RatedDoctorsWithComments.php?doctorid="+selectedDoctor.getRegNo());
             }
         });
 
@@ -165,9 +165,9 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                 selectedDoctor = searchedDoctors.get(groupPosition);
 
                 final AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-                alertDialog.setTitle("Rate Doctor");
-                alertDialog.setMessage("Do you want to rate now?");
-                alertDialog.setPositiveButton("YES",new DialogInterface.OnClickListener() {
+                alertDialog.setTitle(context.getResources().getString(R.string.rate_dialog_title));
+                alertDialog.setMessage(context.getResources().getString(R.string.rate_dialog_message));
+                alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         final Dialog ratingDialog = new Dialog(context);
@@ -176,14 +176,14 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                         ratingDialog.setTitle("Rate Dr." + selectedDoctor.getFullName());
                         //Rate confirm button
                         Button ratebtn = (Button) ratingDialog.findViewById(R.id.rateBtn);
-                        ratebtn.setOnClickListener(new View.OnClickListener(){
+                        ratebtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 //Comment text view
-                                TextView commentText=(TextView)ratingDialog.findViewById(R.id.comment);
+                                TextView commentText = (TextView) ratingDialog.findViewById(R.id.comment);
                                 String comment = commentText.getText().toString();
                                 //Rating bar
-                                RatingBar numberOfStars = (RatingBar)ratingDialog.findViewById(R.id.doctorRatingBar);
+                                RatingBar numberOfStars = (RatingBar) ratingDialog.findViewById(R.id.doctorRatingBar);
                                 float rating = numberOfStars.getRating();
 
                                 String[] Result = CommentValidation.checkComment(comment, R.array.wordsList, R.array.wordsToIgnore, context);
@@ -191,40 +191,23 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
 
                                 if (Integer.parseInt(Result[0]) == 0) {
                                     Doctor_RateAndComment rate_comment = new Doctor_RateAndComment();
-                                    rate_comment.executeRatingAndCommentTask(selectedDoctor,rating,comment,context,"Thanks for Rating!");
+                                    rate_comment.executeRatingAndCommentTask(selectedDoctor, rating, comment, context, context.getResources().getString(R.string.thanks_for_rating));
                                     ratingDialog.dismiss();
-                                }
-                                else if (Integer.parseInt(Result[0]) == -1)
-                                {
+                                } else if (Integer.parseInt(Result[0]) == -1) {
                                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-                                    alertDialogBuilder.setTitle("Warning!");
+                                    alertDialogBuilder.setTitle(context.getResources().getString(R.string.warning));
                                     alertDialogBuilder
-                                            .setIcon(R.drawable.warning_icon)
-                                            .setMessage(R.string.warning_body)
-                                            .setCancelable(false)
-                                            .setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int id) {
-                                                    dialog.cancel();
-                                                }
-                                            });
+                                        .setIcon(R.drawable.warning_icon)
+                                        .setMessage(R.string.warning_body)
+                                        .setCancelable(false)
+                                        .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+                                            }
+                                        });
                                     AlertDialog alertDialog = alertDialogBuilder.create();
                                     alertDialog.show();
                                 }
-
-                                /*StringBuilder url = new StringBuilder("http://sepandroid.esy.es/Rating.php?");
-                                url.append("doctorid=" + selectedDoctor.getRegNo());
-                                url.append("&doctorname="+selectedDoctor.getFullName());
-                                url.append("&doctoraddress="+selectedDoctor.getAddress());
-                                url.append("&docregdate="+selectedDoctor.getRegDate());
-                                url.append("&docqualification="+selectedDoctor.getQualifications());
-                                url.append("&rating="+rating);
-                                url.append("&commentofdoc="+comment);
-
-                                ratingDialog.dismiss();
-
-                                RatingTask ratingTask = new RatingTask();
-                                // passes values for the urls string array
-                                ratingTask.execute(url.toString().replace(" ","%20"));*/
                             }
                         });
 
@@ -239,13 +222,13 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                         ratingDialog.show();
                     }
                 });
-                alertDialog.setNegativeButton("LATER", new DialogInterface.OnClickListener() {
+                alertDialog.setNegativeButton(context.getResources().getString(R.string.LATER), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         sendBasicNotification(selectedDoctor);
                     }
                 });
-                alertDialog.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
+                alertDialog.setNeutralButton(context.getResources().getString(R.string.CANCEL), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -259,17 +242,13 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
         locationBtn.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 selectedDoctor = searchedDoctors.get(groupPosition);
-
                 final AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-                alertDialog.setTitle("Submit Doctor's Location");
-                alertDialog.setMessage("Is the Doctor available in your current location ?");
+                alertDialog.setTitle(context.getResources().getString(R.string.location_dialog_title));
+                alertDialog.setMessage(context.getResources().getString(R.string.location_dialog_message));
                 alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-
-
-                        StringBuilder url = new StringBuilder("http://sepandroid.esy.es/Location.php?");
+                        StringBuilder url = new StringBuilder(context.getResources().getString(R.string.server_link) + "/Location.php?");
                         url.append("doctorid=" + selectedDoctor.getRegNo());
                         url.append("&doctorname="+selectedDoctor.getFullName());
                         url.append("&doctoraddress="+selectedDoctor.getAddress());
@@ -277,7 +256,6 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                         url.append("&docqualification="+selectedDoctor.getQualifications());
                         url.append("&latitude="+Global_Values.latitude);
                         url.append("&longtitude="+Global_Values.longtitude);
-
 
                         JsonReadTask locationTask = new JsonReadTask();
                         // passes values for the urls string array
@@ -404,17 +382,17 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
 
                         boolean isValid = true;
                         if (RequiredFieldValidation.isEmpty(comment)){
-                            newComment.setError("Please add a comment to submit");
+                            newComment.setError(context.getResources().getString(R.string.add_comment_to_submit));
                             isValid = false;
                         }
-                        //Rating bar
-                        //RatingBar numberOfStars = (RatingBar)ratingsDialog.findViewById(R.id.doctorRatingBar);
-                        //float rating = numberOfStars.getRating();
+                        ////Rating bar
+                        ////RatingBar numberOfStars = (RatingBar)ratingsDialog.findViewById(R.id.doctorRatingBar);
+                        ////float rating = numberOfStars.getRating();
                         if(isValid == true && Integer.parseInt(Result[0].toString()) == 0) {
                             Doctor_RateAndComment rate_comment = new Doctor_RateAndComment();
-                            rate_comment.executeRatingAndCommentTask(selectedDoctor, 0.0f, comment, context, "Thanks for the comment!");
+                            rate_comment.executeRatingAndCommentTask(selectedDoctor, 0.0f, comment, context, context.getResources().getString(R.string.thanks_for_the_comment));
                             ratingsDialog.dismiss();
-                            new RatingListLoadTask().execute("http://sepandroid.esy.es/RatedDoctorsWithComments.php?doctorid=" + selectedDoctor.getRegNo());
+                            new RatingListLoadTask().execute(context.getResources().getString(R.string.server_link) + "/RatedDoctorsWithComments.php?doctorid=" + selectedDoctor.getRegNo());
                         }
                         else if (Integer.parseInt(Result[0].toString()) == -1)
                         {
@@ -422,16 +400,6 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                             LayoutInflater inflater = LayoutInflater.from(context);
                             final View dialogView = inflater.inflate(R.layout.warning_alert_dialog, null);
                             alertDialogBuilder.setView(dialogView);
-                            /*alertDialogBuilder.setTitle("Warning!");
-                            alertDialogBuilder
-                                    .setIcon(R.drawable.warning_icon)
-                                    .setMessage(R.string.warning_body)
-                                    .setCancelable(false)
-                                    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.cancel();
-                                        }
-                                    });*/
                             final AlertDialog alertDialog = alertDialogBuilder.create();
                             alertDialog.show();
                             Button ok_btn = (Button)dialogView.findViewById(R.id.ok_btn);
@@ -444,29 +412,9 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                         }
                     }
                 });
-
             } catch (JSONException e) {
                 Toast.makeText(context, "No Ratings for Dr. "+selectedDoctor.getFullName(), Toast.LENGTH_LONG).show();
             }
-        }
-    }
-
-    public class RatingTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... params) {
-            HttpClient client = new DefaultHttpClient();
-            HttpPost post = new HttpPost(params[0]);
-            try {
-                client.execute(post);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            Toast.makeText(context, "Thanks for rating!!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -486,7 +434,7 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(context, "Thanks for support", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getResources().getString(R.string.thanks_for_support), Toast.LENGTH_SHORT).show();
         }
     }// end async task
 
@@ -515,6 +463,25 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
+        /*public class RatingTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            HttpClient client = new DefaultHttpClient();
+            HttpPost post = new HttpPost(params[0]);
+            try {
+                client.execute(post);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(context, "Thanks for rating!!", Toast.LENGTH_SHORT).show();
+        }
+    }*/
 }
 
 

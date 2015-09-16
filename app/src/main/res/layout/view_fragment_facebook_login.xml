@@ -32,13 +32,32 @@
             android:gravity="right"
             android:layout_weight="50">
 
-            <com.facebook.widget.ProfilePictureView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="right"
-                android:id="@+id/profile_pic"
-                android:visibility="invisible">
-            </com.facebook.widget.ProfilePictureView>
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="right">
+
+                <com.facebook.widget.ProfilePictureView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="right"
+                    android:id="@+id/profile_pic"
+                    android:visibility="invisible">
+                </com.facebook.widget.ProfilePictureView>
+
+                <ImageView
+                    android:id="@+id/inside_imageview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/profile_pic"
+                    android:layout_alignBottom="@id/profile_pic"
+                    android:layout_alignLeft="@id/profile_pic"
+                    android:layout_alignRight="@id/profile_pic"
+                    android:scaleType="fitXY"/>
+
+
+            </RelativeLayout>
+
         </LinearLayout>
 
     </LinearLayout>
