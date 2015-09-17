@@ -19,7 +19,6 @@ public class Doctor_Data implements Serializable {
         this.updated_at = updated_at;
 
     }
-
     //create getters
     public String getAutoID() {
         return id;

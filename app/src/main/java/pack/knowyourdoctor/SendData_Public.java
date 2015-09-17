@@ -55,7 +55,6 @@ public class SendData_Public extends Activity implements OnClickListener {
         //DoctorUpdate =(EditText)findViewById(R.id.DoctorUpdate);
         //DoctorCreate =(EditText)findViewById(R.id.DoctorCreate);
         //View list.....................................................................................................................
-
         Button viewlist = (Button)findViewById(R.id.viewlist);
         viewlist.setOnClickListener(new OnClickListener() {
             @Override

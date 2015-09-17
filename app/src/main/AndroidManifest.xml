@@ -60,7 +60,9 @@
         </activity>
 
         <activity android:name=".SendMail_Public"></activity>
+
         <activity android:name=".SendData_Public"></activity>
+
         <activity android:name=".Doctor_Listview"></activity>
 
 

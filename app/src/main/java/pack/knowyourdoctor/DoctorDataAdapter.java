@@ -68,5 +68,4 @@ public class DoctorDataAdapter extends ArrayAdapter<Doctor_Data> {
         this.itemList = itemList;
     }
 
-
 }

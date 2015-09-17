@@ -29,7 +29,6 @@ public class SendMail_Public extends Activity {
         final EditText message_name = (EditText)findViewById(R.id.message_name);
         final EditText subject = (EditText)findViewById(R.id.subject);
         final EditText message_des = (EditText)findViewById(R.id.message_des);
-
         final Button sendmail = (Button)findViewById(R.id.btnsendemail);
         sendmail.setOnClickListener(new View.OnClickListener() {
             @Override

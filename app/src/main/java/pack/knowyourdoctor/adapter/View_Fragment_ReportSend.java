@@ -25,7 +25,6 @@ public class View_Fragment_ReportSend extends Fragment {
                              Bundle savedInstanceState) {
 
         final View rootView = inflater.inflate(R.layout.view_fragment_reportsend, container, false);
-
         final EditText dreg = (EditText)rootView.findViewById(R.id.d_reg);
 
         //String regNo = View_Fragment_DoctorDetails.getRegNo();

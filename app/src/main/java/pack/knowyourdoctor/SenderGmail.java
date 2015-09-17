@@ -90,6 +90,7 @@ public class SenderGmail extends javax.mail.Authenticator  {
         Transport.send(message);
     }
 
+
     public class ByteArrayDataSource implements DataSource {
         private byte[] data;
         private String type;

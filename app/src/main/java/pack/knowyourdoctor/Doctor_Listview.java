@@ -78,7 +78,6 @@ public class Doctor_Listview extends Activity {
                 for (int i=0; i < arr.length(); i++) {
                     result.add(convertContact(arr.getJSONObject(i)));
                 }
-
                 return result;
             }
             catch(Throwable t) {

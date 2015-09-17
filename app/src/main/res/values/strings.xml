@@ -24,6 +24,7 @@
     <string name="city_hint"><font size = "12">City</font></string>
     <string name="report_comment_hint"><font size = "12">Doctor Name</font><font size = "11">\t( Optional )</font></string>
 
+
     <string name="report_doctorid1_hint"><font size = "12">Doctor Id</font><font size = "12" color = "Red">  *</font></string>
     <string name="report_doctorname_hint"><font size = "12">Doctor Name</font><font size = "11">\t( Optional )</font></string>
     <string name="report_aboutyou_hint"><font size = "12">Description</font><font size = "12" color = "Red">  *</font></string>

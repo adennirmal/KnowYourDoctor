@@ -264,6 +264,7 @@ tools:context="pack.knowyourdoctor.adapter.View_Fragment_ReportSend">
             android:layout_gravity="right"
             android:text="Report to SLMC"/>
 
+
         <Button android:id="@+id/btnsend"
             android:layout_width="wrap_content"
             android:layout_height="35dp"

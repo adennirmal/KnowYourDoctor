@@ -26,7 +26,6 @@ public class Person {
         return created_at;
     }
 
-
     public Object getUpdate() {
         return updated_at;
     }
