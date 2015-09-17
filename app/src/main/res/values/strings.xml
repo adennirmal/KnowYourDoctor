@@ -7,12 +7,7 @@
     <string name="title_activity_fragment__slmc">Fragment_SLMC</string>
     <string name="about_SLMC">The Ceylon Medical Council (CMC) was established by the Medical Council Ordinance No. 24 of 1924. The first meeting of the CMC was held on 22nd June 1925 at 3.00 p.m. in the Colombo Medical Library, chaired by the first president, Dr. N. Duncan Walker. The other members of the Council were Doctors J.S.R. Gunawardana, R. Pestonjee, E.A. Cooray, J.O.B. Van Langenburg, Lucian De Zilva, H.M. Peiris, P.J. Chissel, Frank Gunasekera and G. Thornton. At this meeting, Dr. Lucian De Zilva was elected the Vice President and Prof. F.O.B. Ellison, the Registrar.</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_view__show_doctor_details">View_ShowDoctorDetails</string>
-    <string name="title_activity_maps">Map</string>
-    <string name="title_activity_report_">Report_Activity</string>
-
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_report">Report</string>
     <string name="app_id">1582179502036446</string>
@@ -21,24 +16,73 @@
     <string name="report_doc_hint"><font size = "12">Doctor\'s Name</font><font size = "11">\t\t( Optional )</font></string>
     <string name="report_reg_no_hint"><font size = "12">Reg No</font><font size = "12" color = "Red">  *</font></string>
     <string name="report_hospital_name_hint"><font size = "12">Hospital Name</font></string>
-    <string name="city_hint"><font size = "12">City</font></string>
-    <string name="report_comment_hint"><font size = "12">Doctor Name</font><font size = "11">\t( Optional )</font></string>
+    <string name="report_comment_hint"><font size="12">Your comment here..</font><font size="11">\t\t( Optional )</font></string>
+    <string name="city_hint"><font size="12">City</font></string>
+    <string name="rate_comment">Rate &amp; </string>
+    <string name="search"><font size="12">Search</font></string>
+    <string name="current_location"><font size="12">Current Location</font></string>
+    <string name="view_comment_hint"><font size="12">Your comment here..</font></string>
 
+    <string name="warning_body"><font size="14" color="Red">*\tPlease ensure your review is courteous, helpful and fair\n\n
+        *\tWhile we appreciate sincerity, we won’t accept reviews that contain bad language or defamatory comments \n\n
+        Thank You!</font></string>
 
-    <string name="report_doctorid1_hint"><font size = "12">Doctor Id</font><font size = "12" color = "Red">  *</font></string>
-    <string name="report_doctorname_hint"><font size = "12">Doctor Name</font><font size = "11">\t( Optional )</font></string>
-    <string name="report_aboutyou_hint"><font size = "12">Description</font><font size = "12" color = "Red">  *</font></string>
-    <string name="report_cc_hint"><font size = "12">Email Address</font><font size = "11">\t( Optional )</font></string>
-    <string name="report_doctorid_hint"><font size = "12">Doctor Id</font><font size = "12" color = "Red">  *</font></string>
-    <string name="report_subject_hint"><font size = "12">Subject</font><font size = "12" color = "Red">  *</font></string>
-    <string name="report_email_address_hint"><font size = "12">Email Address</font><font size = "12" color = "Red">  *</font></string>
+    <string name="warning_body_rule_one">Please ensure your review is courteous, helpful and fair</string>
+    <string name="warning_body_rule_two_header">While we appreciate sincerity,</string>
+    <string name="warning_body_rule_two_a">we won’t accept reviews that contain bad language or</string>
+    <string name="warning_body_rule_two_b">defamatory comments</string>
 
+    <string name="server_link">http://sepandroidmobile.esy.es</string>
+    <string name="slmc_url">http://www.srilankamedicalcouncil.org/registry.php?registry=&amp;initials=&amp;last_name=&amp;other_name=&amp;reg_no=&amp;nic=&amp;part_of_address=&amp;search=Search</string>
 
+    <string name="fb_dialog_name">Know Your Doctor</string>
+    <string name="fb_dialog_caption">SLMC</string>
+    <string name="fb_dialog_description">Find about your doctor</string>
+    <string name="fb_dialog_link">"http://www.srilankamedicalcouncil.org/</string>
+    <string name="fb_dialog_picture">http://oi61.tinypic.com/2wozz3t.jpg</string>
+    <string name="fb_share_dialog_error">Error.. Could not open Share Dialog Box!</string>
+    <string name="fb_message_dialog_error">Error.. Could not open Message Dialog Box!</string>
+    <string name="fb_log">View_Facebook_Login</string>
+    <string name="fb_log_login">Logged in</string>
+    <string name="fb_log_logout">Logged out</string>
+    <string name="fb_not_logged">You are not logged</string>
+    <string name="fb_activity_result_dialog_error">Error occurred \nMost Common Errors:\n1. Device not connected to Internet\n2.Facebook APP Id Error</string>
+    <string name="fb_session_open">Facebook session opened</string>
+    <string name="fb_session_close">Facebook session closed</string>
+    <string name="fb_save_image_error">Error occurred. Please try again later</string>
+    <string name="fb_pic_not_picked">You haven\'t picked an Image</string>
+    <string name="fb_something_went_wrong">Something went wrong</string>
 
+    <string name="rate_dialog_title">Rate Doctor</string>
+    <string name="rate_dialog_message">Do you want to rate now?</string>
+    <string name="thanks_for_rating">Thanks for Rating!</string>
+    <string name="warning">Warning!</string>
+    <string name="LATER">LATER</string>
+    <string name="CANCEL">CANCEL</string>
 
-    <string name="search"><font size = "12">Search</font></string>
-    <string name="current_location"><font size = "12">Current Location</font></string>
+    <string name="location_dialog_title">Submit Doctor\'s Location</string>
+    <string name="location_dialog_message">Is the Doctor available in your current location?</string>
+    <string name="location_cannot_retrieve">Location can\'t be retrieved</string>
+    <string name="no_provider">No Provider Found</string>
 
+    <string name="thanks_for_the_comment">Thanks for the comment!</string>
+    <string name="add_comment_to_submit">Please add a comment to submit</string>
+    <string name="thanks_for_support">Thanks for support</string>
+    <string name="thanks_for_like">Thanks for like!</string>
+    <string name="first_to_like">Be the first to like this</string>
+
+    <string name="internet_error">Internet Connection error</string>
+    <string name="enable_internet">Do you want to enable the Internet Connection?</string>
+
+    <string name="loading_doctor_list">Loading list Please wait....</string>
+
+    <string name="report_doctorid1_hint"></string>
+    <string name="report_doctorname_hint"></string>
+    <string name="report_email_address_hint"></string>
+    <string name="report_cc_hint"></string>
+    <string name="report_subject_hint"></string>
+    <string name="report_doctorid_hint"></string>
+    <string name="report_aboutyou_hint"></string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>
-

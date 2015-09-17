@@ -54,21 +54,20 @@ public class View_ShowDoctorDetails extends Activity {
 
         listView = (ExpandableListView) findViewById(R.id.expList);
 
-        listAdapter = new Adapter_DoctorList(context,searchedDoctors);
+        listAdapter = new Adapter_DoctorList(context, searchedDoctors);
         listView.setAdapter(listAdapter);
 
         String passedURL = getIntent().getStringExtra("url");
 
         //Check internet connection is available or not
-        if(isNetworkAvailable()) {
+        if (isNetworkAvailable()) {
             //Start the background process
             new GetHTMLContent().execute(passedURL);
-        }
-        else{
+        } else {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
             alertDialog.setTitle(getResources().getString(R.string.internet_error));
             alertDialog.setMessage(getResources().getString(R.string.enable_internet));
-            alertDialog.setPositiveButton("YES",new DialogInterface.OnClickListener() {
+            alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
@@ -94,7 +93,7 @@ public class View_ShowDoctorDetails extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_view__show_doctor_details, menu);
+        //getMenuInflater().inflate(R.menu.menu_view__show_doctor_details, menu);
         return true;
     }
 
@@ -110,7 +109,7 @@ public class View_ShowDoctorDetails extends Activity {
             publishProgress(0);
 
             //Check parsed data has table tag
-            if(doc.getElementById("r_table")!=null) {
+            if (doc.getElementById("r_table") != null) {
                 //Get number of pages
 
                 //Element resultsNumTag = doc.getElementsByTag("h2").get(0);
@@ -119,18 +118,18 @@ public class View_ShowDoctorDetails extends Activity {
                 //int noOfResults = Integer.parseInt(resultsNumTag.text().replaceAll("[a-zA-Z() ]+",""));
                 //check noOfResults equals to multiplier of 20 or not (Example like 80)
                 //int noOfPages = noOfResults%20==0?noOfResults/20:(noOfResults/20)+1;
-                int noOfPages=1;
-                if(doc.getElementById("p_n_links").hasText()) {
+                int noOfPages = 1;
+                if (doc.getElementById("p_n_links").hasText()) {
                     Elements navigationAnchors = doc.getElementById("p_n_links").getElementsByTag("a");
                     //This includes next anchor also (remove it use -1)
-                    noOfPages = navigationAnchors.size()-1;
+                    noOfPages = navigationAnchors.size() - 1;
                 }
 
                 Element tableContent = doc.getElementById("r_table");
                 Elements tableRows = tableContent.getElementsByTag("tr");
 
                 //Iterate through webpages
-                for(int i=0;i<noOfPages;i++){
+                for (int i = 0; i < noOfPages; i++) {
                     int skipFirstRow = 0;
                     for (Element x : tableRows) {
                         //Skip first row because it contains headers of table
@@ -161,11 +160,11 @@ public class View_ShowDoctorDetails extends Activity {
 
                         searchedDoctors.add(currentDoctor);
                         //Update Progress bar
-                        publishProgress((int) ((i / (float)noOfPages) * 100));
+                        publishProgress((int) ((i / (float) noOfPages) * 100));
                     }
                     //Replace the start value of the url to navigate to next page
-                    int nextPage = i+1;
-                    if(nextPage!=noOfPages) {
+                    int nextPage = i + 1;
+                    if (nextPage != noOfPages) {
                         url = url.replace("start=" + i, "start=" + nextPage);
                         doc = GetHTMLDocFromString(url);
                         tableContent = doc.getElementById("r_table");
@@ -174,14 +173,13 @@ public class View_ShowDoctorDetails extends Activity {
                 }
                 //Update Progress bar
                 publishProgress(100);
-            }
-            else{
+            } else {
                 html = "No data found";
             }
             return html;
         }
 
-        private Document GetHTMLDocFromString(String url){
+        private Document GetHTMLDocFromString(String url) {
             HttpClient client = new DefaultHttpClient();
             HttpGet request = new HttpGet(url);
             try {
@@ -201,7 +199,7 @@ public class View_ShowDoctorDetails extends Activity {
                 Document doc = Jsoup.parse(html);
 
                 //Check parsed data has table tag
-                if(doc.getElementById("r_table")!=null) {
+                if (doc.getElementById("r_table") != null) {
                     if (doc.getElementById("p_n_links").getElementsByTag("a") != null) {
                         ////Elements navigationAnchors = doc.getElementById("p_n_links").getElementsByTag("a");
                         //This includes next anchor also (remove it use -1)
@@ -212,7 +210,7 @@ public class View_ShowDoctorDetails extends Activity {
                     ////Elements tableRows = tableContent.getElementsByTag("tr");
                 }
                 return doc;
-            }catch (IOException ex){
+            } catch (IOException ex) {
                 return null;
             }
         }
@@ -221,15 +219,15 @@ public class View_ShowDoctorDetails extends Activity {
             ProgressBar pBar = (ProgressBar) findViewById(R.id.progressShow);
             pBar.setVisibility(View.INVISIBLE);
 
-            if(result.compareTo("No data found")!=0 && result.compareTo("Error")!=0) {
+            if (result.compareTo("No data found") != 0 && result.compareTo("Error") != 0) {
                 txt.setText("Number of doctors found : " + searchedDoctors.size());
-                Collections.sort(searchedDoctors,new DoctorComparator());
+                Collections.sort(searchedDoctors, new DoctorComparator());
                 listAdapter.notifyDataSetChanged();
-            }
-            else{
+            } else {
                 txt.setText(result);
             }
         }
+
         protected void onProgressUpdate(Integer... progress) {
             setProgressPercent(progress[0]);
         }
@@ -237,10 +235,10 @@ public class View_ShowDoctorDetails extends Activity {
 
     private void setProgressPercent(Integer progress) {
         TextView txt = (TextView) findViewById(R.id.displayDetails);
-        txt.setText("Loading : " + progress +"% Completed");
+        txt.setText("Loading : " + progress + "% Completed");
         ProgressBar pBar = (ProgressBar) findViewById(R.id.progressShow);
         pBar.setProgress(progress);
-        Collections.sort(searchedDoctors,new DoctorComparator());
+        Collections.sort(searchedDoctors, new DoctorComparator());
         listAdapter.notifyDataSetChanged();
     }
 
