@@ -48,7 +48,7 @@ public class View_ShowDoctorDetails extends Activity {
         searchedDoctors = new ArrayList<Model_Doctor>();
 
         txt = (TextView) findViewById(R.id.displayDetails);
-        txt.setText("Loading list Please wait....");
+        txt.setText(getResources().getString(R.string.loading_doctor_list));
 
         context = this;
 
@@ -66,8 +66,8 @@ public class View_ShowDoctorDetails extends Activity {
         }
         else{
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-            alertDialog.setTitle("Internet Connection error");
-            alertDialog.setMessage("Do you want to enable the Internet Connection?");
+            alertDialog.setTitle(getResources().getString(R.string.internet_error));
+            alertDialog.setMessage(getResources().getString(R.string.enable_internet));
             alertDialog.setPositiveButton("YES",new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -203,13 +203,13 @@ public class View_ShowDoctorDetails extends Activity {
                 //Check parsed data has table tag
                 if(doc.getElementById("r_table")!=null) {
                     if (doc.getElementById("p_n_links").getElementsByTag("a") != null) {
-                        //Elements navigationAnchors = doc.getElementById("p_n_links").getElementsByTag("a");
+                        ////Elements navigationAnchors = doc.getElementById("p_n_links").getElementsByTag("a");
                         //This includes next anchor also (remove it use -1)
-                        //noOfPages = navigationAnchors.size() - 1;
+                        ////noOfPages = navigationAnchors.size() - 1;
                     }
 
-                    //Element tableContent = doc.getElementById("r_table");
-                    //Elements tableRows = tableContent.getElementsByTag("tr");
+                    ////Element tableContent = doc.getElementById("r_table");
+                    ////Elements tableRows = tableContent.getElementsByTag("tr");
                 }
                 return doc;
             }catch (IOException ex){

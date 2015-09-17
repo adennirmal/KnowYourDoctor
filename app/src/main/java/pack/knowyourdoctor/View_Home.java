@@ -65,7 +65,7 @@ public class View_Home extends FragmentActivity implements View.OnClickListener,
     public static Bundle urlBundle;
 
     // Tab titles
-    //private String[] tabs = { "Search", "Locate Doctor","Report","FB","SLMC","About Us"};
+    ////private String[] tabs = { "Search", "Locate Doctor","Report","FB","SLMC","About Us"};
     final int[] icons = {R.drawable.search_selector,R.drawable.location_selector,R.drawable.report_selector,R.drawable.fb_selector};
 
     @Override
@@ -75,7 +75,7 @@ public class View_Home extends FragmentActivity implements View.OnClickListener,
 
         //prevent app stop
         urlBundle = new Bundle();
-        String url = "http://www.srilankamedicalcouncil.org/registry.php?registry=&initials=&last_name=&other_name=&reg_no=&nic=&part_of_address=&search=Search";
+        String url = getResources().getString(R.string.slmc_url);
         urlBundle.putString("url", url);
 
         mFab = findViewById(R.id.fab);
@@ -92,15 +92,9 @@ public class View_Home extends FragmentActivity implements View.OnClickListener,
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         viewDisplay.setAdapter(mAdapter);
 
-        /*for (int i =0; i<tabs.length; i++){
-            actionBar.addTab(actionBar.newTab().setText(tabs[i]).setTabListener(this));
-        }*/
-
-
         for (int i =0; i<icons.length; i++){
             actionBar.addTab(actionBar.newTab().setIcon(icons[i]).setTabListener(this));
         }
-        //actionBar.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
 
         context = getApplicationContext();
 
@@ -153,10 +147,10 @@ public class View_Home extends FragmentActivity implements View.OnClickListener,
                     onLocationChanged(location);
                 else
 
-                    Toast.makeText(context, "Location can't be retrieved", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, getResources().getString(R.string.location_cannot_retrieve), Toast.LENGTH_SHORT).show();
 
         }else{
-            Toast.makeText(context, "No Provider Found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, getResources().getString(R.string.no_provider), Toast.LENGTH_SHORT).show();
         }
     }
 

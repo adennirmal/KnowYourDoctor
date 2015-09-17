@@ -9,17 +9,17 @@ import pack.knowyourdoctor.R;
  */
 public class CommentValidation {
 
-    static String[] splitComment;
+    static String[] SPLIT_COMMENT;
     public static String[] checkComment (String comment, int wordsArrayId, int ignoreWordsArrayId, Context context)
     {
-        splitComment = comment.split("\\s+"); //Split comment from spaces
+        SPLIT_COMMENT = comment.split("\\s+"); //Split comment from spaces
         String[] wordsFromArray = context.getResources().getStringArray(wordsArrayId);
         String[] wordsToIgnore = context.getResources().getStringArray(ignoreWordsArrayId);
         int words;
         String[] result = {"0",""};
-        for (words = 0; words < splitComment.length; words++)
+        for (words = 0; words < SPLIT_COMMENT.length; words++)
         {
-            String word = splitComment[words].toLowerCase();
+            String word = SPLIT_COMMENT[words].toLowerCase();
 
             int i;
             for (i = 0; i < wordsFromArray.length; i++) {
@@ -37,7 +37,7 @@ public class CommentValidation {
                     break; //Go to next word if the word should be ignored
                 }
                 if (word.contains(wordsFromArray[i])) {
-                    splitComment[words] = "";
+                    SPLIT_COMMENT[words] = "";
                     result[0] = String.valueOf(-1);
                 }
             }
@@ -47,11 +47,11 @@ public class CommentValidation {
         String prefix = "";
         StringBuilder sb = new StringBuilder();
         int i;
-        for (i = 0; i < splitComment.length; i++) {
+        for (i = 0; i < SPLIT_COMMENT.length; i++) {
             sb.append(prefix);
             prefix = " ";
-            sb.append(splitComment[i]);
-            //newSentence += splitComment[i].toString() + " ";
+            sb.append(SPLIT_COMMENT[i]);
+            ////newSentence += splitComment[i].toString() + " ";
         }
         newSentence = sb.toString();
         result[1] = newSentence;
