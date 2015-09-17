@@ -3,7 +3,7 @@ package pack.knowyourdoctor.adapter;
 
 // created By Darrel Rayen
 //Search for Doctors & Hospitals
-
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -41,20 +41,21 @@ public class View_Fragment_LocationFinding extends Fragment {
 
         currentlocation = (Button) rootView.findViewById(R.id.button);
         searchlocation = (Button) rootView.findViewById(R.id.button2);
-        final Intent viewmap = new Intent(getActivity(), MapsActivity.class);
+        final Intent viewmap  = new Intent(getActivity(), MapsActivity.class);
         Tlocation = (EditText) rootView.findViewById(R.id.editText);
         mapView = (MapView) rootView.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.onResume(); // Display the map immediately
 
-        try {
-            MapsInitializer.initialize(getActivity().getApplicationContext());
+            try
+                {
+                       MapsInitializer.initialize(getActivity().getApplicationContext());
 
-        } catch (Exception e)
+                } catch (Exception e)
 
-        {
-            e.printStackTrace();
-        }
+                    {
+                          e.printStackTrace();
+                    }
 
         googleMap = mapView.getMap(); // Load Map
         googleMap.setMyLocationEnabled(true); // Blue pointer on current location
@@ -92,7 +93,7 @@ public class View_Fragment_LocationFinding extends Fragment {
             }
         });
 
-        return rootView;
+     return rootView;
     }
 
 }
