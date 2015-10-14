@@ -33,6 +33,7 @@ import Models.Model_Doctor;
 import Models.Model_GlobalValues;
 import Models.Model_RatedDoctor;
 import ValidationRules.CommentValidation;
+import ValidationRules.RequiredFieldValidation;
 import WebServiceAccess.WebTask_RatingListLoad;
 import pack.knowyourdoctor.MainControllers.Controller_Call_DocRating;
 import pack.knowyourdoctor.MainControllers.Controller_Home;
@@ -185,7 +186,12 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                                 String[] Result = CommentValidation.checkComment(comment, R.array.wordsList, R.array.wordsToIgnore, context);
                                 commentText.setText(Result[1]);
 
-                                if (Integer.parseInt(Result[0]) == 0) {
+                                boolean isValid = true;
+                                if (RequiredFieldValidation.isEmpty(comment)) {
+                                    commentText.setError(context.getResources().getString(R.string.add_comment_to_submit));
+                                    isValid = false;
+                                }
+                                if (isValid == true && Integer.parseInt(Result[0].toString()) == 0) {
                                     Controller_Call_DocRating rate_comment = new Controller_Call_DocRating();
                                     rate_comment.executeRatingAndCommentTask(selectedDoctor, comment, context, context.getResources().getString(R.string.thanks_for_rating));
                                     ratingDialog.dismiss();

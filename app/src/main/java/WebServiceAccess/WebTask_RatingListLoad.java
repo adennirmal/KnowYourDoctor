@@ -187,7 +187,7 @@ public class WebTask_RatingListLoad extends AsyncTask<String, Void, String> {
             JSONArray commentsDetailNode = jsonResponse.optJSONArray("comments");
 
             ArrayList<Model_Comment> commentsOfCurrentDoc = new ArrayList<Model_Comment>();
-            for (int j = commentsDetailNode.length() - 1; j > 0; j--) {
+            for (int j = commentsDetailNode.length() - 1; j >= 0; j--) {
                 JSONObject comment = commentsDetailNode.getJSONObject(j);
                 Model_Comment currentComment = new Model_Comment();
                 currentComment.setCommentID(Integer.parseInt(comment.optString("commentid")));

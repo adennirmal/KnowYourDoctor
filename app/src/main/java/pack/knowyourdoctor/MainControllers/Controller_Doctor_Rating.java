@@ -21,6 +21,7 @@ import java.io.IOException;
 
 import Models.Model_Doctor;
 import ValidationRules.CommentValidation;
+import ValidationRules.RequiredFieldValidation;
 import pack.knowyourdoctor.R;
 
 /**
@@ -54,20 +55,25 @@ public class Controller_Doctor_Rating extends DialogFragment implements View.OnC
         return view;
     }
 
-    Controller_Call_DocRating rate_comment = new Controller_Call_DocRating();
-    TextView commentText = (TextView) view.findViewById(R.id.comment);
-    String comment = commentText.getText().toString();
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rateBtn:
+                Controller_Call_DocRating rate_comment = new Controller_Call_DocRating();
+                TextView commentText = (TextView) view.findViewById(R.id.comment);
+                String comment = commentText.getText().toString();
                 //executeRatingTask(selectedDoc);
                 String[] Result = CommentValidation.checkComment(comment, R.array.wordsList, R.array.wordsToIgnore, context);
                 commentText.setText(Result[1]);
                 commentText.getText().toString().trim();
-                if (Integer.parseInt(Result[0]) == 0) {
+                boolean isValid = true;
+                if (RequiredFieldValidation.isEmpty(comment)) {
+                    commentText.setError(context.getResources().getString(R.string.add_comment_to_submit));
+                    isValid = false;
+                }
+                if (isValid == true && Integer.parseInt(Result[0].toString()) == 0) {
                     rate_comment.executeRatingAndCommentTask(selectedDoc, comment, context, getResources().getString(R.string.thanks_for_rating));
+                    getDialog().dismiss();
                 } else if (Integer.parseInt(Result[0]) == -1) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                     alertDialogBuilder.setTitle("Warning!");
