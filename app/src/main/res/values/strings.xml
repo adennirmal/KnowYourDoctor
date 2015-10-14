@@ -11,11 +11,11 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_report">Report</string>
     <string name="app_id">1582179502036446</string>
-    <string name="report_your_name_hint"><font size = "12">Your Name</font><font size = "11">\t( Optional )</font></string>
-    <string name="report_contact_no_hint"><font size = "12">Contact No</font><font size = "11">\t( Optional )</font></string>
-    <string name="report_doc_hint"><font size = "12">Doctor\'s Name</font><font size = "11">\t\t( Optional )</font></string>
-    <string name="report_reg_no_hint"><font size = "12">Reg No</font><font size = "12" color = "Red">  *</font></string>
-    <string name="report_hospital_name_hint"><font size = "12">Hospital Name</font></string>
+    <string name="report_your_name_hint"><font size="12">Your Name</font><font size="11">\t( Optional )</font></string>
+    <string name="report_contact_no_hint"><font size="12">Contact No</font><font size="11">\t( Optional )</font></string>
+    <string name="report_doc_hint"><font size="12">Doctor\'s Name</font><font size="11">\t\t( Optional )</font></string>
+    <string name="report_reg_no_hint"><font size="12">Reg No</font><font size="12" color="Red">  *</font></string>
+    <string name="report_hospital_name_hint"><font size="12">Hospital Name</font></string>
     <string name="report_comment_hint"><font size="12">Your comment here..</font><font size="11">\t\t( Optional )</font></string>
     <string name="city_hint"><font size="12">City</font></string>
     <string name="rate_comment">Rate &amp; </string>
@@ -33,6 +33,7 @@
     <string name="warning_body_rule_two_b">defamatory comments</string>
 
     <string name="server_link">http://sepandroidmobile.esy.es</string>
+    <string name="webserviceLink">http://knowyourdoctor.sltravelbook.com/index.php/</string>
     <string name="slmc_url">http://www.srilankamedicalcouncil.org/registry.php?registry=&amp;initials=&amp;last_name=&amp;other_name=&amp;reg_no=&amp;nic=&amp;part_of_address=&amp;search=Search</string>
 
     <string name="fb_dialog_name">Know Your Doctor</string>

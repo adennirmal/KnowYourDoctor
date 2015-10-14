@@ -1,353 +1,349 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-android:layout_height="match_parent" android:id="@+id/fragmentReportSend"
-android:padding="10dp"
-android:orientation="vertical"
-tools:context="pack.knowyourdoctor.adapter.View_Fragment_ReportSend">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fragmentReportSend"
+    android:padding="10dp"
+    android:orientation="vertical"
+    tools:context="pack.knowyourdoctor.Tab_Controllers.Controller_Fragment_ReportSend">
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fillViewport="true">
-    <LinearLayout
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical">
-
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:weightSum="30"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_marginTop="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="2dip"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="10"
-            android:background="#e4e4e4"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:text="Report to SLMC"
-            android:gravity="center"
-            android:layout_marginBottom="20dp"
-            android:id="@+id/user_details"
-            android:textSize="15dp"/>
-
-        <TextView
-            android:layout_marginTop="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="2dip"
-            android:layout_marginRight="5dp"
-            android:layout_weight="10"
-            android:background="#e4e4e4"/>
-        </LinearLayout>
-
-        <!--<TextView
-            android:layout_marginTop="5dp"
-            android:layout_width="fill_parent"
-            android:layout_height="1dip"
-            android:background="#616264"/>-->
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:weightSum="100"
-            android:orientation="horizontal" >
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:weightSum="30"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_marginTop="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dip"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="10"
+                    android:background="#e4e4e4" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Report to SLMC"
+                    android:gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:id="@+id/user_details"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:layout_marginTop="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dip"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="10"
+                    android:background="#e4e4e4" />
+            </LinearLayout>
 
             <!--<TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.35"
-                android:text="Registration No" />-->
+                android:layout_marginTop="5dp"
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="#616264"/>-->
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="10dp"
-                android:layout_weight="2" >
+                android:layout_marginTop="10dp"
+                android:weightSum="100"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="30dp"
+                <!--<TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:background="@drawable/doctor_icon"/>
+                    android:layout_weight="0.35"
+                    android:text="Registration No" />-->
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/doctor_icon" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/d_name"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/report_doc_hint"
+                    android:padding="10dp"
+                    android:background="@drawable/edit_text_selector"
+                    android:singleLine="true"
+                    android:layout_weight="75.93" />
+
+                <EditText
+                    android:id="@+id/d_reg"
+                    android:layout_width="113dp"
+                    android:hint="@string/report_reg_no_hint"
+                    android:layout_marginLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="2dp"
+                    android:background="@drawable/edit_text_selector"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:weightSum="100"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/user_icon" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/fullname"
+                    android:layout_width="0dp"
+                    android:padding="10dp"
+                    android:layout_weight="98"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edit_text_selector"
+                    android:hint="@string/report_your_name_hint"
+                    android:singleLine="true" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:weightSum="100"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/phone_icon" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/contact"
+                    android:layout_width="0dp"
+                    android:layout_weight="98"
+                    android:padding="10dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/report_contact_no_hint"
+                    android:background="@drawable/edit_text_selector"
+                    android:singleLine="true" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:weightSum="100"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/comment_icon" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/comment"
+                    android:layout_width="0dp"
+                    android:layout_weight="98"
+                    android:gravity="top|left"
+                    android:padding="10dp"
+                    android:inputType="textMultiLine"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/report_comment_hint"
+                    android:background="@drawable/edit_text_selector"
+                    android:lines="8"
+                    android:minLines="3"
+                    android:maxLines="10"
+                    android:scrollbars="vertical" />
 
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/d_name"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:hint="@string/report_doc_hint"
-                android:padding="10dp"
-                android:background="@drawable/edit_text_selector"
-                android:singleLine="true"
-                android:layout_weight="75.93" />
 
-            <EditText
-                android:id="@+id/d_reg"
-                android:layout_width="113dp"
-                android:hint="@string/report_reg_no_hint"
-                android:layout_marginLeft="10dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+            <!--<TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Fake Doctor Details"
+                android:padding="10dp"
+                android:gravity="center"
+                android:id="@+id/textView2"
+                android:layout_marginTop="30dp"
+                android:textSize="20dp"/>-->
+
+            <!--  <TextView
+                  android:layout_marginTop="5dp"
+                  android:layout_width="fill_parent"
+                  android:layout_height="1dip"
+                  android:background="#616264"/>-->
+
+            <!--<LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.35"
+                    android:text="Name" />
+
+                <EditText
+                    android:id="@+id/d_name"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.65"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"/>
+            </LinearLayout>-->
+
+            <Button
+                android:id="@+id/btnsubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
                 android:paddingLeft="10dp"
-                android:paddingRight="2dp"
-                android:background="@drawable/edit_text_selector"
-                android:layout_height="wrap_content"
-                android:singleLine="true"/>
-        </LinearLayout>
+                android:paddingRight="10dp"
+                android:layout_marginTop="20dip"
+                android:textSize="16sp"
+                android:background="@drawable/search_button_selector"
+                android:textColor="#ffffff"
+                android:layout_gravity="right"
+                android:text="Report to SLMC" />
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:weightSum="100"
-            android:orientation="horizontal" >
 
-            <LinearLayout
+            <!--Button android:id="@+id/btnsend"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="10dp"
-                android:layout_weight="2" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:background="@drawable/user_icon"/>
-
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/fullname"
-                android:layout_width="0dp"
-                android:padding="10dp"
-                android:layout_weight="98"
-                android:layout_height="40dp"
-                android:background="@drawable/edit_text_selector"
-                android:hint="@string/report_your_name_hint"
-                android:singleLine="true"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:weightSum="100"
-            android:orientation="horizontal" >
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="10dp"
-                android:layout_weight="2" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:background="@drawable/phone_icon"/>
-
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/contact"
-                android:layout_width="0dp"
-                android:layout_weight="98"
-                android:padding="10dp"
-                android:layout_height="wrap_content"
-                android:hint="@string/report_contact_no_hint"
-                android:background="@drawable/edit_text_selector"
-                android:singleLine="true"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:weightSum="100"
-            android:orientation="horizontal" >
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="10dp"
-                android:layout_weight="2" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:background="@drawable/comment_icon"/>
-
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/comment"
-                android:layout_width="0dp"
-                android:layout_weight="98"
-                android:gravity="top|left"
-                android:padding="10dp"
-                android:inputType="textMultiLine"
-                android:layout_height="wrap_content"
-                android:hint="@string/report_comment_hint"
-                android:background="@drawable/edit_text_selector"
-                android:lines="8"
-                android:minLines="3"
-                android:maxLines="10"
-                android:scrollbars="vertical"
-            />
-
-        </LinearLayout>
+                android:layout_height="35dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginTop="20dip"
+                android:textSize="16sp"
+                android:background="@drawable/search_button_selector"
+                android:textColor="#ffffff"
+                android:layout_gravity="right"
+                android:text="Report to Public"/-->
 
 
-        <!--<TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Fake Doctor Details"
-            android:padding="10dp"
-            android:gravity="center"
-            android:id="@+id/textView2"
-            android:layout_marginTop="30dp"
-            android:textSize="20dp"/>-->
-
-      <!--  <TextView
-            android:layout_marginTop="5dp"
-            android:layout_width="fill_parent"
-            android:layout_height="1dip"
-            android:background="#616264"/>-->
-
-        <!--<LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.35"
-                android:text="Name" />
-
-            <EditText
-                android:id="@+id/d_name"
-                android:layout_width="0dp"
-                android:layout_weight="0.65"
-                android:layout_height="wrap_content"
-                android:singleLine="true"/>
-        </LinearLayout>-->
-
-        <Button android:id="@+id/btnsubmit"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:layout_marginTop="20dip"
-            android:textSize="16sp"
-            android:background="@drawable/search_button_selector"
-            android:textColor="#ffffff"
-            android:layout_gravity="right"
-            android:text="Report to SLMC"/>
-
-
-        <Button android:id="@+id/btnsend"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:layout_marginTop="20dip"
-            android:textSize="16sp"
-            android:background="@drawable/search_button_selector"
-            android:textColor="#ffffff"
-            android:layout_gravity="right"
-            android:text="Report to Public"/>
-
-
-
-
-
-
-        <!--<LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dip"
-            android:layout_below="@id/header"
-            android:id="@+id/footer">
-
-            <TextView android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Full Name"
-                android:id="@+id/doctor_name" />
-
-            <EditText android:id="@+id/d_name"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dip"
-                android:singleLine="true"
-                android:layout_marginBottom="20dip" />
-
-            <TextView android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="NIC Number"
-                android:id="@+id/d_nicview" />
-
-            <EditText
-                android:id="@+id/d_nic_no"
+            <!--<LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dip"
-                android:singleLine="true"
-                android:layout_marginBottom="20dip" />
+                android:padding="10dip"
+                android:layout_below="@id/header"
+                android:id="@+id/footer">
 
+                <TextView android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Full Name"
+                    android:id="@+id/doctor_name" />
+
+                <EditText android:id="@+id/d_name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dip"
+                    android:singleLine="true"
+                    android:layout_marginBottom="20dip" />
+
+                <TextView android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="NIC Number"
+                    android:id="@+id/d_nicview" />
+
+                <EditText
+                    android:id="@+id/d_nic_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dip"
+                    android:singleLine="true"
+                    android:layout_marginBottom="20dip" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Address"
+                    android:id="@+id/d_address"/>
+
+                <EditText
+                    android:id="@+id/d_contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dip"
+                    android:singleLine="true"
+                    android:layout_marginBottom="20dip"
+                    android:phoneNumber="false" />
+
+                <Button android:id="@+id/btnsubmit"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dip"
+                    android:background="#00000000"
+                    android:textColor="#1e90ff"
+                    android:text="Submit Your Report"/>
+
+            </LinearLayout>
             <TextView
+                android:layout_marginTop="5dp"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Address"
-                android:id="@+id/d_address"/>
-
-            <EditText
-                android:id="@+id/d_contact"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dip"
-                android:singleLine="true"
-                android:layout_marginBottom="20dip"
-                android:phoneNumber="false" />
-
-            <Button android:id="@+id/btnsubmit"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dip"
-                android:background="#00000000"
-                android:textColor="#1e90ff"
-                android:text="Submit Your Report"/>
+                android:layout_height="2dip"
+                android:layout_marginRight="20dp"
+                android:background="#ffffff"/>-->
 
         </LinearLayout>
-        <TextView
-            android:layout_marginTop="5dp"
-            android:layout_width="fill_parent"
-            android:layout_height="2dip"
-            android:layout_marginRight="20dp"
-            android:background="#ffffff"/>-->
-
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
 
 </LinearLayout>

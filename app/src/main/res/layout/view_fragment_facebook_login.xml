@@ -1,10 +1,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="8dp" android:paddingLeft="16dp" android:paddingRight="16dp" android:paddingBottom="16dp"
+    android:paddingTop="8dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="16dp"
     android:orientation="vertical"
     android:background="#f1f1f1"
-    tools:context="pack.knowyourdoctor.adapter.View_Fragment_Facebook_Login">
+    tools:context="pack.knowyourdoctor.Tab_Controllers.Controller_Fragment_Facebook_Login">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +27,7 @@
             android:textColor="#696969"
             android:textSize="25sp"
             android:paddingLeft="10dp"
-            android:layout_weight="50"/>
+            android:layout_weight="50" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,8 +46,7 @@
                     android:layout_height="50dp"
                     android:layout_gravity="right"
                     android:id="@+id/profile_pic"
-                    android:visibility="invisible">
-                </com.facebook.widget.ProfilePictureView>
+                    android:visibility="invisible"></com.facebook.widget.ProfilePictureView>
 
                 <ImageView
                     android:id="@+id/inside_imageview"
@@ -53,7 +56,7 @@
                     android:layout_alignBottom="@id/profile_pic"
                     android:layout_alignLeft="@id/profile_pic"
                     android:layout_alignRight="@id/profile_pic"
-                    android:scaleType="fitXY"/>
+                    android:scaleType="fitXY" />
 
 
             </RelativeLayout>
@@ -67,7 +70,7 @@
         android:layout_marginTop="5dp"
         android:layout_width="fill_parent"
         android:layout_height="2dip"
-        android:background="#e4e4e4"/>
+        android:background="#e4e4e4" />
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -84,43 +87,43 @@
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="95dp"
-                android:src="@drawable/fb_doctor"/>
+                android:src="@drawable/fb_doctor" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Log in with facebook and help us to improve our app, rate doctors and tell us what you think."
-                    android:id="@+id/textView2"
-                    android:textColor="#808080"
-                    android:paddingTop="20dp"
-                    android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Log in with facebook and help us to improve our app, rate doctors and tell us what you think."
+                android:id="@+id/textView2"
+                android:textColor="#808080"
+                android:paddingTop="20dp"
+                android:textSize="16sp" />
 
-                <com.facebook.widget.LoginButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="40dp"
-                    android:id="@+id/fb_login_button"/>
+            <com.facebook.widget.LoginButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                android:id="@+id/fb_login_button" />
 
-                <TextView
-                    android:id="@+id/user_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dp"
-                    android:textSize="18sp"
-                    android:textColor="#000000"
-                    android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:textSize="18sp"
+                android:textColor="#000000"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:textColor="#a9a9a9"
-                    android:textSize="15sp"
-                    android:text="Now you can share on facebook and tell your friends about our app"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:textColor="#a9a9a9"
+                android:textSize="15sp"
+                android:text="Now you can share on facebook and tell your friends about our app" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -153,7 +156,7 @@
                     android:padding="10dp"
                     android:textStyle="bold"
                     android:text="Invite"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
             </LinearLayout>
 

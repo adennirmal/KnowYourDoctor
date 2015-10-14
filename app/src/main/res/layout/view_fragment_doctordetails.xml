@@ -9,7 +9,7 @@
     android:paddingBottom="0dp"
     android:orientation="vertical"
     android:weightSum="100"
-    tools:context="pack.knowyourdoctor.adapter.View_Fragment_DoctorDetails">
+    tools:context="pack.knowyourdoctor.Tab_Controllers.Controller_Fragment_DoctorDetails">
 
     <LinearLayout
         android:id="@+id/mainView"
@@ -31,7 +31,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_gravity="bottom"
                 android:layout_weight="75"
-                android:textColor="#808080"/>
+                android:textColor="#808080" />
 
             <Button
                 android:id="@+id/search"

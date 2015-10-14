@@ -5,49 +5,95 @@
     android:paddingBottom="10dp"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/doctorName"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <EditText
-        android:id="@+id/comment"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:hint="Your Comment"/>
-
-
-    <RatingBar
-        android:id="@+id/doctorRatingBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp" />
-
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_gravity="center">
+        android:background="#f1f1f1">
 
-        <Button
-            android:text="Rate"
-            android:id="@+id/rateBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:textColor="#ffffff"
-            android:background="@drawable/search_button_selector"
-            android:layout_marginRight="5dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:paddingLeft="10dp"
+            android:orientation="vertical"
+            android:background="#87cefa"
+            android:weightSum="100">
 
-        <Button
-            android:text="Cancel"
-            android:id="@+id/cancelBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:textColor="#ffffff"
-            android:background="@drawable/search_button_selector"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/comment_icon" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:background="#ffffff"
+                    android:id="@+id/comment"
+                    android:hint="@string/view_comment_hint" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="100">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:id="@+id/doctorName"
+                    android:textColor="#2483FF"
+                    android:textSize="11sp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:layout_weight="60" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/search_button_selector"
+                    android:padding="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:textSize="12sp"
+                    android:id="@+id/rateBtn"
+                    android:textColor="#ffffff"
+                    android:layout_weight="20"
+                    android:text="Submit" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/search_button_selector"
+                    android:padding="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:textSize="12sp"
+                    android:id="@+id/cancelBtn"
+                    android:textColor="#ffffff"
+                    android:layout_weight="20"
+                    android:text="Cancel" />
+
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>

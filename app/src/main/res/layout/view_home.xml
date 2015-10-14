@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:id="@+id/root_layout"
-android:layout_width="match_parent"
-android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffff">
-    </android.support.v4.view.ViewPager>
+        android:background="#ffffff"></android.support.v4.view.ViewPager>
 
     <FrameLayout
         android:id="@+id/menu_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/scrim"
-        android:visibility="invisible" >
+        android:visibility="invisible">
 
         <com.ogaclejapan.arclayout.ArcLayout
             android:id="@id/arc_layout"
@@ -29,7 +27,7 @@ android:layout_height="match_parent">
             android:background="@android:color/transparent"
             app:arc_radius="@dimen/layout_radius_path"
             app:arc_axisRadius="@dimen/layout_child_offset_path"
-            app:arc_freeAngle="true" >
+            app:arc_freeAngle="true">
 
             <Button
                 android:id="@+id/docDetailsBtn"
@@ -38,7 +36,7 @@ android:layout_height="match_parent">
                 android:textSize="10sp"
                 android:text="Search"
                 android:background="@drawable/search_icon"
-                app:arc_angle="40" />
+                app:arc_angle="60" />
 
             <Button
                 android:id="@+id/locationDetailsBtn"
@@ -46,7 +44,7 @@ android:layout_height="match_parent">
                 android:textColor="@color/path_black"
                 android:textSize="10sp"
                 android:text="Locate  Doc"
-                app:arc_angle="60"  />
+                app:arc_angle="80" />
 
             <Button
                 android:id="@+id/reportFakeDocBtn"
@@ -54,7 +52,7 @@ android:layout_height="match_parent">
                 android:textColor="@color/path_black"
                 android:textSize="10sp"
                 android:text="Report"
-                app:arc_angle="80"  />
+                app:arc_angle="100" />
 
             <Button
                 android:id="@+id/facebookShareBtn"
@@ -62,23 +60,7 @@ android:layout_height="match_parent">
                 android:textColor="@color/path_black"
                 android:textSize="10sp"
                 android:text="FB"
-                app:arc_angle="100" />
-
-            <Button
-                android:id="@+id/aboutSLMCBtn"
-                style="@style/Item.Path"
-                android:textColor="@color/path_black"
-                android:textSize="10sp"
-                android:text="SLMC"
                 app:arc_angle="120" />
-
-            <Button
-                android:id="@+id/aboutDevelopersBtn"
-                style="@style/Item.Path"
-                android:textColor="@color/path_black"
-                android:textSize="10sp"
-                android:text="About  Us"
-                app:arc_angle="140" />
 
         </com.ogaclejapan.arclayout.ArcLayout>
 
@@ -88,13 +70,13 @@ android:layout_height="match_parent">
         android:id="@+id/fab"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:gravity="top|center"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="-24dp"
         android:text="+"
         android:textSize="24sp"
         android:textColor="@color/white"
-        android:background="@drawable/light_blue_oval"
-        />
+        android:background="@drawable/light_blue_oval" />
 
 </RelativeLayout>

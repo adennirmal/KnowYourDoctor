@@ -1,58 +1,72 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/view_fragment_slmc"
-    tools:context="pack.knowyourdoctor.adapter.View_Fragment_SLMC"
+    tools:context="pack.knowyourdoctor.Tab_Controllers.Controller_Fragment_SLMC"
     android:orientation="vertical">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:background="#ff3eaaff">
+        android:fillViewport="true"
+        android:layout_marginTop="5dp">
 
-        <TextView
-            android:id="@+id/appName"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Sri Lanka Medical Council"
-            android:textStyle="bold" />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <WebView
-        android:id="@+id/slmcDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:background="#ff3eaaff">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imgCredits"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:text="Visit SLMC Website:"/>
+                <TextView
+                    android:id="@+id/appName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="25sp"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Sri Lanka Medical Council"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/slmcURL"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imgCredits"
-        android:layout_marginLeft="30dp"
-        android:layout_centerInParent="true"
-        android:text="http://www.srilankamedicalcouncil.org"/>
+            <WebView
+                android:id="@+id/slmcDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/slmc_logo"
-        android:layout_margin="20dp"
-        android:layout_gravity="top|left"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imgCredits"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:text="Visit SLMC Website:" />
+
+            <TextView
+                android:id="@+id/slmcURL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imgCredits"
+                android:layout_marginLeft="30dp"
+                android:layout_centerInParent="true"
+                android:text="http://www.srilankamedicalcouncil.org" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/slmc_logo"
+                android:layout_margin="20dp"
+                android:layout_gravity="top|left" />
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
