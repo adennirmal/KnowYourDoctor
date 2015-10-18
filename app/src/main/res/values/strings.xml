@@ -33,7 +33,7 @@
     <string name="warning_body_rule_two_b">defamatory comments</string>
 
     <string name="server_link">http://sepandroidmobile.esy.es</string>
-    <string name="webserviceLink">http://knowyourdoctor.sltravelbook.com/index.php/</string>
+    <string name="webserviceLink">http://sltravelbook.com/knowyourdoctor/index.php/</string>
     <string name="slmc_url">http://www.srilankamedicalcouncil.org/registry.php?registry=&amp;initials=&amp;last_name=&amp;other_name=&amp;reg_no=&amp;nic=&amp;part_of_address=&amp;search=Search</string>
 
     <string name="fb_dialog_name">Know Your Doctor</string>

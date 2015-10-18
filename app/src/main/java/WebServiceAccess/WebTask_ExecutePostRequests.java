@@ -48,11 +48,9 @@ public class WebTask_ExecutePostRequests extends AsyncTask<String, Void, String>
         HttpPost post = new HttpPost(params[0]);
         try {
             post.setEntity(new StringEntity(jObject.toString(), "UTF-8"));
+            client.execute(post);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }
-        try {
-            client.execute(post);
         } catch (IOException e) {
             e.printStackTrace();
         }

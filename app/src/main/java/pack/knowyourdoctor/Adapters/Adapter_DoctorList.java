@@ -19,30 +19,26 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import Models.Model_Doctor;
-import Models.Model_GlobalValues;
+import Models.Model_HospitalLocation;
 import Models.Model_RatedDoctor;
 import ValidationRules.CommentValidation;
 import ValidationRules.RequiredFieldValidation;
+import WebServiceAccess.WebTask_ExecutePostRequests;
+import WebServiceAccess.WebTask_HospitalListLoad;
 import WebServiceAccess.WebTask_RatingListLoad;
 import pack.knowyourdoctor.MainControllers.Controller_Call_DocRating;
 import pack.knowyourdoctor.MainControllers.Controller_Home;
 import pack.knowyourdoctor.R;
 
-
-/**
- * Created by Nirmal on 3/30/2015.
- */
 public class Adapter_DoctorList extends BaseExpandableListAdapter {
 
     private Context context;
@@ -244,59 +240,85 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
         locationBtn.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 selectedDoctor = searchedDoctors.get(groupPosition);
-                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-                alertDialog.setTitle(context.getResources().getString(R.string.location_dialog_title));
-                alertDialog.setMessage(context.getResources().getString(R.string.location_dialog_message));
-                alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        StringBuilder url = new StringBuilder(context.getResources().getString(R.string.server_link) + "/Location.php?");
-                        url.append("doctorid=" + selectedDoctor.getRegNo());
-                        url.append("&doctorname=" + selectedDoctor.getFullName());
-                        url.append("&doctoraddress=" + selectedDoctor.getAddress());
-                        url.append("&docregdate=" + selectedDoctor.getRegDate());
-                        url.append("&docqualification=" + selectedDoctor.getQualifications());
-                        url.append("&latitude=" + Model_GlobalValues.latitude);
-                        url.append("&longtitude=" + Model_GlobalValues.longtitude);
 
-                        JsonReadTask locationTask = new JsonReadTask();
-                        // passes values for the urls string array
-                        locationTask.execute(url.toString().replace(" ", "%20"));
-                        //Toast.makeText(context, "Thanks for support", Toast.LENGTH_SHORT).show();
+                final Dialog locationDialog = new Dialog(context);
+                locationDialog.setTitle("Submit Medical Center");
+
+                locationDialog.setContentView(R.layout.view_submit_hospital);
+
+                final Spinner spinner = (Spinner) locationDialog.findViewById(R.id.hospitals);
+                TextView docNameTV = (TextView) locationDialog.findViewById(R.id.doctorName);
+                docNameTV.setText("Dr." + selectedDoctor.getFullName());
+
+                WebTask_HospitalListLoad webTaskHospitalListLoad = new WebTask_HospitalListLoad();
+
+                webTaskHospitalListLoad.setHospitalNamesSpinner(spinner);
+                webTaskHospitalListLoad.setContext(context);
+                JSONObject currentLocationJSON = new JSONObject();
+                try {
+                    //Hard coded values
+                    currentLocationJSON.put("latitude", 6.9509300000);
+                    currentLocationJSON.put("longtitude", 79.8668766000);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                webTaskHospitalListLoad.setjObject(currentLocationJSON);
+                final ArrayList<Model_HospitalLocation> hospitals = new ArrayList<Model_HospitalLocation>();
+                webTaskHospitalListLoad.setHospitals(hospitals);
+
+                StringBuilder url = new StringBuilder(context.getResources().getString(R.string.webserviceLink));
+                url.append("PhoneAppControllers/HospitalListController/getAllHospitals");
+
+
+                webTaskHospitalListLoad.execute(url.toString());
+
+                Button submitLocationbtn = (Button) locationDialog.findViewById(R.id.submitLocationBtn);
+                submitLocationbtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int selectedIndex = spinner.getSelectedItemPosition();
+                        Model_HospitalLocation selectedHospital = hospitals.get(selectedIndex);
+
+                        WebTask_ExecutePostRequests submitLocationTask = new WebTask_ExecutePostRequests();
+                        StringBuilder url = new StringBuilder(context.getResources().getString(R.string.webserviceLink));
+                        url.append("PhoneAppControllers/DoctorLocationController/insertLocation");
+
+                        JSONObject docLocationJSON = new JSONObject();
+                        try {
+                            docLocationJSON.put("docID", selectedDoctor.getRegNo());
+                            docLocationJSON.put("docName", selectedDoctor.getFullName());
+                            docLocationJSON.put("docAddress", selectedDoctor.getAddress());
+                            docLocationJSON.put("docRegDate", selectedDoctor.getRegDate());
+                            docLocationJSON.put("docQualifications", selectedDoctor.getQualifications());
+                            docLocationJSON.put("locationID", selectedHospital.getId());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        submitLocationTask.setContext(context);
+                        submitLocationTask.setMessage("Thanks for your support");
+                        submitLocationTask.setjObject(docLocationJSON);
+
+                        submitLocationTask.execute(url.toString());
+
+                        locationDialog.dismiss();
                     }
                 });
-                alertDialog.setNeutralButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
 
+                //cancel button
+                Button cancelbtn = (Button) locationDialog.findViewById(R.id.cancelBtn);
+                cancelbtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        locationDialog.dismiss();
                     }
                 });
-                alertDialog.show();
+
+                locationDialog.show();
             }
         });
         return convertView;
     }
-
-
-    // Async Task to access the web
-    private class JsonReadTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... params) {
-            HttpClient client = new DefaultHttpClient();
-            HttpPost post = new HttpPost(params[0]);
-            try {
-                client.execute(post);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            Toast.makeText(context, context.getResources().getString(R.string.thanks_for_support), Toast.LENGTH_SHORT).show();
-        }
-    }// end async task
 
     public void sendBasicNotification(Model_Doctor selectedDoc) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
@@ -323,25 +345,6 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
-
-        /*public class RatingTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... params) {
-            HttpClient client = new DefaultHttpClient();
-            HttpPost post = new HttpPost(params[0]);
-            try {
-                client.execute(post);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            Toast.makeText(context, "Thanks for rating!!", Toast.LENGTH_SHORT).show();
-        }
-    }*/
 }
 
 
