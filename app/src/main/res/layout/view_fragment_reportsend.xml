@@ -31,7 +31,7 @@
                     android:layout_height="2dip"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="10"
-                    android:background="#e4e4e4" />
+                    android:background="#4fa5d5" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -49,7 +49,7 @@
                     android:layout_height="2dip"
                     android:layout_marginRight="5dp"
                     android:layout_weight="10"
-                    android:background="#e4e4e4" />
+                    android:background="#4fa5d5" />
             </LinearLayout>
 
             <!--<TextView
@@ -65,17 +65,11 @@
                 android:weightSum="100"
                 android:orientation="horizontal">
 
-                <!--<TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.35"
-                    android:text="Registration No" />-->
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="5dp"
                     android:layout_weight="2">
 
                     <TextView
@@ -88,24 +82,25 @@
 
                 <EditText
                     android:id="@+id/d_name"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:hint="@string/report_doc_hint"
                     android:padding="10dp"
-                    android:background="@drawable/edit_text_selector"
+                    android:background="@drawable/border"
                     android:singleLine="true"
-                    android:layout_weight="75.93" />
+                    android:layout_weight="63" />
 
                 <EditText
                     android:id="@+id/d_reg"
-                    android:layout_width="113dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="35"
                     android:hint="@string/report_reg_no_hint"
                     android:layout_marginLeft="10dp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="2dp"
-                    android:background="@drawable/edit_text_selector"
+                    android:background="@drawable/border"
                     android:layout_height="wrap_content"
                     android:singleLine="true" />
             </LinearLayout>
@@ -138,7 +133,7 @@
                     android:padding="10dp"
                     android:layout_weight="98"
                     android:layout_height="40dp"
-                    android:background="@drawable/edit_text_selector"
+                    android:background="@drawable/border"
                     android:hint="@string/report_your_name_hint"
                     android:singleLine="true" />
             </LinearLayout>
@@ -172,7 +167,7 @@
                     android:padding="10dp"
                     android:layout_height="wrap_content"
                     android:hint="@string/report_contact_no_hint"
-                    android:background="@drawable/edit_text_selector"
+                    android:background="@drawable/border"
                     android:singleLine="true" />
             </LinearLayout>
 
@@ -207,7 +202,7 @@
                     android:inputType="textMultiLine"
                     android:layout_height="wrap_content"
                     android:hint="@string/report_comment_hint"
-                    android:background="@drawable/edit_text_selector"
+                    android:background="@drawable/border"
                     android:lines="8"
                     android:minLines="3"
                     android:maxLines="10"
@@ -255,13 +250,14 @@
                 android:id="@+id/btnsubmit"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:layout_margin="20dp"
                 android:layout_marginTop="20dip"
                 android:textSize="16sp"
                 android:background="@drawable/search_button_selector"
                 android:textColor="#ffffff"
                 android:layout_gravity="right"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="Report to SLMC" />
 
 

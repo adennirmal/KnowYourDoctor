@@ -37,8 +37,8 @@ public class Controller_Fragment_LocationFinding extends Fragment {
         View rootView = inflater.inflate(R.layout.view_fragment_locationfinding, container, false);
 
 
-        currentlocation = (Button) rootView.findViewById(R.id.button);
-        searchlocation = (Button) rootView.findViewById(R.id.button2);
+        currentlocation = (Button) rootView.findViewById(R.id.hospitalSearchBtn);
+        searchlocation = (Button) rootView.findViewById(R.id.button);
         //final Intent viewmap  = new Intent(getActivity(), MapsActivity.class);
         Tlocation = (EditText) rootView.findViewById(R.id.editText);
         mapView = (MapView) rootView.findViewById(R.id.mapView);
