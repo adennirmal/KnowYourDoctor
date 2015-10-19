@@ -36,7 +36,7 @@
                 android:textSize="10sp"
                 android:text="Search"
                 android:background="@drawable/search_icon"
-                app:arc_angle="60" />
+                app:arc_angle="24" />
 
             <Button
                 android:id="@+id/locationDetailsBtn"
@@ -44,7 +44,7 @@
                 android:textColor="@color/path_black"
                 android:textSize="10sp"
                 android:text="Locate  Doc"
-                app:arc_angle="80" />
+                app:arc_angle="68" />
 
             <Button
                 android:id="@+id/reportFakeDocBtn"
@@ -52,7 +52,7 @@
                 android:textColor="@color/path_black"
                 android:textSize="10sp"
                 android:text="Report"
-                app:arc_angle="100" />
+                app:arc_angle="112" />
 
             <Button
                 android:id="@+id/facebookShareBtn"
@@ -60,7 +60,7 @@
                 android:textColor="@color/path_black"
                 android:textSize="10sp"
                 android:text="FB"
-                app:arc_angle="120" />
+                app:arc_angle="156" />
 
         </com.ogaclejapan.arclayout.ArcLayout>
 

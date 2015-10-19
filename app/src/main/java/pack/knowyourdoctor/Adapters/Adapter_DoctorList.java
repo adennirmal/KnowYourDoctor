@@ -32,11 +32,9 @@ import Models.Model_HospitalLocation;
 import Models.Model_RatedDoctor;
 import ValidationRules.CommentValidation;
 import ValidationRules.RequiredFieldValidation;
-import WebServiceAccess.WebTask_ExecutePostRequests;
-import WebServiceAccess.WebTask_HospitalListLoad;
 import WebServiceAccess.WebTask_RatingListLoad;
-import pack.knowyourdoctor.MainControllers.Controller_Call_DocRating;
 import pack.knowyourdoctor.MainControllers.Controller_Home;
+import pack.knowyourdoctor.MainControllers.Controller_WebTasks;
 import pack.knowyourdoctor.R;
 
 public class Adapter_DoctorList extends BaseExpandableListAdapter {
@@ -139,16 +137,9 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                 ratedDoc = new Model_RatedDoctor();
                 StringBuilder url = new StringBuilder(context.getResources().getString(R.string.webserviceLink));
                 url.append("PhoneAppControllers/DoctorRatingController/getAllCommentsOfDoc/" + selectedDoctor.getRegNo());
-                WebTask_RatingListLoad ratingListLoad = new WebTask_RatingListLoad();
-                ratingListLoad.setContext(context);
-                ratingListLoad.setRatedDoc(ratedDoc);
-                ratingListLoad.setSelectedDoctor(selectedDoctor);
-                ratingListLoad.setRatingsDialog(ratingsDialog);
-                ratingListLoad.setRatedDocComments(ratedDocComments);
-                ratingListLoad.setCommentDoctorTextView(commentDoctorTextView);
-                ratingListLoad.setListAdapter(listAdapter);
-                ratingListLoad.setNewComment(newComment);
-                ratingListLoad.execute(url.toString());
+                //Call relevant async task
+                Controller_WebTasks webTaskController = new Controller_WebTasks();
+                webTaskController.executeRatingListLoadTask(ratedDoc, context, ratedDocComments, listAdapter, newComment, commentDoctorTextView, ratingsDialog, url.toString(), selectedDoctor);
             }
         });
 
@@ -188,8 +179,26 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                                     isValid = false;
                                 }
                                 if (isValid == true && Integer.parseInt(Result[0].toString()) == 0) {
-                                    Controller_Call_DocRating rate_comment = new Controller_Call_DocRating();
-                                    rate_comment.executeRatingAndCommentTask(selectedDoctor, comment, context, context.getResources().getString(R.string.thanks_for_rating));
+                                    String baseURL = context.getResources().getString(R.string.webserviceLink);
+                                    StringBuilder url = new StringBuilder(baseURL);
+                                    url.append("PhoneAppControllers/DoctorRatingController/insertNewRating/");
+                                    JSONObject docJSONObj = new JSONObject();
+                                    try {
+                                        docJSONObj.put("docID", selectedDoctor.getRegNo());
+                                        docJSONObj.put("docName", selectedDoctor.getFullName());
+                                        docJSONObj.put("docAddress", selectedDoctor.getAddress());
+                                        docJSONObj.put("docRegDate", selectedDoctor.getRegDate());
+                                        docJSONObj.put("docQualifications", selectedDoctor.getQualifications());
+                                        docJSONObj.put("comment", comment);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    //Call relevant async task
+                                    Controller_WebTasks webTaskController = new Controller_WebTasks();
+                                    webTaskController.executePostRequestTaks(context,
+                                            context.getResources().getString(R.string.thanks_for_rating), docJSONObj, url.toString());
+
+
                                     ratingDialog.dismiss();
                                 } else if (Integer.parseInt(Result[0]) == -1) {
                                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
@@ -250,10 +259,6 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                 TextView docNameTV = (TextView) locationDialog.findViewById(R.id.doctorName);
                 docNameTV.setText("Dr." + selectedDoctor.getFullName());
 
-                WebTask_HospitalListLoad webTaskHospitalListLoad = new WebTask_HospitalListLoad();
-
-                webTaskHospitalListLoad.setHospitalNamesSpinner(spinner);
-                webTaskHospitalListLoad.setContext(context);
                 JSONObject currentLocationJSON = new JSONObject();
                 try {
                     //Hard coded values
@@ -262,15 +267,14 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                webTaskHospitalListLoad.setjObject(currentLocationJSON);
                 final ArrayList<Model_HospitalLocation> hospitals = new ArrayList<Model_HospitalLocation>();
-                webTaskHospitalListLoad.setHospitals(hospitals);
 
                 StringBuilder url = new StringBuilder(context.getResources().getString(R.string.webserviceLink));
                 url.append("PhoneAppControllers/HospitalListController/getAllHospitals");
 
-
-                webTaskHospitalListLoad.execute(url.toString());
+                //Call relevant async task
+                final Controller_WebTasks webTaskController = new Controller_WebTasks();
+                webTaskController.executeHospitalListLoadTask(hospitals, spinner, context, currentLocationJSON, url.toString());
 
                 Button submitLocationbtn = (Button) locationDialog.findViewById(R.id.submitLocationBtn);
                 submitLocationbtn.setOnClickListener(new View.OnClickListener() {
@@ -278,8 +282,6 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                     public void onClick(View v) {
                         int selectedIndex = spinner.getSelectedItemPosition();
                         Model_HospitalLocation selectedHospital = hospitals.get(selectedIndex);
-
-                        WebTask_ExecutePostRequests submitLocationTask = new WebTask_ExecutePostRequests();
                         StringBuilder url = new StringBuilder(context.getResources().getString(R.string.webserviceLink));
                         url.append("PhoneAppControllers/DoctorLocationController/insertLocation");
 
@@ -294,13 +296,7 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-                        submitLocationTask.setContext(context);
-                        submitLocationTask.setMessage("Thanks for your support");
-                        submitLocationTask.setjObject(docLocationJSON);
-
-                        submitLocationTask.execute(url.toString());
-
+                        webTaskController.executePostRequestTaks(context, "Thanks for your support", docLocationJSON, url.toString());
                         locationDialog.dismiss();
                     }
                 });

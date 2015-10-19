@@ -13,10 +13,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-public class WebTask_ExecutePostRequests extends AsyncTask<String, Void, String> {
+public class WebTask_ExecutePostRequests extends AsyncTask<String, Void, String> implements WebTask_Interface {
     private Context context;
     private String message;
     private JSONObject jObject;
+    private String url;
 
     public Context getContext() {
         return context;
@@ -42,6 +43,14 @@ public class WebTask_ExecutePostRequests extends AsyncTask<String, Void, String>
         this.jObject = jObject;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     @Override
     protected String doInBackground(String... params) {
         HttpClient client = new DefaultHttpClient();
@@ -60,5 +69,10 @@ public class WebTask_ExecutePostRequests extends AsyncTask<String, Void, String>
     @Override
     protected void onPostExecute(String result) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void executeWebTask() {
+        this.execute(url);
     }
 }

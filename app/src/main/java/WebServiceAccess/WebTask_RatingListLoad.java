@@ -33,10 +33,10 @@ import Models.Model_RatedDoctor;
 import ValidationRules.CommentValidation;
 import ValidationRules.RequiredFieldValidation;
 import pack.knowyourdoctor.Adapters.Adapter_Comments;
-import pack.knowyourdoctor.MainControllers.Controller_Call_DocRating;
+import pack.knowyourdoctor.MainControllers.Controller_WebTasks;
 import pack.knowyourdoctor.R;
 
-public class WebTask_RatingListLoad extends AsyncTask<String, Void, String> {
+public class WebTask_RatingListLoad extends AsyncTask<String, Void, String> implements WebTask_Interface {
     private String jsonResult;
     private Model_RatedDoctor ratedDoc;
     private Context context;
@@ -46,14 +46,7 @@ public class WebTask_RatingListLoad extends AsyncTask<String, Void, String> {
     private TextView commentDoctorTextView;
     private Dialog ratingsDialog;
     private Model_Doctor selectedDoctor;
-
-    public String getJsonResult() {
-        return jsonResult;
-    }
-
-    public void setJsonResult(String jsonResult) {
-        this.jsonResult = jsonResult;
-    }
+    private String url;
 
     public Model_RatedDoctor getRatedDoc() {
         return ratedDoc;
@@ -127,6 +120,14 @@ public class WebTask_RatingListLoad extends AsyncTask<String, Void, String> {
         this.commentsCount = commentsCount;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     private int commentsCount;
 
     @Override
@@ -184,6 +185,10 @@ public class WebTask_RatingListLoad extends AsyncTask<String, Void, String> {
             String docQualification = jsonDocDetails.optString("qualifications");
             ratedDoc.setQualifications(docQualification);
 
+            /*String topCommentText = jsonDocDetails.optString("topcomment");
+            Model_Comment topComment = new Model_Comment();
+            topComment.se*/
+
             JSONArray commentsDetailNode = jsonResponse.optJSONArray("comments");
 
             ArrayList<Model_Comment> commentsOfCurrentDoc = new ArrayList<Model_Comment>();
@@ -235,8 +240,25 @@ public class WebTask_RatingListLoad extends AsyncTask<String, Void, String> {
                     ////RatingBar numberOfStars = (RatingBar)ratingsDialog.findViewById(R.id.doctorRatingBar);
                     ////float rating = numberOfStars.getRating();
                     if (isValid == true && Integer.parseInt(Result[0].toString()) == 0) {
-                        Controller_Call_DocRating rate_comment = new Controller_Call_DocRating();
-                        rate_comment.executeRatingAndCommentTask(selectedDoctor, comment, context, context.getResources().getString(R.string.thanks_for_the_comment));
+                        String baseURL = context.getResources().getString(R.string.webserviceLink);
+                        StringBuilder urlToInsertNewRating = new StringBuilder(baseURL);
+                        urlToInsertNewRating.append("PhoneAppControllers/DoctorRatingController/insertNewRating/");
+                        JSONObject docJSONObj = new JSONObject();
+                        try {
+                            docJSONObj.put("docID", selectedDoctor.getRegNo());
+                            docJSONObj.put("docName", selectedDoctor.getFullName());
+                            docJSONObj.put("docAddress", selectedDoctor.getAddress());
+                            docJSONObj.put("docRegDate", selectedDoctor.getRegDate());
+                            docJSONObj.put("docQualifications", selectedDoctor.getQualifications());
+                            docJSONObj.put("comment", comment);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        //Call relevant async task
+                        Controller_WebTasks webTaskController = new Controller_WebTasks();
+                        webTaskController.executePostRequestTaks(context,
+                                context.getResources().getString(R.string.thanks_for_rating), docJSONObj, urlToInsertNewRating.toString());
+
                         ratingsDialog.dismiss();
 
                         //reload the dialog after inserting new comment
@@ -273,5 +295,10 @@ public class WebTask_RatingListLoad extends AsyncTask<String, Void, String> {
         } catch (JSONException e) {
             Toast.makeText(context, "No Comments about Dr. " + selectedDoctor.getFullName(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void executeWebTask() {
+        this.execute(url);
     }
 }

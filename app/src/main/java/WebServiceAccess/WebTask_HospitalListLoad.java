@@ -25,13 +25,24 @@ import java.util.ArrayList;
 import Models.Model_HospitalLocation;
 import pack.knowyourdoctor.R;
 
-public class WebTask_HospitalListLoad extends AsyncTask<String, Void, String> {
+public class WebTask_HospitalListLoad extends AsyncTask<String, Void, String> implements WebTask_Interface {
     private String jsonResult;
     private ArrayList<Model_HospitalLocation> hospitals;
-    ArrayList<String> hospitalNames;
+    private ArrayList<String> hospitalNames;
     private Spinner hospitalNamesSpinner;
     private Context context;
     private JSONObject jObject;
+    private String url;
+
+    public WebTask_HospitalListLoad() {
+        this.jsonResult = jsonResult;
+        this.hospitals = hospitals;
+        this.hospitalNames = hospitalNames;
+        this.hospitalNamesSpinner = hospitalNamesSpinner;
+        this.context = context;
+        this.jObject = jObject;
+        this.url = url;
+    }
 
     public ArrayList<Model_HospitalLocation> getHospitals() {
         return hospitals;
@@ -63,6 +74,14 @@ public class WebTask_HospitalListLoad extends AsyncTask<String, Void, String> {
 
     public void setjObject(JSONObject jObject) {
         this.jObject = jObject;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override
@@ -139,5 +158,10 @@ public class WebTask_HospitalListLoad extends AsyncTask<String, Void, String> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void executeWebTask() {
+        this.execute(url);
     }
 }

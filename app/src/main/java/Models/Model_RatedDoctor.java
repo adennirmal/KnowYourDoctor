@@ -7,19 +7,19 @@ import java.util.ArrayList;
  */
 public class Model_RatedDoctor extends Model_Doctor {
 
-    private double averageRating;
+    private Model_Comment topComment;
     private ArrayList<Model_Comment> comments;
 
     public Model_RatedDoctor() {
         comments = new ArrayList<Model_Comment>();
     }
 
-    public double getAverageRating() {
-        return averageRating;
+    public Model_Comment getTopComment() {
+        return topComment;
     }
 
-    public void setAverageRating(double averageRating) {
-        this.averageRating = averageRating;
+    public void setTopComment(Model_Comment topComment) {
+        this.topComment = topComment;
     }
 
     public ArrayList<Model_Comment> getComments() {

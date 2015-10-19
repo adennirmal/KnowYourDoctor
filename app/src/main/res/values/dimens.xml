@@ -38,7 +38,7 @@
     <dimen name="layout_child_offset_medium">120dp</dimen>
     <dimen name="layout_child_offset_small">96dp</dimen>
     <dimen name="layout_child_offset_tumblr">100dp</dimen>
-    <dimen name="layout_child_offset_path">114dp</dimen>
+    <dimen name="layout_child_offset_path">50dp</dimen>
 
     <dimen name="item_circle_size_large">72dp</dimen>
     <dimen name="item_circle_size_medium">48dp</dimen>

@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -20,23 +19,12 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import WebServiceAccess.WebTask_GetHTMLContent;
 import pack.knowyourdoctor.Adapters.Adapter_DoctorList;
 import Models.Model_Doctor;
+import pack.knowyourdoctor.MainControllers.Controller_WebTasks;
 import pack.knowyourdoctor.R;
 import ValidationRules.RegNoValidation;
 
@@ -54,13 +42,6 @@ public class Controller_Fragment_DoctorDetails extends Fragment {
     EditText regNoTE;
 
     public static String searchedRegNo;
-
-    public static String getRegNo() {
-        return searchedRegNo;
-    }
-
-    GetHTMLContent readHTMLPages;
-    boolean isCancelled = false;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -168,9 +149,12 @@ public class Controller_Fragment_DoctorDetails extends Fragment {
                 listView.setAdapter(listAdapter);
 
                 if (isNetworkAvailable()) {
-                    //Start the background process
-                    readHTMLPages = new GetHTMLContent();
-                    readHTMLPages.execute(urlList);
+                    ProgressBar pBar = (ProgressBar) linearLayoutView.findViewById(R.id.progressShow);
+                    //Call controller and execute relevant async task
+                    Controller_WebTasks webTaskController = new Controller_WebTasks();
+                    webTaskController.executeGetHTMLTask(searchedDoctors, pBar, txt, listAdapter,
+                            regNoTE, context, searchedRegNo, getActivity(), linearLayoutView, urlList);
+
                 } else {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
                     alertDialog.setTitle("Internet Connection error");
@@ -234,168 +218,7 @@ public class Controller_Fragment_DoctorDetails extends Fragment {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
-
-    protected class GetHTMLContent extends AsyncTask<ArrayList<String>, Integer, String> {
-        String html;
-
-        @Override
-        protected String doInBackground(ArrayList<String>... params) {
-            ArrayList<String> passedURLs = params[0];
-
-            //Update Progress bar
-            publishProgress(0);
-            int urlNo = 1;
-            for (String url : passedURLs) {
-                Document doc = GetHTMLDocFromString(url);
-
-                //Check parsed data has table tag
-                if (doc.getElementById("r_table") != null) {
-                    //Get number of pages
-                    Element resultsNumTag = doc.getElementsByTag("h2").get(0);
-                    //get numeric value from string,divide it by 20(one page contains 20 results) and store it inside the integer variable
-                    int noOfResults = Integer.parseInt(resultsNumTag.text().replaceAll("[a-zA-Z() ]+", ""));
-                    //check noOfResults equals to multiplier of 20 or not (Example like 80)
-                    int noOfPages = noOfResults % 20 == 0 ? noOfResults / 20 : (noOfResults / 20) + 1;
-
-                    Element tableContent = doc.getElementById("r_table");
-                    Elements tableRows = tableContent.getElementsByTag("tr");
-
-                    //Iterate through webpages
-                    for (int i = 0; i < noOfPages; i++) {
-                        int skipFirstRow = 0;
-                        for (Element currentElement : tableRows) {
-                            //Skip first row because it contains headers of table
-                            if (skipFirstRow == 0) {
-                                skipFirstRow++;
-                                continue;
-                            }
-                            //Get row details
-                            Elements tds = currentElement.getElementsByTag("td");
-
-                            //Current Doctor
-                            Model_Doctor currentDoctor = new Model_Doctor();
-                            //Set reg No
-                            currentDoctor.setRegNo(Integer.parseInt(tds.get(1).text()));
-
-                            //Set reg Date
-                            currentDoctor.setRegDate(tds.get(2).text());
-
-                            //Set reg No
-                            currentDoctor.setFullName(tds.get(3).text());
-
-                            //Set reg No
-                            currentDoctor.setAddress(tds.get(4).text());
-
-                            //Set reg No
-                            currentDoctor.setQualifications(tds.get(5).text());
-
-                            searchedDoctors.add(currentDoctor);
-                            //Update Progress bar
-                        }
-                        //Replace the start value of the url to navigate to next page
-                        int nextPage = i + 1;
-                        if (nextPage != noOfPages) {
-                            url = url.replace("start=" + i, "start=" + nextPage);
-                            doc = GetHTMLDocFromString(url);
-                            tableContent = doc.getElementById("r_table");
-                            tableRows = tableContent.getElementsByTag("tr");
-                        }
-                    }
-                } else {
-                    html = "No data found";
-                }
-                publishProgress((int) ((urlNo / (float) passedURLs.size()) * 100));
-                urlNo++;
-            }
-            //Update Progress bar
-            publishProgress(100);
-            return html;
-        }
-
-        private Document GetHTMLDocFromString(String url) {
-            HttpClient client = new DefaultHttpClient();
-            HttpGet request = new HttpGet(url);
-            try {
-                HttpResponse response = client.execute(request);
-
-                html = "";
-                InputStream in = response.getEntity().getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                StringBuilder str = new StringBuilder();
-                String line = null;
-                while ((line = reader.readLine()) != null) {
-                    str.append(line);
-                }
-                in.close();
-                html = str.toString();
-
-                Document doc = Jsoup.parse(html);
-                return doc;
-            } catch (IOException ex) {
-                return null;
-            }
-        }
-
-        protected void onPostExecute(String result) {
-            ProgressBar pBar = (ProgressBar) linearLayoutView.findViewById(R.id.progressShow);
-            pBar.setVisibility(View.INVISIBLE);
-
-            if (!searchedDoctors.isEmpty()) {
-                txt.setText("Number of doctors found : " + searchedDoctors.size());
-                //Collections.sort(searchedDoctors, new DoctorComparator());
-                listAdapter.notifyDataSetChanged();
-            } else {
-                txt.setText("No Data Found");
-                searchedRegNo = regNoTE.getText().toString();
-                //To detect reg no is entered or not
-                if (searchedRegNo.compareTo("") != 0) {
-                    //Detect fake doctor id
-                    if (searchedDoctors.isEmpty()) {
-                        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-                        alertDialog.setTitle("Registration Number (" + searchedRegNo + ") Doesn't Exist!");
-                        alertDialog.setMessage("Do you want to report to SLMC?");
-                        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ViewPager pager = (ViewPager) getActivity().findViewById(R.id.pager);
-                                Tab_Controller mAdapter;
-                                pager.setTag(searchedRegNo);
-                                mAdapter = new Tab_Controller(getActivity().getSupportFragmentManager());
-                                //mAdapter.fakeRegNo = searchedRegNo;
-                                // mAdapter.getItem(2).setArguments(bundle);
-                                pager.setAdapter(mAdapter);
-                                pager.setCurrentItem(2);
-                            }
-                        });
-                        alertDialog.setNeutralButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ViewPager pager = (ViewPager) getActivity().findViewById(R.id.pager);
-                                Tab_Controller mAdapter;
-                                mAdapter = new Tab_Controller(getActivity().getSupportFragmentManager());
-                                pager.setAdapter(mAdapter);
-                                pager.setCurrentItem(0);
-                                searchedDoctors.clear();
-                            }
-                        });
-                        alertDialog.show();
-                    }
-                }
-            }
-        }
-
-        protected void onProgressUpdate(Integer... progress) {
-            setProgressPercent(progress[0]);
-        }
-    }
-
-    private void setProgressPercent(Integer progress) {
-        TextView txt = (TextView) linearLayoutView.findViewById(R.id.displayDetails);
-        txt.setText("Loading : " + progress + "% Completed");
-        ProgressBar pBar = (ProgressBar) linearLayoutView.findViewById(R.id.progressShow);
-        pBar.setProgress(progress);
-        listAdapter.notifyDataSetChanged();
-        //Collections.sort(searchedDoctors,new DoctorComparator());
-    }
 }
+
+
 

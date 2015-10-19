@@ -16,6 +16,8 @@ import android.widget.Toast;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -59,7 +61,6 @@ public class Controller_Doctor_Rating extends DialogFragment implements View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rateBtn:
-                Controller_Call_DocRating rate_comment = new Controller_Call_DocRating();
                 TextView commentText = (TextView) view.findViewById(R.id.comment);
                 String comment = commentText.getText().toString();
                 //executeRatingTask(selectedDoc);
@@ -72,7 +73,24 @@ public class Controller_Doctor_Rating extends DialogFragment implements View.OnC
                     isValid = false;
                 }
                 if (isValid == true && Integer.parseInt(Result[0].toString()) == 0) {
-                    rate_comment.executeRatingAndCommentTask(selectedDoc, comment, context, getResources().getString(R.string.thanks_for_rating));
+                    String baseURL = context.getResources().getString(R.string.webserviceLink);
+                    StringBuilder url = new StringBuilder(baseURL);
+                    url.append("PhoneAppControllers/DoctorRatingController/insertNewRating/");
+                    JSONObject docJSONObj = new JSONObject();
+                    try {
+                        docJSONObj.put("docID", selectedDoc.getRegNo());
+                        docJSONObj.put("docName", selectedDoc.getFullName());
+                        docJSONObj.put("docAddress", selectedDoc.getAddress());
+                        docJSONObj.put("docRegDate", selectedDoc.getRegDate());
+                        docJSONObj.put("docQualifications", selectedDoc.getQualifications());
+                        docJSONObj.put("comment", comment);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    //Call relevant async task
+                    Controller_WebTasks webTaskController = new Controller_WebTasks();
+                    webTaskController.executePostRequestTaks(context,
+                            context.getResources().getString(R.string.thanks_for_rating), docJSONObj, url.toString());
                     getDialog().dismiss();
                 } else if (Integer.parseInt(Result[0]) == -1) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
