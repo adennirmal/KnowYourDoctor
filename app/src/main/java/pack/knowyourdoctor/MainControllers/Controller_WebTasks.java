@@ -10,6 +10,8 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import WebServiceAccess.WebTask_ExecutePostRequests;
 import WebServiceAccess.WebTask_GetHTMLContent;
 import WebServiceAccess.WebTask_HospitalListLoad;
 import WebServiceAccess.WebTask_RatingListLoad;
+import WebServiceAccess.WebTask_SearchHospital;
 import pack.knowyourdoctor.Adapters.Adapter_Comments;
 import pack.knowyourdoctor.Adapters.Adapter_DoctorList;
 
@@ -29,12 +32,14 @@ public class Controller_WebTasks {
     private WebTask_GetHTMLContent getHTMLTask;
     private WebTask_HospitalListLoad hospitalListLoad;
     private WebTask_RatingListLoad ratingListLoadTask;
+    private WebTask_SearchHospital searchHospital;
 
     public Controller_WebTasks() {
         this.postRequestTask = new WebTask_ExecutePostRequests();
         this.getHTMLTask = new WebTask_GetHTMLContent();
         this.hospitalListLoad = new WebTask_HospitalListLoad();
         this.ratingListLoadTask = new WebTask_RatingListLoad();
+        this.searchHospital = new WebTask_SearchHospital();
     }
 
     public void executePostRequestTaks(Context context, String message, JSONObject jObject, String url) {
@@ -90,5 +95,11 @@ public class Controller_WebTasks {
         this.ratingListLoadTask.executeWebTask();
     }
 
+    public void executeSearchHospitalTask(Context context, String hospitalName, GoogleMap googleMap) {
+        this.searchHospital.setContext(context);
+        this.searchHospital.setHospitalName(hospitalName);
+        this.searchHospital.setmMap(googleMap);
+        this.searchHospital.executeWebTask();
+    }
 
 }

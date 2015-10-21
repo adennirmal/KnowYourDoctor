@@ -4,20 +4,18 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-//import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +41,8 @@ import WebServiceAccess.WebTask_ExecutePostRequests;
 import pack.knowyourdoctor.AnimationPack.AnimatorUtils;
 import pack.knowyourdoctor.R;
 import pack.knowyourdoctor.Tab_Controllers.Tab_Controller;
+
+//import android.support.v4.app.FragmentTransaction;
 
 
 public class Controller_Home extends FragmentActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, ActionBar.TabListener, LocationListener {
@@ -131,7 +131,7 @@ public class Controller_Home extends FragmentActivity implements View.OnClickLis
         }
 
 
-        //Load Coordinates
+/*        //Load Coordinates
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE); // Getting LocationManager object
 
         Criteria criteria = new Criteria();// Creating an empty criteria object
@@ -150,7 +150,7 @@ public class Controller_Home extends FragmentActivity implements View.OnClickLis
 
         } else {
             Toast.makeText(context, getResources().getString(R.string.no_provider), Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 
     @Override

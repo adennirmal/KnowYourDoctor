@@ -13,7 +13,6 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -39,7 +38,6 @@ import Models.Model_HospitalLocation;
 import Models.Model_RatedDoctor;
 import ValidationRules.CommentValidation;
 import ValidationRules.RequiredFieldValidation;
-import WebServiceAccess.WebTask_RatingListLoad;
 import pack.knowyourdoctor.LocationListnerClass;
 import pack.knowyourdoctor.MainControllers.Controller_Home;
 import pack.knowyourdoctor.MainControllers.Controller_WebTasks;
@@ -300,6 +298,7 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter implements Loc
                     //Hard coded values
                     currentLocationJSON.put("latitude", Model_GlobalValues.latitude);
                     currentLocationJSON.put("longtitude", Model_GlobalValues.longtitude);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

@@ -8,9 +8,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 
-/**
- * Created by Home on 10/21/2015.
- */
 public class LocationListnerClass implements LocationListener {
     Context context;
 

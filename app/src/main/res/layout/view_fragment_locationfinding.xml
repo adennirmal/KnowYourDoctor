@@ -70,7 +70,7 @@
                         android:textSize="16sp"
                         android:background="@drawable/border"
                         android:inputType="textPersonName"
-                        android:id="@+id/name_doctor"
+                        android:id="@+id/doctorName"
                         android:hint="@string/location_doc_hint" />
 
                     <Button
@@ -82,7 +82,7 @@
                         android:textColor="#ffffff"
                         android:text="Search"
                         android:textSize="16sp"
-                        android:id="@+id/button"
+                        android:id="@+id/nearestHospitalofDoctor"
                         android:layout_marginRight="10dp" />
                 </LinearLayout>
 
@@ -134,7 +134,7 @@
                         android:textSize="16sp"
                         android:background="@drawable/border"
                         android:inputType="textPersonName"
-                        android:id="@+id/editText"
+                        android:id="@+id/hospitalName"
                         android:hint="@string/report_hospital_name_hint" />
 
                     <Button
