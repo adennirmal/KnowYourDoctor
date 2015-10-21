@@ -9,7 +9,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.view.LayoutInflater;
@@ -21,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,16 +34,18 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import Models.Model_Doctor;
+import Models.Model_GlobalValues;
 import Models.Model_HospitalLocation;
 import Models.Model_RatedDoctor;
 import ValidationRules.CommentValidation;
 import ValidationRules.RequiredFieldValidation;
 import WebServiceAccess.WebTask_RatingListLoad;
+import pack.knowyourdoctor.LocationListnerClass;
 import pack.knowyourdoctor.MainControllers.Controller_Home;
 import pack.knowyourdoctor.MainControllers.Controller_WebTasks;
 import pack.knowyourdoctor.R;
 
-public class Adapter_DoctorList extends BaseExpandableListAdapter {
+public class Adapter_DoctorList extends BaseExpandableListAdapter implements LocationListener {
 
     private Context context;
     private ArrayList<Model_Doctor> searchedDoctors;
@@ -261,9 +269,37 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
 
                 JSONObject currentLocationJSON = new JSONObject();
                 try {
+                    //Load Current Location Coordinates
+                    // Getting LocationManager object
+                    LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+                    if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                        buildAlertMessageNoGps();
+                    }
+
+                    // Creating an empty criteria object
+                    Criteria criteria = new Criteria();
+
+                    // Getting the name of the provider that meets the criteria
+                    String provider = locationManager.getBestProvider(criteria, false);
+
+                    if (provider != null && !provider.equals("")) {
+                        // Get the location from the given provider
+                        Location location = locationManager.getLastKnownLocation(provider);
+                        LocationListnerClass a = new LocationListnerClass(context);
+                        locationManager.requestLocationUpdates(provider, 20000, 1, a);
+
+                        if (location != null)
+                            onLocationChanged(location);
+                        else
+                            Toast.makeText(context, "Location can't be retrieved", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        Toast.makeText(context, "No Provider Found", Toast.LENGTH_SHORT).show();
+                    }
                     //Hard coded values
-                    currentLocationJSON.put("latitude", 6.9509300000);
-                    currentLocationJSON.put("longtitude", 79.8668766000);
+                    currentLocationJSON.put("latitude", Model_GlobalValues.latitude);
+                    currentLocationJSON.put("longtitude", Model_GlobalValues.longtitude);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -340,6 +376,34 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Model_GlobalValues.latitude = location.getLatitude();
+        Model_GlobalValues.longtitude = location.getLongitude();
+
+        Toast.makeText(context, "Loading Coordinates", Toast.LENGTH_LONG);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+    //GPS validator method
+    public void buildAlertMessageNoGps() {
+
     }
 }
 
