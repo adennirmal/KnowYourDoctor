@@ -10,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import WebServiceAccess.WebTask_ExecutePostRequests;
+import pack.knowyourdoctor.MainControllers.Controller_Home;
 import pack.knowyourdoctor.R;
 import ValidationRules.RegNoValidation;
 
@@ -22,12 +24,18 @@ public class Controller_Fragment_ReportSend extends Fragment {
     Context context;
     private String fakeRegNo;
     EditText dreg;
+    EditText name;
+    EditText contact;
+    EditText dname;
+    EditText comment;
+
     String regNo;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        setHasOptionsMenu(true);
         final View rootView = inflater.inflate(R.layout.view_fragment_reportsend, container, false);
         context = rootView.getContext();
         dreg = (EditText) rootView.findViewById(R.id.d_reg);
@@ -49,12 +57,12 @@ public class Controller_Fragment_ReportSend extends Fragment {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final EditText name = (EditText) rootView.findViewById(R.id.fullname);
+                name = (EditText) rootView.findViewById(R.id.fullname);
                 //final EditText nic = (EditText)rootView.findViewById(R.id.nic_no);
-                final EditText contact = (EditText) rootView.findViewById(R.id.contact);
+                contact = (EditText) rootView.findViewById(R.id.contact);
 
-                final EditText dname = (EditText) rootView.findViewById(R.id.d_name);
-                final EditText comment = (EditText) rootView.findViewById(R.id.comment);
+                dname = (EditText) rootView.findViewById(R.id.d_name);
+                comment = (EditText) rootView.findViewById(R.id.comment);
                 //final EditText dcontact = (EditText)rootView.findViewById(R.id.d_contact);
 
                 //name.setHint(Html.fromHtml("<font size=\"16\">" + "Your Name" + "</font>"));
@@ -104,39 +112,7 @@ public class Controller_Fragment_ReportSend extends Fragment {
                     final String reportDoctorRegNo = dreg.getText().toString();
                     final String reportDoctorName = dname.getText().toString();
                     final String reportComment = comment.getText().toString();
-                    //String reportDoctorAddress = dcontact.getText().toString();
-                    //Send email
-                    /*
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            GmailSender sender = new GmailSender("knowyourdoctorslmc@gmail.com", "xc45A&qw7!b1");
-                            String newline = System.getProperty("line.separator");
-                            StringBuilder emailBody = new StringBuilder("");
-                            emailBody.append("Reported User Details" + newline);
-                            emailBody.append("------------------------------" + newline);
-                            emailBody.append("Fullname:" + reportUserName + newline);
-                            //emailBody.append("NIC No:" + reportUserNIC + newline);
-                            emailBody.append("Contact No:" + reportContact + newline + newline);
 
-                            emailBody.append("Fake Doctor Details" + newline);
-                            emailBody.append("------------------------------" + newline);
-                            emailBody.append("Registration No:" + reportDoctorRegNo + newline);
-                            emailBody.append("Fullname:" + reportDoctorName + newline);
-                            emailBody.append("Comment:" + reportComment + newline);
-                            //emailBody.append("Address: " + reportDoctorAddress);
-                            try {
-                                sender.sendMail("Fake doctor Details", emailBody.toString(),
-                                        "knowyourdoctorslmc@gmail.com", "yasipiraba@gmail.com");
-                            } catch (Exception e) {
-                                Log.e("SendMail", e.getMessage(), e);
-                                System.out.println(e);
-                            }
-                        }
-                    });
-                    thread.start();
-                    */
-                    /*
                     String newline = System.getProperty("line.separator");
                     StringBuilder emailBody = new StringBuilder("");
                     emailBody.append("Reported User Details" + newline);
@@ -149,17 +125,6 @@ public class Controller_Fragment_ReportSend extends Fragment {
                     emailBody.append("Registration No:" + reportDoctorRegNo + newline);
                     emailBody.append("Fullname:" + reportDoctorName + newline);
                     emailBody.append("Comment:" + reportComment + newline);
-
-                    Intent i = new Intent(Intent.ACTION_SEND);
-                    i.setType("message/rfc822");
-                    i.putExtra(Intent.EXTRA_EMAIL, new String[]{"mcsfernando10@gmail.com"});
-                    i.putExtra(Intent.EXTRA_SUBJECT, "Fake doctor Details");
-                    i.putExtra(Intent.EXTRA_TEXT, emailBody.toString());
-                    try {
-                        startActivity(Intent.createChooser(i, "Send mail..."));
-                    } catch (android.content.ActivityNotFoundException ex) {
-                        Toast.makeText(context, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-                    }*/
 
                     //Send fake doctor details to webservice
                     String baseURL = context.getResources().getString(R.string.webserviceLink);
@@ -182,8 +147,24 @@ public class Controller_Fragment_ReportSend extends Fragment {
                     ratingTask.setjObject(fakeDocJSONObj);
                     // passes values for the urls string array
                     ratingTask.execute(url.toString());
-                }
 
+                    //Send email
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    i.setType("message/rfc822");
+                    i.putExtra(Intent.EXTRA_EMAIL, new String[]{"knowyourdoctorslmc@gmail.com"});
+                    i.putExtra(Intent.EXTRA_SUBJECT, "Fake doctor Details");
+                    i.putExtra(Intent.EXTRA_TEXT, emailBody.toString());
+                    try {
+                        startActivity(Intent.createChooser(i, "Send mail..."));
+                    } catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(context, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                    }
+                    dreg.setText("");
+                    name.setText("");
+                    contact.setText("");
+                    dname.setText("");
+                    comment.setText("");
+                }
             }
         });
         return rootView;
@@ -191,12 +172,10 @@ public class Controller_Fragment_ReportSend extends Fragment {
 
     @Override
     public void onResume() {
+        super.onResume();
         if (regNo == null) {
             regNo = "";
         }
         dreg.setText(regNo);
-        super.onResume();
     }
-
-
 }
