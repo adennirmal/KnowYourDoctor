@@ -64,8 +64,14 @@
 
     <string name="location_dialog_title">Submit Doctor\'s Location</string>
     <string name="location_dialog_message">Is the Doctor available in your current location?</string>
-    <string name="location_cannot_retrieve">Location can\'t be retrieved</string>
+    <string name="cannot_retrieve_location">Location can\'t be retrieved</string>
     <string name="no_provider">No Provider Found</string>
+    <string name="Your_current_location">You are Here</string>
+    <integer name="zoom_into">14</integer>
+    <string name="hospital_name_required">Hospital Name Required</string>
+    <string name="enable_gps">Your GPS seems to be disabled, do you want to enable it?</string>
+    <string name="hospital_not_located">No Hospital Located in the name of </string>
+
 
     <string name="thanks_for_the_comment">Thanks for the comment!</string>
     <string name="add_comment_to_submit">Please add a comment to submit</string>
@@ -86,5 +92,8 @@
     <string name="report_doctorid_hint"></string>
     <string name="report_aboutyou_hint"></string>
     <string name="title_activity_maps">Map</string>
+
+    <string name="nearest_doctors"><font size="12">  Nearest Doctors  </font></string>
+    <string name="nearest_hospitals"><font size="12">  Nearest Hospitals  </font></string>
 
 </resources>

@@ -15,10 +15,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.List;
 
+import pack.knowyourdoctor.R;
+
 /**
  * Created by Darrel on 10/22/2015.
  */
 public class WebTask_SearchHospital extends AsyncTask<String, Void, List<Address>> implements WebTask_Interface {
+
 
     private Context context;
     private GoogleMap mMap;
@@ -77,7 +80,7 @@ public class WebTask_SearchHospital extends AsyncTask<String, Void, List<Address
 
         if (addresses == null || addresses.size() == 0) {
 
-            Toast.makeText(context, "No Location found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getResources().getString(R.string.hospital_not_located) + hospitalName, Toast.LENGTH_SHORT).show();
         }
 
         //Add markerr for each matching context

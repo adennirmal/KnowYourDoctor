@@ -38,7 +38,7 @@ import Models.Model_HospitalLocation;
 import Models.Model_RatedDoctor;
 import ValidationRules.CommentValidation;
 import ValidationRules.RequiredFieldValidation;
-import pack.knowyourdoctor.LocationListnerClass;
+import pack.knowyourdoctor.LocationListenerClass;
 import pack.knowyourdoctor.MainControllers.Controller_Home;
 import pack.knowyourdoctor.MainControllers.Controller_WebTasks;
 import pack.knowyourdoctor.R;
@@ -284,7 +284,7 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter implements Loc
                     if (provider != null && !provider.equals("")) {
                         // Get the location from the given provider
                         Location location = locationManager.getLastKnownLocation(provider);
-                        LocationListnerClass a = new LocationListnerClass(context);
+                        LocationListenerClass a = new LocationListenerClass(context);
                         locationManager.requestLocationUpdates(provider, 20000, 1, a);
 
                         if (location != null)

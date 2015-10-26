@@ -1,23 +1,23 @@
 package pack.knowyourdoctor;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.widget.Toast;
 
-public class LocationListnerClass implements LocationListener {
+import Models.Model_GlobalValues;
+
+public class LocationListenerClass implements LocationListener {
     Context context;
 
-    public LocationListnerClass(Context c) {
+    public LocationListenerClass(Context c) {
         context = c;
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        /*final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -31,7 +31,11 @@ public class LocationListnerClass implements LocationListener {
                     }
                 });
         final AlertDialog alert = builder.create();
-        alert.show();
+        alert.show();*/
+
+        Model_GlobalValues.latitude = location.getLatitude();
+        Model_GlobalValues.longtitude = location.getLongitude();
+        Toast.makeText(context, "Coordinates Refreshed", Toast.LENGTH_LONG);
     }
 
     @Override

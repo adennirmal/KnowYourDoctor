@@ -61,7 +61,7 @@
                         android:layout_marginRight="10dp"
                         android:background="@drawable/doctor_icon" />
 
-                    <EditText
+                    <!--<EditText
                         android:layout_width="wrap_content"
                         android:layout_marginTop="2dp"
                         android:padding="10dp"
@@ -70,6 +70,16 @@
                         android:textSize="16sp"
                         android:background="@drawable/border"
                         android:inputType="textPersonName"
+                        android:id="@+id/doctorName"
+                        android:hint="@string/location_doc_hint" />-->
+
+                    <Spinner
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:padding="10dp"
+                        android:layout_height="35dp"
+                        android:layout_weight="85"
+                        android:textSize="16sp"
                         android:id="@+id/doctorName"
                         android:hint="@string/location_doc_hint" />
 

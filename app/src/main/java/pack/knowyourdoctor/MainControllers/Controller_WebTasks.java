@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import Models.Model_Doctor;
 import Models.Model_HospitalLocation;
 import Models.Model_RatedDoctor;
+import WebServiceAccess.WebTask_DoctorListLoad;
 import WebServiceAccess.WebTask_ExecutePostRequests;
 import WebServiceAccess.WebTask_GetHTMLContent;
 import WebServiceAccess.WebTask_HospitalListLoad;
@@ -33,6 +34,7 @@ public class Controller_WebTasks {
     private WebTask_HospitalListLoad hospitalListLoad;
     private WebTask_RatingListLoad ratingListLoadTask;
     private WebTask_SearchHospital searchHospital;
+    private WebTask_DoctorListLoad doctorListLoad;
 
     public Controller_WebTasks() {
         this.postRequestTask = new WebTask_ExecutePostRequests();
@@ -40,6 +42,7 @@ public class Controller_WebTasks {
         this.hospitalListLoad = new WebTask_HospitalListLoad();
         this.ratingListLoadTask = new WebTask_RatingListLoad();
         this.searchHospital = new WebTask_SearchHospital();
+        this.doctorListLoad = new WebTask_DoctorListLoad();
     }
 
     public void executePostRequestTaks(Context context, String message, JSONObject jObject, String url) {
@@ -100,6 +103,16 @@ public class Controller_WebTasks {
         this.searchHospital.setHospitalName(hospitalName);
         this.searchHospital.setmMap(googleMap);
         this.searchHospital.executeWebTask();
+    }
+
+    public void executeDoctorListLoadTask(Context context, ArrayList<Model_Doctor> model_doctors,
+                                          Spinner spinner, JSONObject jsonObject, String url) {
+        this.doctorListLoad.setContext(context);
+        this.doctorListLoad.setDoctorList(model_doctors);
+        this.doctorListLoad.setDoctorNamesSpinner(spinner);
+        this.doctorListLoad.setjObject(jsonObject);
+        this.doctorListLoad.setUrl(url);
+        this.doctorListLoad.executeWebTask();
     }
 
 }
