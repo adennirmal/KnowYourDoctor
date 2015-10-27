@@ -9,10 +9,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -33,12 +31,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import Models.Model_Doctor;
+import Models.Model_GPS;
 import Models.Model_GlobalValues;
 import Models.Model_HospitalLocation;
 import Models.Model_RatedDoctor;
 import ValidationRules.CommentValidation;
 import ValidationRules.RequiredFieldValidation;
-import pack.knowyourdoctor.LocationListenerClass;
 import pack.knowyourdoctor.MainControllers.Controller_Home;
 import pack.knowyourdoctor.MainControllers.Controller_WebTasks;
 import pack.knowyourdoctor.R;
@@ -268,34 +266,10 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter implements Loc
                 JSONObject currentLocationJSON = new JSONObject();
                 try {
                     //Load Current Location Coordinates
-                    // Getting LocationManager object
-                    LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+                    Model_GPS modelGps = Model_GPS.getInstance();
+                    modelGps.getCurrentLocation(context);
 
-                    if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                        buildAlertMessageNoGps();
-                    }
-
-                    // Creating an empty criteria object
-                    Criteria criteria = new Criteria();
-
-                    // Getting the name of the provider that meets the criteria
-                    String provider = locationManager.getBestProvider(criteria, false);
-
-                    if (provider != null && !provider.equals("")) {
-                        // Get the location from the given provider
-                        Location location = locationManager.getLastKnownLocation(provider);
-                        LocationListenerClass a = new LocationListenerClass(context);
-                        locationManager.requestLocationUpdates(provider, 20000, 1, a);
-
-                        if (location != null)
-                            onLocationChanged(location);
-                        else
-                            Toast.makeText(context, "Location can't be retrieved", Toast.LENGTH_SHORT).show();
-
-                    } else {
-                        Toast.makeText(context, "No Provider Found", Toast.LENGTH_SHORT).show();
-                    }
-                    //Hard coded values
+                    //Pass Latitude & Longtitude to json object
                     currentLocationJSON.put("latitude", Model_GlobalValues.latitude);
                     currentLocationJSON.put("longtitude", Model_GlobalValues.longtitude);
 
