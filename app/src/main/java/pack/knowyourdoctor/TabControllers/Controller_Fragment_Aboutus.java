@@ -1,4 +1,4 @@
-package pack.knowyourdoctor.Tab_Controllers;
+package pack.knowyourdoctor.TabControllers;
 
 import android.app.AlertDialog;
 import android.content.Context;

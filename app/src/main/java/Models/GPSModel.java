@@ -16,15 +16,15 @@ import pack.knowyourdoctor.R;
 /**
  * Created by anthony on 10/26/2015.
  */
-public class Model_GPS implements LocationListener {
+public class GPSModel implements LocationListener {
 
-    private static Model_GPS locationInstance = new Model_GPS();
+    private static GPSModel locationInstance = new GPSModel();
 
-    public static Model_GPS getInstance() {
+    public static GPSModel getInstance() {
         return locationInstance;
     }
 
-    private Model_GPS() {
+    private GPSModel() {
     }
 
     /*Check Whether GPS is active
@@ -89,8 +89,8 @@ public class Model_GPS implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        Model_GlobalValues.latitude = location.getLatitude();
-        Model_GlobalValues.longtitude = location.getLongitude();
+        GlobalValueModel.latitude = location.getLatitude();
+        GlobalValueModel.longtitude = location.getLongitude();
     }
 
     @Override

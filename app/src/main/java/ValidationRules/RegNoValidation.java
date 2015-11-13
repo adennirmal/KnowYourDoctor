@@ -3,9 +3,7 @@ package ValidationRules;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by Home on 5/10/2015.
- */
+//Doctor Reg No validation
 public class RegNoValidation {
     // validating Registration Number
     public static boolean isValidRegNo(String regNo) {

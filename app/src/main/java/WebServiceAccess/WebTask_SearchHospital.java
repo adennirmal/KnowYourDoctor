@@ -15,28 +15,21 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.List;
 
+import pack.knowyourdoctor.Constants.Numbers;
+import pack.knowyourdoctor.Constants.Strings;
 import pack.knowyourdoctor.R;
 
-/**
- * Created by Darrel on 10/22/2015.
- */
-public class WebTask_SearchHospital extends AsyncTask<String, Void, List<Address>> implements WebTask_Interface {
-
-
+//Retrieve all hospitals
+public class WebTask_SearchHospital
+        extends AsyncTask<String, Void, List<Address>>
+        implements WebTask_Interface {
     private Context context;
     private GoogleMap mMap;
     private String hospitalName;
 
-    public String getHospitalName() {
-        return hospitalName;
-    }
-
+    //Getters and setters
     public void setHospitalName(String hospitalName) {
         this.hospitalName = hospitalName;
-    }
-
-    public GoogleMap getmMap() {
-        return mMap;
     }
 
     public void setmMap(GoogleMap mMap) {
@@ -44,7 +37,6 @@ public class WebTask_SearchHospital extends AsyncTask<String, Void, List<Address
     }
 
     public Context getContext() {
-
         return context;
     }
 
@@ -52,12 +44,7 @@ public class WebTask_SearchHospital extends AsyncTask<String, Void, List<Address
         this.context = context;
     }
 
-    @Override
-    public void executeWebTask() {
-
-        this.execute(hospitalName + " Hospital Sri Lanka");
-    }
-
+    //Run in background thread - Execution of web task
     @Override
     protected List<Address> doInBackground(String... locationName) {
         Geocoder geocoder = new Geocoder(context);
@@ -66,7 +53,7 @@ public class WebTask_SearchHospital extends AsyncTask<String, Void, List<Address
 
         try {
             // Getting a maximum of 3 Address that matches the input text
-            addresses = geocoder.getFromLocationName(locationName[0], 3);
+            addresses = geocoder.getFromLocationName(locationName[Numbers.ZERO], Numbers.THREE);
 
         } catch (IOException ex) {
 
@@ -75,27 +62,26 @@ public class WebTask_SearchHospital extends AsyncTask<String, Void, List<Address
         return addresses;
     }
 
+    //Execute after the web task executed
     @Override
     protected void onPostExecute(List<Address> addresses) {
-
-        if (addresses == null || addresses.size() == 0) {
-
-            Toast.makeText(context, context.getResources().getString(R.string.hospital_not_located) + hospitalName, Toast.LENGTH_SHORT).show();
+        if (addresses == null || addresses.size() == Numbers.ZERO) {
+            Toast.makeText(context, context.getResources().getString(R.string.hospital_not_located)
+                    + hospitalName, Toast.LENGTH_SHORT).show();
         }
-
         //Add markerr for each matching context
-        for (int i = 0; i < addresses.size(); i++) {
-
-            Address address = (Address) addresses.get(i);
+        for (int i = Numbers.ZERO; i < addresses.size(); i++) {
+            Address address = addresses.get(i);
 
             // Creating an instance of GeoPoint, to display in Google Map
             LatLng latLng2 = new LatLng(address.getLatitude(), address.getLongitude());
 
-            String addressText = String.format("%s,%s",
-                    address.getMaxAddressLineIndex() > 0 ? address.getAddressLine(0) : "",
+            String addressText = String.format(Strings.STRING_FORMAT,
+                    address.getMaxAddressLineIndex() > Numbers.ZERO ?
+                            address.getAddressLine(Numbers.ZERO) : Strings.EMPTY_STRING,
                     address.getCountryName());
 
-            address.setCountryCode("LK");
+            address.setCountryCode(Strings.SRI_LANKA_CODE);
 
             MarkerOptions locationmarker = new MarkerOptions();
             locationmarker.position(latLng2);
@@ -104,7 +90,7 @@ public class WebTask_SearchHospital extends AsyncTask<String, Void, List<Address
             mMap.addMarker(locationmarker);
 
             //Locate the first Location
-            if (i == 0) {
+            if (i == Numbers.ZERO) {
                 //Move Camera
                 CameraPosition cameraPosition = new CameraPosition.Builder()
                         .target(latLng2)
@@ -113,5 +99,11 @@ public class WebTask_SearchHospital extends AsyncTask<String, Void, List<Address
                         .newCameraPosition(cameraPosition));
             }
         }
+    }
+
+    //Method to start execution of current web task
+    @Override
+    public void executeWebTask() {
+        this.execute(hospitalName + Strings.HOSPITAL_SL);
     }
 }

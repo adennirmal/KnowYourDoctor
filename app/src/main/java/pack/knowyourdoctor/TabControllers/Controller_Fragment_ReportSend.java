@@ -1,10 +1,9 @@
-package pack.knowyourdoctor.Tab_Controllers;
+package pack.knowyourdoctor.TabControllers;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,21 +15,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import WebServiceAccess.WebTask_ExecutePostRequests;
-import pack.knowyourdoctor.MainControllers.Controller_Home;
+import pack.knowyourdoctor.Constants.Strings;
 import pack.knowyourdoctor.R;
 import ValidationRules.RegNoValidation;
 
+//Fake Doctor Details handle fragment
 public class Controller_Fragment_ReportSend extends Fragment {
     Context context;
-    private String fakeRegNo;
     EditText dreg;
     EditText name;
     EditText contact;
     EditText dname;
     EditText comment;
-
-    String regNo;
-
+    String fakeRegNo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,18 +37,12 @@ public class Controller_Fragment_ReportSend extends Fragment {
         context = rootView.getContext();
         dreg = (EditText) rootView.findViewById(R.id.d_reg);
 
-        //String regNo = View_Fragment_DoctorDetails.getRegNo();
-        //String regNo;
-        if (regNo == null) {
-            regNo = "";
-        } else {
-            try {
-                regNo = container.getTag().toString();
-            } catch (NullPointerException e) {
-                regNo = "";
-            }
+        try {
+            fakeRegNo = container.getTag().toString();
+        } catch (NullPointerException e) {
+            fakeRegNo = Strings.EMPTY_STRING;
         }
-        dreg.setText(regNo);
+        dreg.setText(fakeRegNo);
 
         final Button send = (Button) rootView.findViewById(R.id.btnsubmit);
         send.setOnClickListener(new View.OnClickListener() {
@@ -65,36 +56,34 @@ public class Controller_Fragment_ReportSend extends Fragment {
                 comment = (EditText) rootView.findViewById(R.id.comment);
                 //final EditText dcontact = (EditText)rootView.findViewById(R.id.d_contact);
 
-                //name.setHint(Html.fromHtml("<font size=\"16\">" + "Your Name" + "</font>"));
-
                 //Validation
                 boolean isValid = true;
-                //if (RequiredFieldValidation.isEmpty(name.getText().toString())) {
-                //  name.setError("Please enter your full name");
-                //isValid = false;
-                //}
+                /*if (RequiredFieldValidation.isEmpty(name.getText().toString())) {
+                    name.setError("Please enter your full name");
+                isValid = false;
+                }
 
-                /*if(!NICValidation.isValidNIC(nic.getText().toString())){
+                if(!NICValidation.isValidNIC(nic.getText().toString())){
                     nic.setError("Please enter your NIC number");
-                    isValid = false;
-                }*/
-
-                //if (!ContactNoValidation.isValidContactNo(contact.getText().toString())) {
-                //    contact.setError("Please enter your contact number as XXX-XXXXXXX");
-                //    isValid = false;
-                // }
-
-                if (!RegNoValidation.isValidRegNoWithRequiredValidation(dreg.getText().toString())) {
-                    dreg.setError("Please enter fake doctor's registration number");
                     isValid = false;
                 }
 
-                //if (RequiredFieldValidation.isEmpty(dname.getText().toString())) {
-                //    dname.setError("Please enter fake doctor's name");
-                //    isValid = false;
-                //}
+                if (!ContactNoValidation.isValidContactNo(contact.getText().toString())) {
+                    contact.setError("Please enter your contact number as XXX-XXXXXXX");
+                    isValid = false;
+                }*/
 
-                /*if(!NICValidation.isValidNIC(dnicno.getText().toString())){
+                if (!RegNoValidation.isValidRegNoWithRequiredValidation(dreg.getText().toString())) {
+                    dreg.setError(Strings.INVALID_FAKE_REGNO);
+                    isValid = false;
+                }
+
+                /*if (RequiredFieldValidation.isEmpty(dname.getText().toString())) {
+                    dname.setError("Please enter fake doctor's name");
+                    isValid = false;
+                }
+
+                if(!NICValidation.isValidNIC(dnicno.getText().toString())){
                     dnicno.setError("Please enter fake doctor's NIC number");
                     isValid = false;
                 }
@@ -113,57 +102,59 @@ public class Controller_Fragment_ReportSend extends Fragment {
                     final String reportDoctorName = dname.getText().toString();
                     final String reportComment = comment.getText().toString();
 
-                    String newline = System.getProperty("line.separator");
-                    StringBuilder emailBody = new StringBuilder("");
-                    emailBody.append("Reported User Details" + newline);
-                    emailBody.append("------------------------------" + newline);
-                    emailBody.append("Fullname:" + reportUserName + newline);
-                    emailBody.append("Contact No:" + reportContact + newline + newline);
-
-                    emailBody.append("Fake Doctor Details" + newline);
-                    emailBody.append("------------------------------" + newline);
-                    emailBody.append("Registration No:" + reportDoctorRegNo + newline);
-                    emailBody.append("Fullname:" + reportDoctorName + newline);
-                    emailBody.append("Comment:" + reportComment + newline);
-
                     //Send fake doctor details to webservice
                     String baseURL = context.getResources().getString(R.string.webserviceLink);
                     StringBuilder url = new StringBuilder(baseURL);
-                    url.append("PhoneAppControllers/FakeDoctorReportController/insertFakeDoctorReport/");
+                    url.append(Strings.INSERT_FAKE_DOC_DETAILS);
                     JSONObject fakeDocJSONObj = new JSONObject();
                     try {
-                        fakeDocJSONObj.put("fakeDocID", reportDoctorRegNo);
-                        fakeDocJSONObj.put("fakeDocName", reportDoctorName);
-                        fakeDocJSONObj.put("reportedPerson", reportUserName);
-                        fakeDocJSONObj.put("contactNo", reportContact);
-                        fakeDocJSONObj.put("comment", reportComment);
+                        fakeDocJSONObj.put(Strings.JSON_FAKEDOC_ID_TEXT, reportDoctorRegNo);
+                        fakeDocJSONObj.put(Strings.JSON_FAKEDOC_NAME_TEXT, reportDoctorName);
+                        fakeDocJSONObj.put(Strings.JSON_REPORTED_PERSON_TEXT, reportUserName);
+                        fakeDocJSONObj.put(Strings.JSON_REPORTED_CONTACT_TEXT, reportContact);
+                        fakeDocJSONObj.put(Strings.JSON_COMMENT_TEXT, reportComment);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                     WebTask_ExecutePostRequests ratingTask = new WebTask_ExecutePostRequests();
                     ratingTask.setContext(context);
-                    ratingTask.setMessage("Thanks for your report!!");
+                    ratingTask.setMessage(Strings.THANKING_TEXT);
                     ratingTask.setjObject(fakeDocJSONObj);
                     // passes values for the urls string array
                     ratingTask.execute(url.toString());
 
                     //Send email
                     Intent i = new Intent(Intent.ACTION_SEND);
-                    i.setType("message/rfc822");
-                    i.putExtra(Intent.EXTRA_EMAIL, new String[]{"knowyourdoctorslmc@gmail.com"});
-                    i.putExtra(Intent.EXTRA_SUBJECT, "Fake doctor Details");
+                    i.setType(Strings.MSG_TYPE);
+                    i.putExtra(Intent.EXTRA_EMAIL, new String[]{Strings.RECEIVER_MAIL_ADD});
+                    i.putExtra(Intent.EXTRA_SUBJECT, Strings.EMAIL_SUBJECT);
+
+                    //Format the email body to send
+                    String newline = System.getProperty(Strings.LINE_SEPERATOR);
+                    StringBuilder emailBody = new StringBuilder(Strings.EMPTY_STRING);
+                    emailBody.append(Strings.REPORTED_USER_HEADING + newline);
+                    emailBody.append(Strings.HORIZONTAL_SEPERATOR + newline);
+                    emailBody.append(Strings.FULLNAME_TEXT + reportUserName + newline);
+                    emailBody.append(Strings.CONTACTNO_TEXT + reportContact + newline + newline);
+
+                    emailBody.append(Strings.FAKE_DOCTOR_HEADING + newline);
+                    emailBody.append(Strings.HORIZONTAL_SEPERATOR + newline);
+                    emailBody.append(Strings.FAKE_REGNO_TEXT + reportDoctorRegNo + newline);
+                    emailBody.append(Strings.FULLNAME_TEXT + reportDoctorName + newline);
+                    emailBody.append(Strings.COMMENT_TEXT + reportComment + newline);
+
                     i.putExtra(Intent.EXTRA_TEXT, emailBody.toString());
                     try {
-                        startActivity(Intent.createChooser(i, "Send mail..."));
+                        startActivity(Intent.createChooser(i, Strings.SENDING_MSG));
                     } catch (android.content.ActivityNotFoundException ex) {
-                        Toast.makeText(context, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, Strings.NO_EMAIL_CLIENT_MSG, Toast.LENGTH_SHORT).show();
                     }
-                    dreg.setText("");
-                    name.setText("");
-                    contact.setText("");
-                    dname.setText("");
-                    comment.setText("");
+                    dreg.setText(Strings.EMPTY_STRING);
+                    name.setText(Strings.EMPTY_STRING);
+                    contact.setText(Strings.EMPTY_STRING);
+                    dname.setText(Strings.EMPTY_STRING);
+                    comment.setText(Strings.EMPTY_STRING);
                 }
             }
         });
@@ -173,9 +164,9 @@ public class Controller_Fragment_ReportSend extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (regNo == null) {
-            regNo = "";
+        if (fakeRegNo == null) {
+            fakeRegNo = Strings.EMPTY_STRING;
         }
-        dreg.setText(regNo);
+        dreg.setText(fakeRegNo);
     }
 }

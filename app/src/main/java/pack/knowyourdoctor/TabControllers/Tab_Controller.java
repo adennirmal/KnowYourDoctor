@@ -1,21 +1,20 @@
-package pack.knowyourdoctor.Tab_Controllers;
+package pack.knowyourdoctor.TabControllers;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-/**
- * Created by Home on 3/6/2015.
- */
-public class Tab_Controller extends FragmentPagerAdapter {
+import pack.knowyourdoctor.Constants.Numbers;
 
+//Controller of tabs
+public class Tab_Controller extends FragmentPagerAdapter {
     public String fakeRegNo;
 
     public Tab_Controller(FragmentManager fm) {
         super(fm);
     }
 
-    //static String url;
+    //Get fragment according to the position
     @Override
     public Fragment getItem(int index) {
         switch (index) {
@@ -37,9 +36,9 @@ public class Tab_Controller extends FragmentPagerAdapter {
         return null;
     }
 
+    //Get tab count of app
     @Override
     public int getCount() {
-        // get item count - equal to number of tabs
-        return 4;
+        return Numbers.TAB_COUNT;
     }
 }

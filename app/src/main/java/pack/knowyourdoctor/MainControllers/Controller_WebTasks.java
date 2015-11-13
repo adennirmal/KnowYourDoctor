@@ -16,18 +16,20 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import Models.Model_Doctor;
-import Models.Model_HospitalLocation;
-import Models.Model_RatedDoctor;
+import Models.DoctorModel;
+import Models.HospitalLocationModel;
+import Models.RatedDoctorModel;
 import WebServiceAccess.WebTask_DoctorListLoad;
 import WebServiceAccess.WebTask_ExecutePostRequests;
 import WebServiceAccess.WebTask_GetHTMLContent;
 import WebServiceAccess.WebTask_HospitalListLoad;
 import WebServiceAccess.WebTask_RatingListLoad;
 import WebServiceAccess.WebTask_SearchHospital;
-import pack.knowyourdoctor.Adapters.Adapter_Comments;
-import pack.knowyourdoctor.Adapters.Adapter_DoctorList;
+import pack.knowyourdoctor.ListControllers.Adapter_Comments;
+import pack.knowyourdoctor.ListControllers.Adapter_DoctorList;
 
+
+//Control all web service tasks
 public class Controller_WebTasks {
     private WebTask_ExecutePostRequests postRequestTask;
     private WebTask_GetHTMLContent getHTMLTask;
@@ -36,6 +38,7 @@ public class Controller_WebTasks {
     private WebTask_SearchHospital searchHospital;
     private WebTask_DoctorListLoad doctorListLoad;
 
+    //Constructor
     public Controller_WebTasks() {
         this.postRequestTask = new WebTask_ExecutePostRequests();
         this.getHTMLTask = new WebTask_GetHTMLContent();
@@ -45,7 +48,9 @@ public class Controller_WebTasks {
         this.doctorListLoad = new WebTask_DoctorListLoad();
     }
 
-    public void executePostRequestTaks(Context context, String message, JSONObject jObject, String url) {
+    //Handler for all POST requests
+    public void executePostRequestTaks(Context context, String message,
+                                       JSONObject jObject, String url) {
         this.postRequestTask.setContext(context);
         this.postRequestTask.setMessage(message);
         this.postRequestTask.setjObject(jObject);
@@ -53,7 +58,8 @@ public class Controller_WebTasks {
         this.postRequestTask.executeWebTask();
     }
 
-    public void executeGetHTMLTask(ArrayList<Model_Doctor> searchedDoctors,
+    //Execute get HTML Web request
+    public void executeGetHTMLTask(ArrayList<DoctorModel> searchedDoctors,
                                    ProgressBar pBar, TextView txt, Adapter_DoctorList listAdapter,
                                    EditText regNoTE, Context context, String searchedRegNo,
                                    FragmentActivity currentActivity, LinearLayout linearLayoutView,
@@ -71,7 +77,8 @@ public class Controller_WebTasks {
         this.getHTMLTask.executeWebTask();
     }
 
-    public void executeHospitalListLoadTask(ArrayList<Model_HospitalLocation> hospitals,
+    //Retrieve all hospitals
+    public void executeHospitalListLoadTask(ArrayList<HospitalLocationModel> hospitals,
                                             Spinner hospitalNamesSpinner,
                                             Context context, JSONObject jObject, String url) {
         this.hospitalListLoad.setHospitals(hospitals);
@@ -82,11 +89,12 @@ public class Controller_WebTasks {
         this.hospitalListLoad.executeWebTask();
     }
 
-    public void executeRatingListLoadTask(Model_RatedDoctor ratedDoc,
+    //Retrieve all comments of given doctor
+    public void executeRatingListLoadTask(RatedDoctorModel ratedDoc,
                                           Context context, ListView ratedDocComments,
                                           Adapter_Comments listAdapter, EditText newComment,
                                           TextView commentDoctorTextView, Dialog ratingsDialog,
-                                          String url, Model_Doctor selectedDoctor) {
+                                          String url, DoctorModel selectedDoctor) {
         this.ratingListLoadTask.setRatedDoc(ratedDoc);
         this.ratingListLoadTask.setContext(context);
         this.ratingListLoadTask.setListAdapter(listAdapter);
@@ -98,17 +106,20 @@ public class Controller_WebTasks {
         this.ratingListLoadTask.executeWebTask();
     }
 
-    public void executeSearchHospitalTask(Context context, String hospitalName, GoogleMap googleMap) {
+    //Retrieve location of searched hospital
+    public void executeSearchHospitalTask(Context context, String hospitalName,
+                                          GoogleMap googleMap) {
         this.searchHospital.setContext(context);
         this.searchHospital.setHospitalName(hospitalName);
         this.searchHospital.setmMap(googleMap);
         this.searchHospital.executeWebTask();
     }
 
-    public void executeDoctorListLoadTask(Context context, ArrayList<Model_Doctor> model_doctors,
+    //Retrieve doctors who are having submitted locations
+    public void executeDoctorListLoadTask(Context context, ArrayList<DoctorModel> _doctorModels,
                                           Spinner spinner, JSONObject jsonObject, String url) {
         this.doctorListLoad.setContext(context);
-        this.doctorListLoad.setDoctorList(model_doctors);
+        this.doctorListLoad.setDoctorList(_doctorModels);
         this.doctorListLoad.setDoctorNamesSpinner(spinner);
         this.doctorListLoad.setjObject(jsonObject);
         this.doctorListLoad.setUrl(url);

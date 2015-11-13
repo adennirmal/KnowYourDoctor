@@ -1,6 +1,7 @@
 package Models;
 
-public class Model_HospitalLocation {
+//Hospital with it's location
+public class HospitalLocationModel {
     private int id;
     private String name;
     private String address;
@@ -8,6 +9,7 @@ public class Model_HospitalLocation {
     private double longtitude;
     private String district;
 
+    //Getters and Setters
     public int getId() {
         return id;
     }
@@ -32,24 +34,8 @@ public class Model_HospitalLocation {
         this.address = address;
     }
 
-    public double getLatitude() {
-        return latitude;
-    }
-
     public void setLatitude(double latitude) {
         this.latitude = latitude;
-    }
-
-    public double getLongtitude() {
-        return longtitude;
-    }
-
-    public void setLongtitude(double longtitude) {
-        this.longtitude = longtitude;
-    }
-
-    public String getDistrict() {
-        return district;
     }
 
     public void setDistrict(String district) {

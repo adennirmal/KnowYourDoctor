@@ -1,21 +1,20 @@
 package Models;
 
-/**
- * Created by Home on 5/8/2015.
- */
-public class Model_Comment {
+//Comment
+public class CommentModel {
     private int commentID;
     private String comment;
     private double rate;
     private int noOfLikes;
 
-    public Model_Comment() {
+    public CommentModel() {
     }
 
     public int getCommentID() {
         return commentID;
     }
 
+    //Getters and setters
     public void setCommentID(int commentID) {
         this.commentID = commentID;
     }
@@ -26,14 +25,6 @@ public class Model_Comment {
 
     public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    public double getRate() {
-        return rate;
-    }
-
-    public void setRate(double rate) {
-        this.rate = rate;
     }
 
     public int getNoOfLikes() {

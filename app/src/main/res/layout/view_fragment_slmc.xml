@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/view_fragment_slmc"
-    tools:context="pack.knowyourdoctor.Tab_Controllers.Controller_Fragment_SLMC"
+    tools:context="pack.knowyourdoctor.TabControllers.Controller_Fragment_SLMC"
     android:orientation="vertical">
 
     <ScrollView

@@ -6,7 +6,7 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import Models.Model_GlobalValues;
+import Models.GlobalValueModel;
 
 public class LocationListenerClass implements LocationListener {
     Context context;
@@ -33,8 +33,8 @@ public class LocationListenerClass implements LocationListener {
         final AlertDialog alert = builder.create();
         alert.show();*/
 
-        Model_GlobalValues.latitude = location.getLatitude();
-        Model_GlobalValues.longtitude = location.getLongitude();
+        GlobalValueModel.latitude = location.getLatitude();
+        GlobalValueModel.longtitude = location.getLongitude();
         Toast.makeText(context, "Coordinates Refreshed", Toast.LENGTH_LONG);
     }
 

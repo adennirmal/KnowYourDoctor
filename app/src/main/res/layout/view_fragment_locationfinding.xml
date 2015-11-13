@@ -6,7 +6,7 @@
     android:layout_marginTop="10dp"
     android:padding="10dp"
     android:weightSum="100"
-    tools:context="pack.knowyourdoctor.Tab_Controllers.Controller_Fragment_LocationFinding">
+    tools:context="pack.knowyourdoctor.TabControllers.Controller_Fragment_LocationFinding">
 
     <ScrollView
         android:layout_width="match_parent"

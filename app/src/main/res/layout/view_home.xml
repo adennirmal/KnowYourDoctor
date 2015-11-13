@@ -6,20 +6,20 @@
     android:layout_height="match_parent">
 
     <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/pager"
+        android:id="@+id/fragmentViewer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffffff"></android.support.v4.view.ViewPager>
 
     <FrameLayout
-        android:id="@+id/menu_layout"
+        android:id="@+id/menuLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/scrim"
         android:visibility="invisible">
 
         <com.ogaclejapan.arclayout.ArcLayout
-            android:id="@id/arc_layout"
+            android:id="@id/arcLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="32dp"
@@ -67,7 +67,7 @@
     </FrameLayout>
 
     <Button
-        android:id="@+id/fab"
+        android:id="@+id/arcLayoutCtrlBtn"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:gravity="top|center"

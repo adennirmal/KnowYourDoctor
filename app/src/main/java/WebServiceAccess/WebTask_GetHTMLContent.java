@@ -27,17 +27,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import Models.Model_Doctor;
-import pack.knowyourdoctor.Adapters.Adapter_DoctorList;
+import Models.DoctorModel;
+import pack.knowyourdoctor.Constants.Numbers;
+import pack.knowyourdoctor.Constants.Strings;
+import pack.knowyourdoctor.ListControllers.Adapter_DoctorList;
 import pack.knowyourdoctor.R;
-import pack.knowyourdoctor.Tab_Controllers.Tab_Controller;
+import pack.knowyourdoctor.TabControllers.Tab_Controller;
 
-/**
- * Created by Home on 10/19/2015.
- */
-public class WebTask_GetHTMLContent extends AsyncTask<ArrayList<String>, Integer, String> implements WebTask_Interface {
+//Retrieve HTML content from web site and get doctor details from it
+public class WebTask_GetHTMLContent
+        extends AsyncTask<ArrayList<String>, Integer, String>
+        implements WebTask_Interface {
     String html;
-    ArrayList<Model_Doctor> searchedDoctors;
+    ArrayList<DoctorModel> searchedDoctors;
     ProgressBar pBar;
     TextView txt;
     Adapter_DoctorList listAdapter;
@@ -48,32 +50,17 @@ public class WebTask_GetHTMLContent extends AsyncTask<ArrayList<String>, Integer
     LinearLayout linearLayoutView;
     ArrayList<String> urls;
 
-    public ArrayList<Model_Doctor> getSearchedDoctors() {
-        return searchedDoctors;
-    }
-
-    public void setSearchedDoctors(ArrayList<Model_Doctor> searchedDoctors) {
+    //Getters and setters
+    public void setSearchedDoctors(ArrayList<DoctorModel> searchedDoctors) {
         this.searchedDoctors = searchedDoctors;
-    }
-
-    public ProgressBar getpBar() {
-        return pBar;
     }
 
     public void setpBar(ProgressBar pBar) {
         this.pBar = pBar;
     }
 
-    public TextView getTxt() {
-        return txt;
-    }
-
     public void setTxt(TextView txt) {
         this.txt = txt;
-    }
-
-    public Adapter_DoctorList getListAdapter() {
-        return listAdapter;
     }
 
     public void setListAdapter(Adapter_DoctorList listAdapter) {
@@ -88,46 +75,27 @@ public class WebTask_GetHTMLContent extends AsyncTask<ArrayList<String>, Integer
         this.context = context;
     }
 
-    public EditText getRegNoTE() {
-        return regNoTE;
-    }
-
     public void setRegNoTE(EditText regNoTE) {
         this.regNoTE = regNoTE;
-    }
-
-    public String getSearchedRegNo() {
-        return searchedRegNo;
     }
 
     public void setSearchedRegNo(String searchedRegNo) {
         this.searchedRegNo = searchedRegNo;
     }
 
-    public FragmentActivity getCurrentActivity() {
-        return currentActivity;
-    }
-
     public void setCurrentActivity(FragmentActivity currentActivity) {
         this.currentActivity = currentActivity;
-    }
-
-    public LinearLayout getLinearLayoutView() {
-        return linearLayoutView;
     }
 
     public void setLinearLayoutView(LinearLayout linearLayoutView) {
         this.linearLayoutView = linearLayoutView;
     }
 
-    public ArrayList<String> getUrls() {
-        return urls;
-    }
-
     public void setUrls(ArrayList<String> urls) {
         this.urls = urls;
     }
 
+    //Run in background thread - Execution of web task
     @Override
     protected String doInBackground(ArrayList<String>... params) {
         ArrayList<String> passedURLs = params[0];
@@ -139,66 +107,72 @@ public class WebTask_GetHTMLContent extends AsyncTask<ArrayList<String>, Integer
             Document doc = GetHTMLDocFromString(url);
 
             //Check parsed data has table tag
-            if (doc.getElementById("r_table") != null) {
+            if (doc.getElementById(Strings.TABLE_ID) != null) {
                 //Get number of pages
-                Element resultsNumTag = doc.getElementsByTag("h2").get(0);
-                //get numeric value from string,divide it by 20(one page contains 20 results) and store it inside the integer variable
-                int noOfResults = Integer.parseInt(resultsNumTag.text().replaceAll("[a-zA-Z() ]+", ""));
+                Element resultsNumTag = doc.getElementsByTag(Strings.HEADING_TYPE_2).get(0);
+                /*get numeric value from string,
+                divide it by 20(one page contains 20 results) and
+                store it inside the integer variable*/
+                int noOfResults = Integer.parseInt(resultsNumTag.text().replaceAll(
+                        Strings.REPLACING_REG_EX, Strings.EMPTY_STRING));
                 //check noOfResults equals to multiplier of 20 or not (Example like 80)
-                int noOfPages = noOfResults % 20 == 0 ? noOfResults / 20 : (noOfResults / 20) + 1;
+                int noOfPages = noOfResults % Numbers.PAGE_DOC_LIMIT == Numbers.ZERO ?
+                        noOfResults / Numbers.PAGE_DOC_LIMIT :
+                        (noOfResults / 20) + Numbers.ONE;
 
-                Element tableContent = doc.getElementById("r_table");
-                Elements tableRows = tableContent.getElementsByTag("tr");
+                Element tableContent = doc.getElementById(Strings.TABLE_ID);
+                Elements tableRows = tableContent.getElementsByTag(Strings.TABLE_ROW);
 
                 //Iterate through webpages
-                for (int i = 0; i < noOfPages; i++) {
-                    int skipFirstRow = 0;
+                for (int i = Numbers.ZERO; i < noOfPages; i++) {
+                    int skipFirstRow = Numbers.ZERO;
                     for (Element currentElement : tableRows) {
                         //Skip first row because it contains headers of table
-                        if (skipFirstRow == 0) {
+                        if (skipFirstRow == Numbers.ZERO) {
                             skipFirstRow++;
                             continue;
                         }
                         //Get row details
-                        Elements tds = currentElement.getElementsByTag("td");
+                        Elements tds = currentElement.getElementsByTag(Strings.TABLE_DATA);
 
                         //Current Doctor
-                        Model_Doctor currentDoctor = new Model_Doctor();
+                        DoctorModel currentDoctor = new DoctorModel();
                         //Set reg No
-                        currentDoctor.setRegNo(Integer.parseInt(tds.get(1).text()));
+                        currentDoctor.setRegNo(Integer.parseInt(tds.get(Numbers.COLUMN_ONE).text()));
 
                         //Set reg Date
-                        currentDoctor.setRegDate(tds.get(2).text());
+                        currentDoctor.setRegDate(tds.get(Numbers.COLUMN_TWO).text());
 
                         //Set reg No
-                        currentDoctor.setFullName(tds.get(3).text());
+                        currentDoctor.setFullName(tds.get(Numbers.COLUMN_THREE).text());
 
                         //Set reg No
-                        currentDoctor.setAddress(tds.get(4).text());
+                        currentDoctor.setAddress(tds.get(Numbers.COLUMN_FOUR).text());
 
                         //Set reg No
-                        currentDoctor.setQualifications(tds.get(5).text());
+                        currentDoctor.setQualifications(tds.get(Numbers.COLUMN_FIVE).text());
 
                         searchedDoctors.add(currentDoctor);
                         //Update Progress bar
                     }
                     //Replace the start value of the url to navigate to next page
-                    int nextPage = i + 1;
+                    int nextPage = i + Numbers.ONE;
                     if (nextPage != noOfPages) {
-                        url = url.replace("start=" + i, "start=" + nextPage);
+                        url = url.replace(Strings.START_WITH_EQUALS + i,
+                                Strings.START_WITH_EQUALS + nextPage);
                         doc = GetHTMLDocFromString(url);
-                        tableContent = doc.getElementById("r_table");
-                        tableRows = tableContent.getElementsByTag("tr");
+                        tableContent = doc.getElementById(Strings.TABLE_ID);
+                        tableRows = tableContent.getElementsByTag(Strings.TABLE_ROW);
                     }
                 }
             } else {
-                html = "No data found";
+                html = Strings.EMPTY_STRING;
             }
-            publishProgress((int) ((urlNo / (float) passedURLs.size()) * 100));
+            publishProgress((int) ((urlNo / (float) passedURLs.size()) * Numbers.HUNDRED));
             urlNo++;
         }
         //Update Progress bar
-        publishProgress(100);
+        publishProgress(Numbers.HUNDRED);
         return html;
     }
 
@@ -208,7 +182,7 @@ public class WebTask_GetHTMLContent extends AsyncTask<ArrayList<String>, Integer
         try {
             HttpResponse response = client.execute(request);
 
-            html = "";
+            html = Strings.EMPTY_STRING;
             InputStream in = response.getEntity().getContent();
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             StringBuilder str = new StringBuilder();
@@ -226,44 +200,47 @@ public class WebTask_GetHTMLContent extends AsyncTask<ArrayList<String>, Integer
         }
     }
 
+    //Execute after the web task executed
+    @Override
     protected void onPostExecute(String result) {
         pBar.setVisibility(View.INVISIBLE);
 
         if (!searchedDoctors.isEmpty()) {
-            txt.setText("Number of doctors found : " + searchedDoctors.size());
+            txt.setText(Strings.NO_OF_DOC_TEXT + searchedDoctors.size());
             //Collections.sort(searchedDoctors, new DoctorComparator());
             listAdapter.notifyDataSetChanged();
         } else {
-            txt.setText("No Data Found");
+            txt.setText(Strings.NO_DATA_FOUND);
             searchedRegNo = regNoTE.getText().toString();
             //To detect reg no is entered or not
-            if (searchedRegNo.compareTo("") != 0) {
+            if (searchedRegNo.compareTo(Strings.EMPTY_STRING) != Numbers.ZERO) {
                 //Detect fake doctor id
                 if (searchedDoctors.isEmpty()) {
                     final AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-                    alertDialog.setTitle("Registration Number (" + searchedRegNo + ") Doesn't Exist!");
-                    alertDialog.setMessage("Do you want to report to SLMC?");
-                    alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    alertDialog.setTitle(
+                            Strings.REG_NO_TEXT + searchedRegNo + Strings.DOESNOT_EXISTS);
+                    alertDialog.setMessage(Strings.REPORT_TO_SLMC);
+                    alertDialog.setPositiveButton(Strings.YES, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            ViewPager pager = (ViewPager) currentActivity.findViewById(R.id.pager);
+                            ViewPager pager = (ViewPager) currentActivity.findViewById(R.id.fragmentViewer);
                             Tab_Controller mAdapter;
                             pager.setTag(searchedRegNo);
                             mAdapter = new Tab_Controller(currentActivity.getSupportFragmentManager());
                             //mAdapter.fakeRegNo = searchedRegNo;
                             // mAdapter.getItem(2).setArguments(bundle);
                             pager.setAdapter(mAdapter);
-                            pager.setCurrentItem(2);
+                            pager.setCurrentItem(Numbers.TWO);
                         }
                     });
-                    alertDialog.setNeutralButton("No", new DialogInterface.OnClickListener() {
+                    alertDialog.setNeutralButton(Strings.NO, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            ViewPager pager = (ViewPager) currentActivity.findViewById(R.id.pager);
+                            ViewPager pager = (ViewPager) currentActivity.findViewById(R.id.fragmentViewer);
                             Tab_Controller mAdapter;
                             mAdapter = new Tab_Controller(currentActivity.getSupportFragmentManager());
                             pager.setAdapter(mAdapter);
-                            pager.setCurrentItem(0);
+                            pager.setCurrentItem(Numbers.ZERO);
                             searchedDoctors.clear();
                         }
                     });
@@ -274,18 +251,19 @@ public class WebTask_GetHTMLContent extends AsyncTask<ArrayList<String>, Integer
     }
 
     protected void onProgressUpdate(Integer... progress) {
-        setProgressPercent(progress[0]);
+        setProgressPercent(progress[Numbers.ZERO]);
     }
 
     private void setProgressPercent(Integer progress) {
         TextView txt = (TextView) linearLayoutView.findViewById(R.id.displayDetails);
-        txt.setText("Loading : " + progress + "% Completed");
+        txt.setText(Strings.LOADING + progress + Strings.COMPLETED);
         ProgressBar pBar = (ProgressBar) linearLayoutView.findViewById(R.id.progressShow);
         pBar.setProgress(progress);
         listAdapter.notifyDataSetChanged();
         //Collections.sort(searchedDoctors,new DoctorComparator());
     }
 
+    //Method to start execution of current web task
     @Override
     public void executeWebTask() {
         this.execute(urls);

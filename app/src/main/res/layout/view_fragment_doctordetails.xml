@@ -9,7 +9,7 @@
     android:paddingBottom="0dp"
     android:orientation="vertical"
     android:weightSum="100"
-    tools:context="pack.knowyourdoctor.Tab_Controllers.Controller_Fragment_DoctorDetails">
+    tools:context="pack.knowyourdoctor.TabControllers.Controller_Fragment_DoctorDetails">
 
     <LinearLayout
         android:id="@+id/mainView"

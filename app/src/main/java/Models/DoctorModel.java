@@ -2,20 +2,18 @@ package Models;
 
 import java.io.Serializable;
 
-/**
- * Created by Home on 3/8/2015.
- */
-public class Model_Doctor implements Serializable {
+//Doctor
+public class DoctorModel implements Serializable {
     private int regNo;
     private String regDate;
     private String fullName;
     private String address;
     private String qualifications;
 
-    public Model_Doctor() {
+    public DoctorModel() {
     }
 
-    public Model_Doctor(int regNo, String regDate, String address, String fullName, String qualifications) {
+    public DoctorModel(int regNo, String regDate, String address, String fullName, String qualifications) {
         this.regNo = regNo;
         this.regDate = regDate;
         this.address = address;
@@ -63,16 +61,5 @@ public class Model_Doctor implements Serializable {
 
     public String getQualifications() {
         return qualifications;
-    }
-
-    public String getDoctorDetails() {
-        String details = "";
-        details += "Registration No : " + regNo + "\n";
-        details += "Registered Date : " + regDate + "\n";
-        details += "Full Name : " + fullName + "\n";
-        details += "Address : " + address + "\n";
-        details += "Qualifications : " + qualifications + "\n";
-
-        return details;
     }
 }

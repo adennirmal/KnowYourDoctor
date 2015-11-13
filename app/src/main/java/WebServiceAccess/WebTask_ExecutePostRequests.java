@@ -13,12 +13,18 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-public class WebTask_ExecutePostRequests extends AsyncTask<String, Void, String> implements WebTask_Interface {
+import pack.knowyourdoctor.Constants.Strings;
+
+//Execute all Web POST Requests
+public class WebTask_ExecutePostRequests
+        extends AsyncTask<String, Void, String>
+        implements WebTask_Interface {
     private Context context;
     private String message;
     private JSONObject jObject;
     private String url;
 
+    //Getters and setters
     public Context getContext() {
         return context;
     }
@@ -51,12 +57,13 @@ public class WebTask_ExecutePostRequests extends AsyncTask<String, Void, String>
         this.url = url;
     }
 
+    //Run in background thread - Execution of web task
     @Override
     protected String doInBackground(String... params) {
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(params[0]);
         try {
-            post.setEntity(new StringEntity(jObject.toString(), "UTF-8"));
+            post.setEntity(new StringEntity(jObject.toString(), Strings.TEXT_TYPE));
             client.execute(post);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -66,11 +73,13 @@ public class WebTask_ExecutePostRequests extends AsyncTask<String, Void, String>
         return null;
     }
 
+    //Execute after the web task executed
     @Override
     protected void onPostExecute(String result) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
+    //Method to start execution of current web task
     @Override
     public void executeWebTask() {
         this.execute(url);

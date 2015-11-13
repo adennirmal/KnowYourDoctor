@@ -1,4 +1,4 @@
-package pack.knowyourdoctor.Tab_Controllers;
+package pack.knowyourdoctor.TabControllers;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -21,33 +21,30 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import WebServiceAccess.WebTask_GetHTMLContent;
-import pack.knowyourdoctor.Adapters.Adapter_DoctorList;
-import Models.Model_Doctor;
+import pack.knowyourdoctor.Constants.Strings;
+import pack.knowyourdoctor.ListControllers.Adapter_DoctorList;
+import Models.DoctorModel;
 import pack.knowyourdoctor.MainControllers.Controller_WebTasks;
 import pack.knowyourdoctor.R;
 import ValidationRules.RegNoValidation;
 
+//Handle search page of doctors
 public class Controller_Fragment_DoctorDetails extends Fragment {
-
     Context context;
-
     TextView txt;
     Adapter_DoctorList listAdapter;
     ExpandableListView listView;
-
-    ArrayList<Model_Doctor> searchedDoctors;
-
+    ArrayList<DoctorModel> searchedDoctors;
     LinearLayout linearLayoutView;
     EditText regNoTE;
-
     public static String searchedRegNo;
 
+    //onCreate method - calls in the initializing the fragment
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-
-        final View rootView = inflater.inflate(R.layout.view_fragment_doctordetails, container, false);
+        final View rootView = inflater.inflate(R.layout.view_fragment_doctordetails,
+                container, false);
         context = rootView.getContext();
         //Set object of search page
         //final TextView registryText = (TextView)rootView.findViewById(R.id.registryTextView);
@@ -92,27 +89,28 @@ public class Controller_Fragment_DoctorDetails extends Fragment {
             public void onClick(View arg0) {
                 //validate
                 if (!RegNoValidation.isValidRegNo(regNoTE.getText().toString())) {
-                    regNoTE.setError("Invalid Registration Number");
+                    regNoTE.setError(Strings.INVALID_REGNO);
                     return;
                 }
 
                 ArrayList<String> urlList = new ArrayList<String>();
                 for (int i = 3; i < 7; i++) {
                     //Generate URL for four categories
-                    StringBuilder url = new StringBuilder("http://www.srilankamedicalcouncil.org/registry.php?start=0&registry=");
+                    StringBuilder url = new StringBuilder(Strings.URL_TO_SLMC_SEARCH);
                     //nothing selected in spinner
                     url.append(i);
 
                     //Generate URL
-                    url.append("&initials=" + initialsTE.getText());
-                    url.append("&last_name=" + familyNameTE.getText());
-                    url.append("&other_name=" + otherNameTE.getText());
-                    url.append("&reg_no=" + regNoTE.getText());
-                    url.append("&nic=" + nicNo.getText());
-                    url.append("&part_of_address=" + addressTE.getText());
-                    url.append("&search=Search");
+                    url.append(Strings.INITIALS + initialsTE.getText());
+                    url.append(Strings.LASTNAME + familyNameTE.getText());
+                    url.append(Strings.OTHERNAME + otherNameTE.getText());
+                    url.append(Strings.REGNO + regNoTE.getText());
+                    url.append(Strings.NIC + nicNo.getText());
+                    url.append(Strings.PART_OF_ADDRESS + addressTE.getText());
+                    url.append(Strings.SEARCH);
                     //replace all spaces with %20
-                    String generatedURL = url.toString().replace(" ", "%20");
+                    String generatedURL = url.toString().replace(Strings.STRING_WITH_SPACE,
+                            Strings.IGNORE_SPACES);
 
                     urlList.add(generatedURL);
                 }
@@ -120,15 +118,16 @@ public class Controller_Fragment_DoctorDetails extends Fragment {
                 //Setup part for display doctor details
                 linearLayoutView = (LinearLayout) getActivity().findViewById(R.id.mainView);
                 linearLayoutView.removeAllViewsInLayout();
-                linearLayoutView.addView(View.inflate(context, R.layout.view_fragment_doctordetails_searched, null));
-                linearLayoutView.setBackgroundColor(Color.parseColor("#f1f1f1"));
+                linearLayoutView.addView(View.inflate(context,
+                        R.layout.view_fragment_doctordetails_searched, null));
+                linearLayoutView.setBackgroundColor(Color.parseColor(Strings.WHITE_COLOR));
 
                 //Setup search again button
                 Button searchAgainBtn = (Button) linearLayoutView.findViewById(R.id.searchAgain);
                 searchAgainBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ViewPager pager = (ViewPager) getActivity().findViewById(R.id.pager);
+                        ViewPager pager = (ViewPager) getActivity().findViewById(R.id.fragmentViewer);
                         Tab_Controller mAdapter;
                         mAdapter = new Tab_Controller(getActivity().getSupportFragmentManager());
                         pager.setAdapter(mAdapter);
@@ -139,11 +138,11 @@ public class Controller_Fragment_DoctorDetails extends Fragment {
 
                 //Load Searched Doctor Details
                 txt = (TextView) linearLayoutView.findViewById(R.id.displayDetails);
-                txt.setText("Loading list Please wait....");
+                txt.setText(Strings.LOADING_ALERT);
 
                 listView = (ExpandableListView) rootView.findViewById(R.id.expList);
 
-                searchedDoctors = new ArrayList<Model_Doctor>();
+                searchedDoctors = new ArrayList<DoctorModel>();
 
                 listAdapter = new Adapter_DoctorList(context, searchedDoctors);
                 listView.setAdapter(listAdapter);
@@ -157,15 +156,15 @@ public class Controller_Fragment_DoctorDetails extends Fragment {
 
                 } else {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-                    alertDialog.setTitle("Internet Connection error");
-                    alertDialog.setMessage("Do you want to enable the Internet Connection?");
-                    alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    alertDialog.setTitle(Strings.INTERNET_CONNECTION_ERROR);
+                    alertDialog.setMessage(Strings.ENABLE_INTERNET_CONNECTION);
+                    alertDialog.setPositiveButton(Strings.YES, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
                         }
                     });
-                    alertDialog.setNeutralButton("No", new DialogInterface.OnClickListener() {
+                    alertDialog.setNeutralButton(Strings.NO, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
@@ -180,7 +179,7 @@ public class Controller_Fragment_DoctorDetails extends Fragment {
         advanceSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                if (advanceSearch.getText().toString().compareTo("Advanced Search") == 0) {
+                if (advanceSearch.getText().toString().compareTo(Strings.ADVANCED_SEARCH) == 0) {
                     //visible advance search options
                     //TextViews
                     initialsText.setVisibility(View.VISIBLE);
@@ -192,7 +191,7 @@ public class Controller_Fragment_DoctorDetails extends Fragment {
                     nicNo.setVisibility(View.VISIBLE);
                     addressTE.setVisibility(View.VISIBLE);
 
-                    advanceSearch.setText("Hide Advance Search");
+                    advanceSearch.setText(Strings.HIDE_ADVANCED_SEARCH);
                 } else {
                     //hide advance search options
                     //TextViews
@@ -205,7 +204,7 @@ public class Controller_Fragment_DoctorDetails extends Fragment {
                     nicNo.setVisibility(View.INVISIBLE);
                     addressTE.setVisibility(View.INVISIBLE);
 
-                    advanceSearch.setText("Advanced Search");
+                    advanceSearch.setText(Strings.ADVANCED_SEARCH);
                 }
             }
         });

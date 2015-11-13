@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 
+//Handle phone local database
 public class DBAccess extends SQLiteOpenHelper {
     //database version
     private static final int database_VERSION = 1;
@@ -16,13 +17,15 @@ public class DBAccess extends SQLiteOpenHelper {
     private static final String table_Ratings = "ratings";
     private static final String comment_ID = "cid";
 
+    //Constructor
     public DBAccess(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, database_NAME, factory, database_VERSION);
     }
 
+    //Create table
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_BOOK_TABLE = "CREATE TABLE " + table_Ratings + " ( " + comment_ID + " INTEGER PRIMARY KEY )";
+        String CREATE_BOOK_TABLE = "CREATE TABLE IF NOT EXISTS " + table_Ratings + " ( " + comment_ID + " INTEGER PRIMARY KEY )";
         db.execSQL(CREATE_BOOK_TABLE);
     }
 

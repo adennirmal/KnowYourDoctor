@@ -1,7 +1,6 @@
-package pack.knowyourdoctor.Adapters;
+package pack.knowyourdoctor.ListControllers;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,31 +8,26 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import LocalDatabase.DBAccess;
-import Models.Model_Comment;
+import Models.CommentModel;
 import WebServiceAccess.WebTask_ExecutePostRequests;
+import pack.knowyourdoctor.Constants.Numbers;
+import pack.knowyourdoctor.Constants.Strings;
 import pack.knowyourdoctor.R;
 
-/**
- * Created by Home on 7/30/2015.
- */
+//Display comments list
 public class Adapter_Comments extends BaseAdapter {
-    private ArrayList<Model_Comment> comments;
+    private ArrayList<CommentModel> comments;
     private Context context;
     DBAccess access;
 
-    public Adapter_Comments(Context context, ArrayList<Model_Comment> ratedDocComments) {
+    public Adapter_Comments(Context context, ArrayList<CommentModel> ratedDocComments) {
         comments = ratedDocComments;
         this.context = context;
     }
@@ -60,9 +54,9 @@ public class Adapter_Comments extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        access = new DBAccess(context, "", null, 0);
+        access = new DBAccess(context, Strings.EMPTY_STRING, null, 0);
         ArrayList<Integer> commentedIds = access.getAllCommentedIds();
-        final Model_Comment thisComment = (Model_Comment) comments.get(position);
+        final CommentModel thisComment = comments.get(position);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) context
@@ -74,12 +68,12 @@ public class Adapter_Comments extends BaseAdapter {
 
         commentTextView.setText(thisComment.getComment().toString());
         ////LikesTextView.setText("Likes : " + thisComment.getNoOfLikes());
-        if (thisComment.getNoOfLikes() == 0) {
+        if (thisComment.getNoOfLikes() == Numbers.ZERO) {
             LikesTextView.setText(context.getResources().getString(R.string.first_to_like));
-        } else if (thisComment.getNoOfLikes() == 1) {
-            LikesTextView.setText(thisComment.getNoOfLikes() + " Like");
+        } else if (thisComment.getNoOfLikes() == Numbers.ONE) {
+            LikesTextView.setText(thisComment.getNoOfLikes() + Strings.LIKE_WITH_SPACE);
         } else {
-            LikesTextView.setText(thisComment.getNoOfLikes() + " people Like this");
+            LikesTextView.setText(thisComment.getNoOfLikes() + Strings.NO_OF_PEOPLE_TEXT);
         }
         final Button button = (Button) convertView.findViewById(R.id.likeorUnlikeBTN);
 
@@ -95,37 +89,39 @@ public class Adapter_Comments extends BaseAdapter {
                 int currentLikes = thisComment.getNoOfLikes();
                 boolean isIncrement;
                 //Check button text is like or not and set no of likes accordingly
-                if (button.getText().equals("Like")) {
+                if (button.getText().equals(Strings.LIKE)) {
                     isIncrement = true;
                     thisComment.setNoOfLikes(++currentLikes);
                     access.insertCommentID(thisComment.getCommentID());
-                    button.setText("UnLike");
+                    button.setText(Strings.UNLIKE);
                 } else {
                     isIncrement = false;
                     thisComment.setNoOfLikes(--currentLikes);
                     access.deleteCommentID(thisComment.getCommentID());
-                    button.setText("Like");
+                    button.setText(Strings.LIKE);
                 }
                 if (currentLikes == 0) {
                     LikesTextView.setText(context.getResources().getString(R.string.first_to_like));
                 } else if (currentLikes == 1) {
-                    LikesTextView.setText(currentLikes + " Like");
+                    LikesTextView.setText(currentLikes + Strings.LIKE_WITH_SPACE);
                 } else {
-                    LikesTextView.setText(currentLikes + " people Like this");
+                    LikesTextView.setText(currentLikes + Strings.NO_OF_PEOPLE_TEXT);
                 }
 
-                StringBuilder url = new StringBuilder(context.getResources().getString(R.string.webserviceLink) + "PhoneAppControllers/DoctorRatingController/updateLikes/");
+                StringBuilder url = new StringBuilder(
+                        context.getResources().getString(R.string.webserviceLink) +
+                                Strings.UPDATE_LIKES);
                 JSONObject commentDetailsJSONObj = new JSONObject();
                 try {
-                    commentDetailsJSONObj.put("commentID", thisComment.getCommentID());
-                    commentDetailsJSONObj.put("isIncrement", isIncrement);
+                    commentDetailsJSONObj.put(Strings.COMMENTID, thisComment.getCommentID());
+                    commentDetailsJSONObj.put(Strings.IS_INCREMENT, isIncrement);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
                 WebTask_ExecutePostRequests ratingTask = new WebTask_ExecutePostRequests();
                 ratingTask.setContext(context);
-                ratingTask.setMessage("Thanks for your support!!");
+                ratingTask.setMessage(Strings.THANKING_TEXT);
                 ratingTask.setjObject(commentDetailsJSONObj);
                 // passes values for the urls string array
                 ratingTask.execute(url.toString());

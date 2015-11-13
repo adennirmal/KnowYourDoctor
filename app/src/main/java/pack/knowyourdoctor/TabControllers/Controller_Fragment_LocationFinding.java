@@ -1,10 +1,4 @@
-package pack.knowyourdoctor.Tab_Controllers;
-
-
-/**
- * Created by Darrel on 10/24/2015.
- */
-//Search for Doctors & Hospitals
+package pack.knowyourdoctor.TabControllers;
 
 import android.content.Context;
 import android.location.Location;
@@ -19,7 +13,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -32,18 +25,20 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import Models.Model_Doctor;
-import Models.Model_GlobalValues;
-import Models.Model_GPS;
+import Models.DoctorModel;
+import Models.GPSModel;
+import Models.GlobalValueModel;
 import ValidationRules.RequiredFieldValidation;
+import pack.knowyourdoctor.Constants.Strings;
 import pack.knowyourdoctor.MainControllers.Controller_WebTasks;
 import pack.knowyourdoctor.R;
 
 import static com.google.android.gms.common.api.GoogleApiClient.*;
 
-public class Controller_Fragment_LocationFinding extends Fragment implements LocationListener, OnConnectionFailedListener,
-        ConnectionCallbacks {
-
+//Search for Doctors & Hospitals
+public class Controller_Fragment_LocationFinding
+        extends Fragment
+        implements LocationListener, OnConnectionFailedListener, ConnectionCallbacks {
     EditText Tlocation;
     Button nearestHospitalofDoctorbtn;
     Button searchHospitalbtn;
@@ -52,9 +47,10 @@ public class Controller_Fragment_LocationFinding extends Fragment implements Loc
     Context context;
     Spinner doctorName;
     StringBuilder url;
-    ArrayList<Model_Doctor> model_doctors;
+    ArrayList<DoctorModel> _doctorModels;
     JSONObject currentLocationJSON = new JSONObject();
 
+    //onCreate method - calls in the initializing the dialog
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,7 +59,7 @@ public class Controller_Fragment_LocationFinding extends Fragment implements Loc
         context = rootView.getContext();
 
         //Get Current Location
-        Model_GPS modelGps = Model_GPS.getInstance();
+        GPSModel modelGps = GPSModel.getInstance();
         modelGps.getCurrentLocation(context);
 
         searchHospitalbtn = (Button) rootView.findViewById(R.id.hospitalSearchBtn);
@@ -71,18 +67,18 @@ public class Controller_Fragment_LocationFinding extends Fragment implements Loc
         Tlocation = (EditText) rootView.findViewById(R.id.hospitalName);
         doctorName = (Spinner) rootView.findViewById(R.id.doctorName);
         mapView = (MapView) rootView.findViewById(R.id.mapView);
-        model_doctors = new ArrayList<>();
+        _doctorModels = new ArrayList<>();
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         final Controller_WebTasks controller_webTasks = new Controller_WebTasks();
 
         url = new StringBuilder(context.getResources().getString(R.string.webserviceLink));
-        url.append("PhoneAppControllers/LocatedDoctorListController/getAllLocatedDoctors");
+        url.append(Strings.GET_ALL_LOCATED_DOCTORS);
 
         try {
             //Assign Current Coordinates
-            currentLocationJSON.put("latitude", Model_GlobalValues.latitude);
-            currentLocationJSON.put("longtitude", Model_GlobalValues.longtitude);
+            currentLocationJSON.put(Strings.JSON_LATITUDE, GlobalValueModel.latitude);
+            currentLocationJSON.put(Strings.JSON_LONGTITUDE, GlobalValueModel.longtitude);
             //Initiallize the Google Map
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
@@ -90,7 +86,7 @@ public class Controller_Fragment_LocationFinding extends Fragment implements Loc
             e.printStackTrace();
         }
         //Execute Controller
-        controller_webTasks.executeDoctorListLoadTask(context, model_doctors, doctorName,
+        controller_webTasks.executeDoctorListLoadTask(context, _doctorModels, doctorName,
                 currentLocationJSON, url.toString());
         // Load Map
         googleMap = mapView.getMap();
@@ -100,13 +96,13 @@ public class Controller_Fragment_LocationFinding extends Fragment implements Loc
             @Override
             public void onClick(View v) {
                 // Create Marker
-                googleMap.addMarker(new MarkerOptions().position(new LatLng(Model_GlobalValues.latitude,
-                        Model_GlobalValues.longtitude)).title(context.getResources()
+                googleMap.addMarker(new MarkerOptions().position(new LatLng(GlobalValueModel.latitude,
+                        GlobalValueModel.longtitude)).title(context.getResources()
                         .getString(R.string.Your_current_location))
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
                 // Move camera
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(Model_GlobalValues.latitude,
-                        Model_GlobalValues.longtitude)));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(GlobalValueModel.latitude,
+                        GlobalValueModel.longtitude)));
                 // Zoom camera to the current Location
                 googleMap.animateCamera(CameraUpdateFactory.zoomTo(context.getResources()
                         .getInteger(R.integer.zoom_into)));
@@ -119,8 +115,8 @@ public class Controller_Fragment_LocationFinding extends Fragment implements Loc
                 if (!RequiredFieldValidation.isEmpty(Tlocation.getText().toString())) {
                     // Getting user input location
                     googleMap.clear();
-                    googleMap.addMarker(new MarkerOptions().position(new LatLng(Model_GlobalValues.latitude,
-                            Model_GlobalValues.longtitude)).title(context.getResources()
+                    googleMap.addMarker(new MarkerOptions().position(new LatLng(GlobalValueModel.latitude,
+                            GlobalValueModel.longtitude)).title(context.getResources()
                             .getString(R.string.Your_current_location))
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
                     String location = Tlocation.getText().toString();
@@ -135,8 +131,8 @@ public class Controller_Fragment_LocationFinding extends Fragment implements Loc
 
     @Override
     public void onLocationChanged(Location location) {
-            /*Model_GlobalValues.latitude = location.getLatitude();
-            Model_GlobalValues.longtitude = location.getLongitude();*/
+        //GlobalValueModel.latitude = location.getLatitude();
+        //GlobalValueModel.longtitude = location.getLongitude();
     }
 
     @Override

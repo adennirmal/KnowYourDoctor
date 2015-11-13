@@ -5,7 +5,7 @@
     android:id="@+id/fragmentReportSend"
     android:padding="10dp"
     android:orientation="vertical"
-    tools:context="pack.knowyourdoctor.Tab_Controllers.Controller_Fragment_ReportSend">
+    tools:context="pack.knowyourdoctor.TabControllers.Controller_Fragment_ReportSend">
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"

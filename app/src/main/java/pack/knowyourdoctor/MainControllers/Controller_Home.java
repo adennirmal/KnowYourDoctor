@@ -1,6 +1,5 @@
 package pack.knowyourdoctor.MainControllers;
 
-import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -9,9 +8,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -25,7 +21,6 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ogaclejapan.arclayout.ArcLayout;
 
@@ -35,103 +30,94 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import Models.Model_Doctor;
-import Models.Model_GlobalValues;
+import Models.DoctorModel;
 import WebServiceAccess.WebTask_ExecutePostRequests;
-import pack.knowyourdoctor.AnimationPack.AnimatorUtils;
+import pack.knowyourdoctor.AnimationControllers.Animator;
+import pack.knowyourdoctor.Constants.Numbers;
+import pack.knowyourdoctor.Constants.Strings;
+import pack.knowyourdoctor.DialogControllers.DoctorRatingDialog;
 import pack.knowyourdoctor.R;
-import pack.knowyourdoctor.Tab_Controllers.Tab_Controller;
+import pack.knowyourdoctor.TabControllers.Tab_Controller;
 
-//import android.support.v4.app.FragmentTransaction;
-
-
-public class Controller_Home extends FragmentActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, ActionBar.TabListener, LocationListener {
+public class Controller_Home extends FragmentActivity implements View.OnClickListener,
+        ViewPager.OnPageChangeListener, ActionBar.TabListener {
     private Context context;
-    View mFab;
-    View mMenuLayout;
-    ArcLayout mArcLayout;
+    View arcLayouCtrl;
+    View menuLayout;
+    ArcLayout arcLayout;
     ViewPager viewDisplay;
     Button docDetailsBTN;
     Button reportFakeDocBTN;
     Button locationDetailBTN;
-    Button likeDocDetailsBTN;
     Button faceBookShareBTN;
-    Button aboutSLMCBTN;
-    Button aboutDevelopersBTN;
     private Tab_Controller mAdapter;
     private ActionBar actionBar;
-    LocationManager locationManager;
-    Location location;
-    String provider;
     Dialog fragmentsDialog;
-
     Button lastSelectedButton;
 
-    public static Bundle urlBundle;
+    //Tab images
+    final int[] icons = {
+            R.drawable.search_selector,
+            R.drawable.location_selector,
+            R.drawable.report_selector,
+            R.drawable.fb_selector
+    };
 
-    // Tab titles
-    ////private String[] tabs = { "Search", "Locate Doctor","Report","FB","SLMC","About Us"};
-    final int[] icons = {R.drawable.search_selector, R.drawable.location_selector, R.drawable.report_selector, R.drawable.fb_selector};
-
+    //onCreate method - calls in the initializing the page
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        context = getApplicationContext();
         setContentView(R.layout.view_home);
 
         //prevent app stop
-        urlBundle = new Bundle();
+        /*urlBundle = new Bundle();
         String url = getResources().getString(R.string.slmc_url);
-        urlBundle.putString("url", url);
+        urlBundle.putString("url", url);*/
 
-        mFab = findViewById(R.id.fab);
-        mMenuLayout = findViewById(R.id.menu_layout);
-        mArcLayout = (ArcLayout) findViewById(R.id.arc_layout);
-        viewDisplay = (ViewPager) findViewById(R.id.pager);
-
-        actionBar = getActionBar();
-        mAdapter = new Tab_Controller(getSupportFragmentManager());
-
-        viewDisplay.setAdapter(mAdapter);
-
-        actionBar.setHomeButtonEnabled(false);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        viewDisplay.setAdapter(mAdapter);
-
-        for (int i = 0; i < icons.length; i++) {
-            actionBar.addTab(actionBar.newTab().setIcon(icons[i]).setTabListener(this));
-        }
-
-        context = getApplicationContext();
-
-        //Define buttons
+        //Set up arc layout
+        arcLayouCtrl = findViewById(R.id.arcLayoutCtrlBtn);
+        menuLayout = findViewById(R.id.menuLayout);
+        arcLayout = (ArcLayout) findViewById(R.id.arcLayout);
+        //Define arc layout buttons
         docDetailsBTN = (Button) findViewById(R.id.docDetailsBtn);
         reportFakeDocBTN = (Button) findViewById(R.id.reportFakeDocBtn);
         locationDetailBTN = (Button) findViewById(R.id.locationDetailsBtn);
         faceBookShareBTN = (Button) findViewById(R.id.facebookShareBtn);
-
         lastSelectedButton = docDetailsBTN;
         docDetailsBTN.setBackgroundResource(R.drawable.light_blue_oval_selector);
+        //Set click event to arc layout buttons
+        menuLayout.setOnClickListener(this);
+        for (int i = 0, size = arcLayout.getChildCount(); i < size; i++) {
+            arcLayout.getChildAt(i).setOnClickListener(this);
+        }
+        arcLayouCtrl.setOnClickListener(this);
 
-        //Detect slide
+        //Set up tabs
+        viewDisplay = (ViewPager) findViewById(R.id.fragmentViewer);
+        actionBar = getActionBar();
+        mAdapter = new Tab_Controller(getSupportFragmentManager());
+        viewDisplay.setAdapter(mAdapter);
+        actionBar.setHomeButtonEnabled(false);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        viewDisplay.setAdapter(mAdapter);
+        //Set up images to respective tabs
+        for (int i = 0; i < icons.length; i++) {
+            actionBar.addTab(actionBar.newTab().setIcon(icons[i]).setTabListener(this));
+        }
+        //Detect slide event
         viewDisplay.setOnPageChangeListener(this);
 
-        mMenuLayout.setOnClickListener(this);
-
-        for (int i = 0, size = mArcLayout.getChildCount(); i < size; i++) {
-            mArcLayout.getChildAt(i).setOnClickListener(this);
-        }
-
-        mFab.setOnClickListener(this);
-
-        if (this.getIntent().hasExtra("SelectedDoc")) {
-            Model_Doctor selectedDoctor = (Model_Doctor) this.getIntent().getSerializableExtra("SelectedDoc");
-            Controller_Doctor_Rating ratingDialog = new Controller_Doctor_Rating();
+        //Handle rate later option of the app
+        if (this.getIntent().hasExtra(Strings.SELECTED_DOC_TEXT)) {
+            DoctorModel selectedDoctor = (DoctorModel) this.getIntent().getSerializableExtra(Strings.SELECTED_DOC_TEXT);
+            DoctorRatingDialog ratingDialog = new DoctorRatingDialog();
             ratingDialog.setArguments(selectedDoctor, context);
             ratingDialog.show(getSupportFragmentManager(), null);
         }
 
-
-/*        //Load Coordinates
+        /*  Load Coordinates
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE); // Getting LocationManager object
 
         Criteria criteria = new Criteria();// Creating an empty criteria object
@@ -155,35 +141,37 @@ public class Controller_Home extends FragmentActivity implements View.OnClickLis
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_view__home, menu);
+        getMenuInflater().inflate(R.menu.menu_view_home, menu);
         return true;
     }
 
+    //Menu items selection
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
+            //About SLMC dialog box
             case R.id.view_fragment_slmc:
                 fragmentsDialog = new Dialog(Controller_Home.this);
-                fragmentsDialog.setTitle("About SLMC");
+                fragmentsDialog.setTitle(Strings.ABOUT_SLMC_TITLE);
                 fragmentsDialog.setContentView(R.layout.view_fragment_slmc);
 
                 WebView aboutSLMCWebView = (WebView) fragmentsDialog.findViewById(R.id.slmcDetails);
                 aboutSLMCWebView.setBackgroundColor(Color.TRANSPARENT);
 
                 //Display about SLMC Text
-                StringBuilder textAboutSLMC = new StringBuilder("<html><body><p align=\"justify\" style=\"color:black\">");
+                StringBuilder textAboutSLMC = new StringBuilder(Strings.HTML_STYLE);
                 textAboutSLMC.append(getString(R.string.about_SLMC));
-                textAboutSLMC.append("</p></body></html>");
+                textAboutSLMC.append(Strings.HTML_REST);
 
-                aboutSLMCWebView.loadData(textAboutSLMC.toString(), "text/html", "utf-8");
+                aboutSLMCWebView.loadData(textAboutSLMC.toString(), Strings.DOC_TYPE, Strings.TEXT_TYPE);
 
                 //Set URL link to SLMC Website
                 TextView urlView = (TextView) fragmentsDialog.findViewById(R.id.slmcURL);
                 urlView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.srilankamedicalcouncil.org"));
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Strings.SLMC_SITE_URL));
                         startActivity(browserIntent);
 
                     }
@@ -191,10 +179,11 @@ public class Controller_Home extends FragmentActivity implements View.OnClickLis
 
                 fragmentsDialog.show();
                 break;
+            //About Us dialog box
             case R.id.view_fragment_aboutUs:
                 fragmentsDialog = new Dialog(Controller_Home.this);
                 fragmentsDialog.setContentView(R.layout.view_fragment_aboutus);
-                fragmentsDialog.setTitle("About Us");
+                fragmentsDialog.setTitle(Strings.ABOUT_US_TITLE);
                 final RatingBar ratingBar = (RatingBar) fragmentsDialog.findViewById(R.id.ratingBar);
 
                 ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -213,18 +202,18 @@ public class Controller_Home extends FragmentActivity implements View.OnClickLis
                         StringBuilder url = new StringBuilder(baseURL);
                         float rating = ratingBar.getRating();
                         String rateLevelText = getRatingTextFrom(rating);
-                        url.append("PhoneAppControllers/AppRatingController/insertAppNewRating/");
+                        url.append(Strings.INSERT_NEW_RATING_URL);
                         JSONObject ratingJSONObj = new JSONObject();
                         try {
-                            ratingJSONObj.put("rating", rating);
-                            ratingJSONObj.put("ratingLevelText", rateLevelText);
+                            ratingJSONObj.put(Strings.JSON_RATING_VALUE, rating);
+                            ratingJSONObj.put(Strings.JSON_RATING_TEXT, rateLevelText);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
                         WebTask_ExecutePostRequests ratingTask = new WebTask_ExecutePostRequests();
                         ratingTask.setContext(context);
-                        ratingTask.setMessage("Thanks for your support!!");
+                        ratingTask.setMessage(Strings.THANKING_TEXT);
                         ratingTask.setjObject(ratingJSONObj);
                         // passes values for the urls string array
                         ratingTask.execute(url.toString());
@@ -238,67 +227,70 @@ public class Controller_Home extends FragmentActivity implements View.OnClickLis
         return true;
     }
 
+    //Get rating string according to the given rating
     private String getRatingTextFrom(float rate) {
         int rateLevel = (int) rate;
         String rateLevelString;
         switch (rateLevel) {
             case 0:
-                rateLevelString = "Very Bad App";
+                rateLevelString = Strings.RATING_VERY_BAD;
                 break;
             case 1:
-                rateLevelString = "Bad App";
+                rateLevelString = Strings.RATING_BAD;
                 break;
             case 2:
-                rateLevelString = "App is in average level";
+                rateLevelString = Strings.RATING_AVERAGE_LEVEL;
                 break;
             case 3:
-                rateLevelString = "Good App";
+                rateLevelString = Strings.RATING_GOOD;
                 break;
             case 4:
-                rateLevelString = "Very Good App";
+                rateLevelString = Strings.RATING_VERY_GOOD;
                 break;
             default:
-                rateLevelString = "Excellent App";
+                rateLevelString = Strings.RATING_EXCELLENT;
         }
         return rateLevelString;
     }
 
+    //Onclick handle
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.fab) {
-            onFabClick(v);
+        if (v.getId() == R.id.arcLayoutCtrlBtn) {
+            arcLayoutCtrlBtnClick(v);
             return;
         }
 
         if (v instanceof Button) {
-            switch (((Button) v).getId()) {
+            switch (v.getId()) {
                 case R.id.docDetailsBtn:
-                    viewDisplay.setCurrentItem(0);
+                    viewDisplay.setCurrentItem(Numbers.ZERO);
                     docDetailsBTN.setBackgroundResource(R.drawable.light_blue_oval_selector);
-                    viewDisplay.setBackgroundColor(Color.parseColor("#ffffff"));
+                    viewDisplay.setBackgroundColor(Color.parseColor(Strings.WHITE_COLOR));
                     break;
                 case R.id.locationDetailsBtn:
-                    viewDisplay.setCurrentItem(1);
-                    viewDisplay.setBackgroundColor(Color.parseColor("#ffffff"));
+                    viewDisplay.setCurrentItem(Numbers.ONE);
+                    viewDisplay.setBackgroundColor(Color.parseColor(Strings.WHITE_COLOR));
                     break;
                 case R.id.reportFakeDocBtn:
-                    viewDisplay.setCurrentItem(2);
-                    viewDisplay.setBackgroundColor(Color.parseColor("#ffffff"));
+                    viewDisplay.setCurrentItem(Numbers.TWO);
+                    viewDisplay.setBackgroundColor(Color.parseColor(Strings.WHITE_COLOR));
                     break;
                 case R.id.facebookShareBtn:
-                    viewDisplay.setCurrentItem(3);
-                    viewDisplay.setBackgroundColor(Color.parseColor("#f1f1f1"));
+                    viewDisplay.setCurrentItem(Numbers.THREE);
+                    viewDisplay.setBackgroundColor(Color.parseColor(Strings.WHITE_COLOR));
                     break;
             }
         }
 
         //Hide menu if user click anywhere in the screen
-        if (v.getId() == mMenuLayout.getId()) {
+        if (v.getId() == menuLayout.getId()) {
             hideMenu();
         }
     }
 
-    private void onFabClick(View v) {
+    //Handle click event of arc layout controller buttons
+    private void arcLayoutCtrlBtnClick(View v) {
         if (v.isSelected()) {
             hideMenu();
         } else {
@@ -307,82 +299,83 @@ public class Controller_Home extends FragmentActivity implements View.OnClickLis
         v.setSelected(!v.isSelected());
     }
 
-    @SuppressWarnings("NewApi")
+    //Way to show arc layout
     private void showMenu() {
-        mMenuLayout.setVisibility(View.VISIBLE);
+        menuLayout.setVisibility(View.VISIBLE);
 
-        List<Animator> animList = new ArrayList<>();
+        List<android.animation.Animator> animList = new ArrayList<>();
 
-        for (int i = 0, len = mArcLayout.getChildCount(); i < len; i++) {
-            animList.add(createShowItemAnimator(mArcLayout.getChildAt(i)));
+        for (int i = 0, len = arcLayout.getChildCount(); i < len; i++) {
+            animList.add(createShowItemAnimator(arcLayout.getChildAt(i)));
         }
 
         AnimatorSet animSet = new AnimatorSet();
-        animSet.setDuration(400);
+        animSet.setDuration(Numbers.ANIM_DURATION);
         animSet.setInterpolator(new OvershootInterpolator());
         animSet.playTogether(animList);
         animSet.start();
     }
 
-    @SuppressWarnings("NewApi")
+    //Way to hide arc layout
     private void hideMenu() {
 
-        List<Animator> animList = new ArrayList<>();
+        List<android.animation.Animator> animList = new ArrayList<>();
 
-        for (int i = mArcLayout.getChildCount() - 1; i >= 0; i--) {
-            animList.add(createHideItemAnimator(mArcLayout.getChildAt(i)));
+        for (int i = arcLayout.getChildCount() - 1; i >= 0; i--) {
+            animList.add(createHideItemAnimator(arcLayout.getChildAt(i)));
         }
 
         AnimatorSet animSet = new AnimatorSet();
-        animSet.setDuration(400);
+        animSet.setDuration(Numbers.ANIM_DURATION);
         animSet.setInterpolator(new AnticipateInterpolator());
         animSet.playTogether(animList);
         animSet.addListener(new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationEnd(Animator animation) {
+            public void onAnimationEnd(android.animation.Animator animation) {
                 super.onAnimationEnd(animation);
-                mMenuLayout.setVisibility(View.INVISIBLE);
+                menuLayout.setVisibility(View.INVISIBLE);
             }
         });
         animSet.start();
     }
 
-    private Animator createShowItemAnimator(View item) {
+    //Way to show animation of given arc layout button
+    private android.animation.Animator createShowItemAnimator(View item) {
+        float dx = arcLayouCtrl.getX() - item.getX();
+        float dy = arcLayouCtrl.getY() - item.getY();
 
-        float dx = mFab.getX() - item.getX();
-        float dy = mFab.getY() - item.getY();
-
-        item.setRotation(0f);
+        item.setRotation(Numbers.STARTING_POSITION);
         item.setTranslationX(dx);
         item.setTranslationY(dy);
 
-        Animator anim = ObjectAnimator.ofPropertyValuesHolder(
+        android.animation.Animator anim = ObjectAnimator.ofPropertyValuesHolder(
                 item,
-                AnimatorUtils.rotation(0f, 720f),
-                AnimatorUtils.translationX(dx, 0f),
-                AnimatorUtils.translationY(dy, 0f)
+                Animator.rotation(Numbers.STARTING_POSITION, Numbers.ENDING_POSITION),
+                Animator.translationX(dx, Numbers.STARTING_POSITION),
+                Animator.translationY(dy, Numbers.STARTING_POSITION)
         );
 
         return anim;
     }
 
-    private Animator createHideItemAnimator(final View item) {
-        float dx = mFab.getX() - item.getX();
-        float dy = mFab.getY() - item.getY();
+    //Way to hide animation of given arc layout button
+    private android.animation.Animator createHideItemAnimator(final View item) {
+        float dx = arcLayouCtrl.getX() - item.getX();
+        float dy = arcLayouCtrl.getY() - item.getY();
 
-        Animator anim = ObjectAnimator.ofPropertyValuesHolder(
+        android.animation.Animator anim = ObjectAnimator.ofPropertyValuesHolder(
                 item,
-                AnimatorUtils.rotation(720f, 0f),
-                AnimatorUtils.translationX(0f, dx),
-                AnimatorUtils.translationY(0f, dy)
+                Animator.rotation(Numbers.ENDING_POSITION, Numbers.STARTING_POSITION),
+                Animator.translationX(Numbers.STARTING_POSITION, dx),
+                Animator.translationY(Numbers.STARTING_POSITION, dy)
         );
 
         anim.addListener(new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationEnd(Animator animation) {
+            public void onAnimationEnd(android.animation.Animator animation) {
                 super.onAnimationEnd(animation);
-                item.setTranslationX(0f);
-                item.setTranslationY(0f);
+                item.setTranslationX(Numbers.STARTING_POSITION);
+                item.setTranslationY(Numbers.STARTING_POSITION);
             }
         });
 
@@ -394,39 +387,30 @@ public class Controller_Home extends FragmentActivity implements View.OnClickLis
 
     }
 
+    //Handle tab click events
     @Override
     public void onPageSelected(int position) {
         getActionBar().setSelectedNavigationItem(position);
         switch (position) {
             case 0:
-                viewDisplay.setCurrentItem(0);
+                viewDisplay.setCurrentItem(Numbers.ZERO);
                 SelectedButtonDisplay(docDetailsBTN);
-                viewDisplay.setBackgroundColor(Color.parseColor("#ffffff"));
+                viewDisplay.setBackgroundColor(Color.parseColor(Strings.WHITE_COLOR));
                 break;
             case 1:
-                viewDisplay.setCurrentItem(1);
+                viewDisplay.setCurrentItem(Numbers.ONE);
                 SelectedButtonDisplay(locationDetailBTN);
-                viewDisplay.setBackgroundColor(Color.parseColor("#ffffff"));
+                viewDisplay.setBackgroundColor(Color.parseColor(Strings.WHITE_COLOR));
                 break;
             case 2:
-                viewDisplay.setCurrentItem(2);
+                viewDisplay.setCurrentItem(Numbers.TWO);
                 SelectedButtonDisplay(reportFakeDocBTN);
-                viewDisplay.setBackgroundColor(Color.parseColor("#ffffff"));
+                viewDisplay.setBackgroundColor(Color.parseColor(Strings.WHITE_COLOR));
                 break;
             case 3:
-                viewDisplay.setCurrentItem(3);
+                viewDisplay.setCurrentItem(Numbers.THREE);
                 SelectedButtonDisplay(faceBookShareBTN);
-                viewDisplay.setBackgroundColor(Color.parseColor("#f1f1f1"));
-                break;
-            case 4:
-                viewDisplay.setCurrentItem(4);
-                SelectedButtonDisplay(aboutSLMCBTN);
-                viewDisplay.setBackgroundColor(Color.parseColor("#ffffff"));
-                break;
-            case 5:
-                viewDisplay.setCurrentItem(5);
-                SelectedButtonDisplay(aboutDevelopersBTN);
-                viewDisplay.setBackgroundColor(Color.parseColor("#ffffff"));
+                viewDisplay.setBackgroundColor(Color.parseColor(Strings.WHITE_COLOR));
                 break;
         }
     }
@@ -436,6 +420,7 @@ public class Controller_Home extends FragmentActivity implements View.OnClickLis
 
     }
 
+    //Handle selected button of arc layout
     private void SelectedButtonDisplay(Button b) {
         lastSelectedButton.setBackgroundResource(R.drawable.path_white_oval);
         b.setBackgroundResource(R.drawable.light_blue_oval_selector);
@@ -454,29 +439,6 @@ public class Controller_Home extends FragmentActivity implements View.OnClickLis
 
     @Override
     public void onTabReselected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
-
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        Model_GlobalValues.latitude = location.getLatitude();
-        Model_GlobalValues.longtitude = location.getLongitude();
-
-        Toast.makeText(context, "Loading Coordinates", Toast.LENGTH_LONG);
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
 
     }
 }

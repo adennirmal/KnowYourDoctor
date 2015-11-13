@@ -6,7 +6,7 @@
     android:id="@+id/view_fragment_aboutUs"
     android:weightSum="100"
     android:background="#f1f1f1"
-    tools:context="pack.knowyourdoctor.Tab_Controllers.Controller_Fragment_Aboutus">
+    tools:context="pack.knowyourdoctor.TabControllers.Controller_Fragment_Aboutus">
 
     <ScrollView
         android:layout_width="match_parent"

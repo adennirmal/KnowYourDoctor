@@ -1,4 +1,4 @@
-package pack.knowyourdoctor.Tab_Controllers;
+package pack.knowyourdoctor.TabControllers;
 
 
 import android.content.Intent;
@@ -14,9 +14,7 @@ import android.widget.TextView;
 
 import pack.knowyourdoctor.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class Controller_Fragment_SLMC extends Fragment {
     WebView aboutSLMCWebView;
 

@@ -1,4 +1,4 @@
-package pack.knowyourdoctor.Adapters;
+package pack.knowyourdoctor.ListControllers;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,9 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.location.Location;
-import android.location.LocationListener;
-import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.view.LayoutInflater;
@@ -23,38 +21,40 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.google.android.gms.maps.GoogleMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import Models.Model_Doctor;
-import Models.Model_GPS;
-import Models.Model_GlobalValues;
-import Models.Model_HospitalLocation;
-import Models.Model_RatedDoctor;
+import Models.DoctorModel;
+import Models.GPSModel;
+import Models.GlobalValueModel;
+import Models.HospitalLocationModel;
+import Models.RatedDoctorModel;
 import ValidationRules.CommentValidation;
 import ValidationRules.RequiredFieldValidation;
+import pack.knowyourdoctor.Constants.Numbers;
+import pack.knowyourdoctor.Constants.Strings;
 import pack.knowyourdoctor.MainControllers.Controller_Home;
 import pack.knowyourdoctor.MainControllers.Controller_WebTasks;
 import pack.knowyourdoctor.R;
 
-public class Adapter_DoctorList extends BaseExpandableListAdapter implements LocationListener {
-
+//Display doctor list
+public class Adapter_DoctorList extends BaseExpandableListAdapter {
     private Context context;
-    private ArrayList<Model_Doctor> searchedDoctors;
-    Model_Doctor selectedDoctor;
-    Model_RatedDoctor ratedDoc;
+    private ArrayList<DoctorModel> searchedDoctors;
+    DoctorModel selectedDoctor;
+    RatedDoctorModel ratedDoc;
     ListView ratedDocComments;
     Adapter_Comments listAdapter;
     EditText newComment;
     TextView commentDoctorTextView;
     Dialog ratingsDialog;
-    int commentsCount;
 
-    public Adapter_DoctorList(Context context, ArrayList<Model_Doctor> doctors) {
+    public Adapter_DoctorList(Context context, ArrayList<DoctorModel> doctors) {
         this.context = context;
         searchedDoctors = doctors;
     }
@@ -96,7 +96,8 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter implements Loc
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
+                             ViewGroup parent) {
         String docName = (String) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
@@ -106,14 +107,15 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter implements Loc
 
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.searchedDocName);
         lblListHeader.setTypeface(null, Typeface.BOLD);
-        lblListHeader.setText("Dr. " + docName);
+        lblListHeader.setText(Strings.DR + docName);
 
         return convertView;
     }
 
     @Override
-    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        Model_Doctor currentDoc = (Model_Doctor) getChild(groupPosition, childPosition);
+    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild,
+                             View convertView, ViewGroup parent) {
+        DoctorModel currentDoc = (DoctorModel) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
@@ -130,7 +132,8 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter implements Loc
         TextView textAddress = (TextView) convertView.findViewById(R.id.searchedDocAddress);
         textAddress.setText(currentDoc.getAddress());
 
-        TextView textQualification = (TextView) convertView.findViewById(R.id.searchedDocQualification);
+        TextView textQualification = (TextView) convertView.findViewById(
+                R.id.searchedDocQualification);
         textQualification.setText(currentDoc.getQualifications());
 
         //ViewRating button
@@ -138,12 +141,15 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter implements Loc
         viewRatingBtn.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 selectedDoctor = searchedDoctors.get(groupPosition);
-                ratedDoc = new Model_RatedDoctor();
-                StringBuilder url = new StringBuilder(context.getResources().getString(R.string.webserviceLink));
-                url.append("PhoneAppControllers/DoctorRatingController/getAllCommentsOfDoc/" + selectedDoctor.getRegNo());
+                ratedDoc = new RatedDoctorModel();
+                StringBuilder url = new StringBuilder(
+                        context.getResources().getString(R.string.webserviceLink));
+                url.append(Strings.GET_ALL_COMMENTS + selectedDoctor.getRegNo());
                 //Call relevant async task
                 Controller_WebTasks webTaskController = new Controller_WebTasks();
-                webTaskController.executeRatingListLoadTask(ratedDoc, context, ratedDocComments, listAdapter, newComment, commentDoctorTextView, ratingsDialog, url.toString(), selectedDoctor);
+                webTaskController.executeRatingListLoadTask(ratedDoc, context, ratedDocComments,
+                        listAdapter, newComment, commentDoctorTextView, ratingsDialog,
+                        url.toString(), selectedDoctor);
             }
         });
 
@@ -155,7 +161,7 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter implements Loc
                 final AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
                 alertDialog.setTitle(context.getResources().getString(R.string.rate_dialog_title));
                 alertDialog.setMessage(context.getResources().getString(R.string.rate_dialog_message));
-                alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                alertDialog.setPositiveButton(Strings.YES, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         final Dialog ratingDialog = new Dialog(context);
@@ -164,17 +170,19 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter implements Loc
                         ratingDialog.setTitle("Your Comment");
 
                         TextView docNameTV = (TextView) ratingDialog.findViewById(R.id.doctorName);
-                        docNameTV.setText("Dr." + selectedDoctor.getFullName());
+                        docNameTV.setText(Strings.DR + selectedDoctor.getFullName());
                         //Rate confirm button
                         Button ratebtn = (Button) ratingDialog.findViewById(R.id.rateBtn);
                         ratebtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 //Comment text view
-                                TextView commentText = (TextView) ratingDialog.findViewById(R.id.comment);
+                                TextView commentText = (TextView) ratingDialog.findViewById(
+                                        R.id.comment);
                                 String comment = commentText.getText().toString();
 
-                                String[] Result = CommentValidation.checkComment(comment, R.array.wordsList, R.array.wordsToIgnore, context);
+                                String[] Result = CommentValidation.checkComment(comment,
+                                        R.array.wordsList, R.array.wordsToIgnore, context);
                                 commentText.setText(Result[1]);
 
                                 boolean isValid = true;
@@ -182,18 +190,23 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter implements Loc
                                     commentText.setError(context.getResources().getString(R.string.add_comment_to_submit));
                                     isValid = false;
                                 }
-                                if (isValid == true && Integer.parseInt(Result[0].toString()) == 0) {
+                                if (isValid == true && Integer.parseInt(Result[0].toString()) == Numbers.ZERO) {
                                     String baseURL = context.getResources().getString(R.string.webserviceLink);
                                     StringBuilder url = new StringBuilder(baseURL);
-                                    url.append("PhoneAppControllers/DoctorRatingController/insertNewRating/");
+                                    url.append(Strings.INSERT_DOC_RATING);
                                     JSONObject docJSONObj = new JSONObject();
                                     try {
-                                        docJSONObj.put("docID", selectedDoctor.getRegNo());
-                                        docJSONObj.put("docName", selectedDoctor.getFullName());
-                                        docJSONObj.put("docAddress", selectedDoctor.getAddress());
-                                        docJSONObj.put("docRegDate", selectedDoctor.getRegDate());
-                                        docJSONObj.put("docQualifications", selectedDoctor.getQualifications());
-                                        docJSONObj.put("comment", comment);
+                                        docJSONObj.put(Strings.JSON_SEND_DOCID,
+                                                selectedDoctor.getRegNo());
+                                        docJSONObj.put(Strings.JSON_SEND_DOCTOR_NAME,
+                                                selectedDoctor.getFullName());
+                                        docJSONObj.put(Strings.JSON_SEND_ADDRESS,
+                                                selectedDoctor.getAddress());
+                                        docJSONObj.put(Strings.JSON_SEND_REG_DATE,
+                                                selectedDoctor.getRegDate());
+                                        docJSONObj.put(Strings.JSON_SEND_QUALIFICATIONS,
+                                                selectedDoctor.getQualifications());
+                                        docJSONObj.put(Strings.JSON_SEND_COMMENT, comment);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -204,14 +217,14 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter implements Loc
 
 
                                     ratingDialog.dismiss();
-                                } else if (Integer.parseInt(Result[0]) == -1) {
+                                } else if (Integer.parseInt(Result[Numbers.ZERO]) == Numbers.MINUS_ONE) {
                                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                                     alertDialogBuilder.setTitle(context.getResources().getString(R.string.warning));
                                     alertDialogBuilder
                                             .setIcon(R.drawable.warning_icon)
                                             .setMessage(R.string.warning_body)
                                             .setCancelable(false)
-                                            .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                            .setNegativeButton(Strings.OK, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int id) {
                                                     dialog.cancel();
                                                 }
@@ -249,37 +262,53 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter implements Loc
             }
         });
 
-        Button locationBtn = (Button) convertView.findViewById(R.id.locationBTN);
+        final Button locationBtn = (Button) convertView.findViewById(R.id.locationBTN);
         locationBtn.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 selectedDoctor = searchedDoctors.get(groupPosition);
 
                 final Dialog locationDialog = new Dialog(context);
-                locationDialog.setTitle("Submit Medical Center");
+                locationDialog.setTitle(Strings.SUBMIT_MEDICAL_CENTER);
 
                 locationDialog.setContentView(R.layout.view_submit_hospital);
 
                 final Spinner spinner = (Spinner) locationDialog.findViewById(R.id.hospitals);
                 TextView docNameTV = (TextView) locationDialog.findViewById(R.id.doctorName);
+                /*MapFragment sample (SupportMapFragment)
+                MapsInitializer.initialize(context);
+
+                Activity a = (Activity) context;
+                //googleMap = ((MapFragment) a.getFragmentManager().findFragmentById(R.id.chooseMapView)).getMap();
+                if(googleMap !=  null) {
+                    googleMap.setMyLocationEnabled(true);
+                }else{
+                    System.out.println("Unable to retreive Map");
+                }
+                if(!RequiredFieldValidation.isEmpty(addHospitalName.getText().toString())){
+
+                }else{
+                    addHospitalName.setError(context.getResources().getString(R.string.hospital_name_required));
+                }*/
+
                 docNameTV.setText("Dr." + selectedDoctor.getFullName());
 
                 JSONObject currentLocationJSON = new JSONObject();
                 try {
                     //Load Current Location Coordinates
-                    Model_GPS modelGps = Model_GPS.getInstance();
+                    GPSModel modelGps = GPSModel.getInstance();
                     modelGps.getCurrentLocation(context);
 
                     //Pass Latitude & Longtitude to json object
-                    currentLocationJSON.put("latitude", Model_GlobalValues.latitude);
-                    currentLocationJSON.put("longtitude", Model_GlobalValues.longtitude);
+                    currentLocationJSON.put(Strings.JSON_LATITUDE, GlobalValueModel.latitude);
+                    currentLocationJSON.put(Strings.JSON_LONGTITUDE, GlobalValueModel.longtitude);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                final ArrayList<Model_HospitalLocation> hospitals = new ArrayList<Model_HospitalLocation>();
+                final ArrayList<HospitalLocationModel> hospitals = new ArrayList<HospitalLocationModel>();
 
                 StringBuilder url = new StringBuilder(context.getResources().getString(R.string.webserviceLink));
-                url.append("PhoneAppControllers/HospitalListController/getAllHospitals");
+                url.append(Strings.GET_ALL_HOSPITALS);
 
                 //Call relevant async task
                 final Controller_WebTasks webTaskController = new Controller_WebTasks();
@@ -290,22 +319,22 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter implements Loc
                     @Override
                     public void onClick(View v) {
                         int selectedIndex = spinner.getSelectedItemPosition();
-                        Model_HospitalLocation selectedHospital = hospitals.get(selectedIndex);
+                        HospitalLocationModel selectedHospital = hospitals.get(selectedIndex);
                         StringBuilder url = new StringBuilder(context.getResources().getString(R.string.webserviceLink));
-                        url.append("PhoneAppControllers/DoctorLocationController/insertLocation");
+                        url.append(Strings.INSERT_DOC_LOCATION);
 
                         JSONObject docLocationJSON = new JSONObject();
                         try {
-                            docLocationJSON.put("docID", selectedDoctor.getRegNo());
-                            docLocationJSON.put("docName", selectedDoctor.getFullName());
-                            docLocationJSON.put("docAddress", selectedDoctor.getAddress());
-                            docLocationJSON.put("docRegDate", selectedDoctor.getRegDate());
-                            docLocationJSON.put("docQualifications", selectedDoctor.getQualifications());
-                            docLocationJSON.put("locationID", selectedHospital.getId());
+                            docLocationJSON.put(Strings.JSON_SEND_DOCID, selectedDoctor.getRegNo());
+                            docLocationJSON.put(Strings.JSON_SEND_DOCTOR_NAME, selectedDoctor.getFullName());
+                            docLocationJSON.put(Strings.JSON_SEND_ADDRESS, selectedDoctor.getAddress());
+                            docLocationJSON.put(Strings.JSON_SEND_REG_DATE, selectedDoctor.getRegDate());
+                            docLocationJSON.put(Strings.JSON_SEND_QUALIFICATIONS, selectedDoctor.getQualifications());
+                            docLocationJSON.put(Strings.JSON_SEND_LOCATION_ID, selectedHospital.getId());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        webTaskController.executePostRequestTaks(context, "Thanks for your support", docLocationJSON, url.toString());
+                        webTaskController.executePostRequestTaks(context, Strings.THANKING_TEXT, docLocationJSON, url.toString());
                         locationDialog.dismiss();
                     }
                 });
@@ -325,19 +354,19 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter implements Loc
         return convertView;
     }
 
-    public void sendBasicNotification(Model_Doctor selectedDoc) {
+    public void sendBasicNotification(DoctorModel selectedDoc) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setAutoCancel(true);
-        builder.setContentTitle("Rate Dr. " + selectedDoc.getFullName());
-        builder.setContentText("Tap to rate");
+        builder.setContentTitle(Strings.RATE_DR + selectedDoc.getFullName());
+        builder.setContentText(Strings.TAP_TO_RATE);
         builder.setSmallIcon(R.mipmap.appiconimg);
 
         Intent i = new Intent(this.context, Controller_Home.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this.context);
         stackBuilder.addParentStack(Controller_Home.class);
-        i.putExtra("SelectedDoc", (java.io.Serializable) selectedDoc);
+        i.putExtra(Strings.SELECTED_DOC_TEXT, selectedDoc);
         stackBuilder.addNextIntent(i);
-        PendingIntent pi_main = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pi_main = stackBuilder.getPendingIntent(Numbers.ZERO, PendingIntent.FLAG_CANCEL_CURRENT);
 
         builder.setContentIntent(pi_main);
 
@@ -350,35 +379,4 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter implements Loc
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        Model_GlobalValues.latitude = location.getLatitude();
-        Model_GlobalValues.longtitude = location.getLongitude();
-
-        Toast.makeText(context, "Loading Coordinates", Toast.LENGTH_LONG);
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
-
-    //GPS validator method
-    public void buildAlertMessageNoGps() {
-
-    }
 }
-
-
-

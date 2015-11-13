@@ -2,11 +2,8 @@ package ValidationRules;
 
 import android.content.Context;
 
-/**
- * Created by Aden on 9/8/2015.
- */
+//Comment validation
 public class CommentValidation {
-
     static String[] SPLIT_COMMENT;
 
     public static String[] checkComment(String comment, int wordsArrayId, int ignoreWordsArrayId, Context context) {

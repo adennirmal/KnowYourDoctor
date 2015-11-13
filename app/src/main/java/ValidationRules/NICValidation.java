@@ -3,9 +3,7 @@ package ValidationRules;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by Home on 5/10/2015.
- */
+//NIC Validation
 public class NICValidation {
     // validating Registration Number
     public static boolean isValidNIC(String nicNo) {

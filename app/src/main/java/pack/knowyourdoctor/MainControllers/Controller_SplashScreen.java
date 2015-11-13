@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import pack.knowyourdoctor.Constants.Numbers;
 import pack.knowyourdoctor.R;
 
 
 public class Controller_SplashScreen extends Activity {
-    // Splash screen timer
-    private static int SPLASH_TIME_OUT = 3000;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +32,7 @@ public class Controller_SplashScreen extends Activity {
                 // close this activity
                 finish();
             }
-        }, SPLASH_TIME_OUT);
+        }, Numbers.SPLASH_TIME_OUT);
     }
 
 }
