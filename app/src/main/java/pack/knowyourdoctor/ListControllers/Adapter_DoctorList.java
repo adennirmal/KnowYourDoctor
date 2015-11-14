@@ -290,7 +290,7 @@ public class Adapter_DoctorList extends BaseExpandableListAdapter {
                     addHospitalName.setError(context.getResources().getString(R.string.hospital_name_required));
                 }*/
 
-                docNameTV.setText("Dr." + selectedDoctor.getFullName());
+                docNameTV.setText(Strings.DR + selectedDoctor.getFullName());
 
                 JSONObject currentLocationJSON = new JSONObject();
                 try {
