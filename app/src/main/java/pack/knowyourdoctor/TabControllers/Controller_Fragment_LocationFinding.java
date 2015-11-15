@@ -28,12 +28,14 @@ import java.util.ArrayList;
 import Models.DoctorModel;
 import Models.GPSModel;
 import Models.GlobalValueModel;
+import Models.HospitalLocationModel;
 import ValidationRules.RequiredFieldValidation;
 import pack.knowyourdoctor.Constants.Strings;
 import pack.knowyourdoctor.MainControllers.Controller_WebTasks;
 import pack.knowyourdoctor.R;
 
-import static com.google.android.gms.common.api.GoogleApiClient.*;
+import static com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import static com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 
 //Search for Doctors & Hospitals
 public class Controller_Fragment_LocationFinding
@@ -47,15 +49,16 @@ public class Controller_Fragment_LocationFinding
     Context context;
     Spinner doctorName;
     StringBuilder url;
-    ArrayList<DoctorModel> _doctorModels;
-    JSONObject currentLocationJSON = new JSONObject();
+    ArrayList<DoctorModel> doctorModels;
+    Controller_WebTasks controller_webTasks;
 
     //onCreate method - calls in the initializing the dialog
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.view_fragment_locationfinding, container, false);
+        //Web Controller
+        controller_webTasks = new Controller_WebTasks();
         context = rootView.getContext();
 
         //Get Current Location
@@ -67,14 +70,13 @@ public class Controller_Fragment_LocationFinding
         Tlocation = (EditText) rootView.findViewById(R.id.hospitalName);
         doctorName = (Spinner) rootView.findViewById(R.id.doctorName);
         mapView = (MapView) rootView.findViewById(R.id.mapView);
-        _doctorModels = new ArrayList<>();
+        doctorModels = new ArrayList<>();
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
-        final Controller_WebTasks controller_webTasks = new Controller_WebTasks();
 
         url = new StringBuilder(context.getResources().getString(R.string.webserviceLink));
         url.append(Strings.GET_ALL_LOCATED_DOCTORS);
-
+        JSONObject currentLocationJSON = new JSONObject();
         try {
             //Assign Current Coordinates
             currentLocationJSON.put(Strings.JSON_LATITUDE, GlobalValueModel.latitude);
@@ -82,11 +84,10 @@ public class Controller_Fragment_LocationFinding
             //Initiallize the Google Map
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
-
             e.printStackTrace();
         }
         //Execute Controller
-        controller_webTasks.executeDoctorListLoadTask(context, _doctorModels, doctorName,
+        controller_webTasks.executeDoctorListLoadTask(context, doctorModels, doctorName,
                 currentLocationJSON, url.toString());
         // Load Map
         googleMap = mapView.getMap();
@@ -95,7 +96,30 @@ public class Controller_Fragment_LocationFinding
         nearestHospitalofDoctorbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Create Marker
+                //Selected doctor from spinner
+                int selectedIndex = doctorName.getSelectedItemPosition();
+                DoctorModel seletedDoc = doctorModels.get(selectedIndex);
+
+                url = new StringBuilder(context.getResources().getString(R.string.webserviceLink));
+                url.append(Strings.GET_ALL_LOCATIONS);
+                JSONObject currentLocationJSON = new JSONObject();
+                try {
+                    currentLocationJSON.put("docID",seletedDoc.getRegNo());
+                    //Assign Current Coordinates
+                    currentLocationJSON.put(Strings.JSON_LATITUDE, GlobalValueModel.latitude);
+                    currentLocationJSON.put(Strings.JSON_LONGTITUDE, GlobalValueModel.longtitude);
+                    //Initiallize the Google Map
+                    MapsInitializer.initialize(getActivity().getApplicationContext());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                ArrayList<HospitalLocationModel> hospitals = new ArrayList<HospitalLocationModel>();
+                //Execute Controller
+                controller_webTasks.executeGetAllLocationsTask(context, seletedDoc, hospitals,
+                                                        currentLocationJSON,googleMap,url.toString());
+
+                // Create Marker to current location
                 googleMap.addMarker(new MarkerOptions().position(new LatLng(GlobalValueModel.latitude,
                         GlobalValueModel.longtitude)).title(context.getResources()
                         .getString(R.string.Your_current_location))

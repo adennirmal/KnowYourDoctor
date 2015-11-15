@@ -36,6 +36,8 @@ public class Strings {
             "PhoneAppControllers/HospitalListController/getAllHospitals";
     public static final String INSERT_DOC_LOCATION =
             "PhoneAppControllers/DoctorLocationController/insertLocation";
+    public static final String GET_ALL_LOCATIONS =
+            "PhoneAppControllers/LocatedDoctorListController/getAllLocationsOfDoc";
 
     //Toast Messages
     public static final String THANKING_TEXT = "Thanks for your support!!";
@@ -135,6 +137,10 @@ public class Strings {
     //Doc List Load Web Task
     public static final String JSON_LOCATED_DOC = "locatedDoctors";
     public static final String JSON_DOC_NAME = "docname";
+    public static final String JSON_DOC_ID = "docid";
+    public static final String JSON_DOC_ADDRESS = "address";
+    public static final String JSON_DOC_REG_DATE = "regdate";
+    public static final String JSON_DOC_QUALIFICATION = "qualifications";
     //GET HTML content Web Task
     public static final String TABLE_ID = "r_table";
     public static final String HEADING_TYPE_2 = "h2";

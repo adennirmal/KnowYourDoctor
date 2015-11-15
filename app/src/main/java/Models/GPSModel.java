@@ -14,7 +14,7 @@ import android.widget.Toast;
 import pack.knowyourdoctor.R;
 
 /**
- * Created by anthony on 10/26/2015.
+ * Created by Darrel on 10/26/2015.
  */
 public class GPSModel implements LocationListener {
 

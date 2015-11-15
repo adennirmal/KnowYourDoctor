@@ -21,6 +21,7 @@ import Models.HospitalLocationModel;
 import Models.RatedDoctorModel;
 import WebServiceAccess.WebTask_DoctorListLoad;
 import WebServiceAccess.WebTask_ExecutePostRequests;
+import WebServiceAccess.WebTask_GetDoctorLocations;
 import WebServiceAccess.WebTask_GetHTMLContent;
 import WebServiceAccess.WebTask_HospitalListLoad;
 import WebServiceAccess.WebTask_RatingListLoad;
@@ -37,6 +38,7 @@ public class Controller_WebTasks {
     private WebTask_RatingListLoad ratingListLoadTask;
     private WebTask_SearchHospital searchHospital;
     private WebTask_DoctorListLoad doctorListLoad;
+    private WebTask_GetDoctorLocations getAllLocations;
 
     //Constructor
     public Controller_WebTasks() {
@@ -46,6 +48,7 @@ public class Controller_WebTasks {
         this.ratingListLoadTask = new WebTask_RatingListLoad();
         this.searchHospital = new WebTask_SearchHospital();
         this.doctorListLoad = new WebTask_DoctorListLoad();
+        this.getAllLocations = new WebTask_GetDoctorLocations();
     }
 
     //Handler for all POST requests
@@ -124,6 +127,18 @@ public class Controller_WebTasks {
         this.doctorListLoad.setjObject(jsonObject);
         this.doctorListLoad.setUrl(url);
         this.doctorListLoad.executeWebTask();
+    }
+
+    //Retrieve all doctor locations
+    public void executeGetAllLocationsTask(Context context, DoctorModel selectedDoctor,
+                                           ArrayList<HospitalLocationModel> hospitals, JSONObject jsonObject,GoogleMap googleMap, String url) {
+        this.getAllLocations.setContext(context);
+        this.getAllLocations.setSelectedDoctor(selectedDoctor);
+        this.getAllLocations.setHospitals(hospitals);
+        this.getAllLocations.setjObject(jsonObject);
+        this.getAllLocations.setmMap(googleMap);
+        this.getAllLocations.setUrl(url);
+        this.getAllLocations.executeWebTask();
     }
 
 }

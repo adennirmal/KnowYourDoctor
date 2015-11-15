@@ -81,7 +81,8 @@
                         android:layout_weight="85"
                         android:textSize="16sp"
                         android:id="@+id/doctorName"
-                        android:hint="@string/location_doc_hint" />
+                        android:hint="@string/location_doc_hint"
+                        />
 
                     <Button
                         android:layout_width="wrap_content"

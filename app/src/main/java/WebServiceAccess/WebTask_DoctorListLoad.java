@@ -11,6 +11,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,8 +72,12 @@ public class WebTask_DoctorListLoad
     //Run in background thread - Execution of web task
     @Override
     protected String doInBackground(String... params) {
+        HttpParams httpParameters = new BasicHttpParams();
+        HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
+        HttpConnectionParams.setSoTimeout(httpParameters, 10000+12000);
         HttpClient httpclient = new DefaultHttpClient();
         HttpPost httppost = new HttpPost(params[0]);
+        httppost.setParams(httpParameters);
         try {
             httppost.setEntity(new StringEntity(jObject.toString(), Strings.TEXT_TYPE));
             HttpResponse response = httpclient.execute(httppost);
@@ -113,8 +120,20 @@ public class WebTask_DoctorListLoad
                 DoctorModel doctor = new DoctorModel();
                 JSONObject jsonDoctor = doctorNameNode.getJSONObject(i);
 
+                doctor.setRegNo(Integer.parseInt(jsonDoctor.optString(Strings.JSON_DOC_ID)));
+
                 String doctorName = jsonDoctor.optString(Strings.JSON_DOC_NAME);
                 doctor.setFullName(doctorName);
+
+                //Set reg Date
+                doctor.setRegDate(jsonDoctor.optString(Strings.JSON_DOC_REG_DATE));
+
+                //Set reg No
+                doctor.setAddress(jsonDoctor.optString(Strings.JSON_DOC_ADDRESS));
+
+                //Set reg No
+                doctor.setQualifications(jsonDoctor.optString(Strings.JSON_DOC_QUALIFICATION));
+
                 doctorNames.add(doctorName);
                 doctorList.add(doctor);
             }
