@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,6 +30,7 @@ import Models.DoctorModel;
 import Models.GPSModel;
 import Models.GlobalValueModel;
 import Models.HospitalLocationModel;
+import Services.InternetCheck;
 import ValidationRules.RequiredFieldValidation;
 import pack.knowyourdoctor.Constants.Strings;
 import pack.knowyourdoctor.MainControllers.Controller_WebTasks;
@@ -86,9 +88,15 @@ public class Controller_Fragment_LocationFinding
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //Execute Controller
-        controller_webTasks.executeDoctorListLoadTask(context, doctorModels, doctorName,
-                currentLocationJSON, url.toString());
+
+        //Check internet is enabled or not
+        if (InternetCheck.isNetworkAvailable(context)) {
+            //Execute Controller
+            controller_webTasks.executeDoctorListLoadTask(context, doctorModels, doctorName,
+                    currentLocationJSON, url.toString());
+        } else {
+            Toast.makeText(context, "Sorry! please turn on your internet connection", Toast.LENGTH_LONG).show();
+        }
         // Load Map
         googleMap = mapView.getMap();
         // Blue pointer on current location
@@ -96,40 +104,45 @@ public class Controller_Fragment_LocationFinding
         nearestHospitalofDoctorbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Selected doctor from spinner
-                int selectedIndex = doctorName.getSelectedItemPosition();
-                DoctorModel seletedDoc = doctorModels.get(selectedIndex);
+                //Check internet is enabled or not
+                if (InternetCheck.isNetworkAvailable(context)) {
+                    //Selected doctor from spinner
+                    int selectedIndex = doctorName.getSelectedItemPosition();
+                    DoctorModel seletedDoc = doctorModels.get(selectedIndex);
 
-                url = new StringBuilder(context.getResources().getString(R.string.webserviceLink));
-                url.append(Strings.GET_ALL_LOCATIONS);
-                JSONObject currentLocationJSON = new JSONObject();
-                try {
-                    currentLocationJSON.put("docID",seletedDoc.getRegNo());
-                    //Assign Current Coordinates
-                    currentLocationJSON.put(Strings.JSON_LATITUDE, GlobalValueModel.latitude);
-                    currentLocationJSON.put(Strings.JSON_LONGTITUDE, GlobalValueModel.longtitude);
-                    //Initiallize the Google Map
-                    MapsInitializer.initialize(getActivity().getApplicationContext());
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    url = new StringBuilder(context.getResources().getString(R.string.webserviceLink));
+                    url.append(Strings.GET_ALL_LOCATIONS);
+                    JSONObject currentLocationJSON = new JSONObject();
+                    try {
+                        currentLocationJSON.put("docID", seletedDoc.getRegNo());
+                        //Assign Current Coordinates
+                        currentLocationJSON.put(Strings.JSON_LATITUDE, GlobalValueModel.latitude);
+                        currentLocationJSON.put(Strings.JSON_LONGTITUDE, GlobalValueModel.longtitude);
+                        //Initiallize the Google Map
+                        MapsInitializer.initialize(getActivity().getApplicationContext());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    ArrayList<HospitalLocationModel> hospitals = new ArrayList<HospitalLocationModel>();
+                    //Execute Controller
+                    controller_webTasks.executeGetAllLocationsTask(context, seletedDoc, hospitals,
+                            currentLocationJSON, googleMap, url.toString());
+
+                    // Create Marker to current location
+                    googleMap.addMarker(new MarkerOptions().position(new LatLng(GlobalValueModel.latitude,
+                            GlobalValueModel.longtitude)).title(context.getResources()
+                            .getString(R.string.Your_current_location))
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                    // Move camera
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(GlobalValueModel.latitude,
+                            GlobalValueModel.longtitude)));
+                    // Zoom camera to the current Location
+                    googleMap.animateCamera(CameraUpdateFactory.zoomTo(context.getResources()
+                            .getInteger(R.integer.zoom_into)));
+                } else {
+                    Toast.makeText(context, "Sorry! please turn on your internet connection", Toast.LENGTH_LONG).show();
                 }
-
-                ArrayList<HospitalLocationModel> hospitals = new ArrayList<HospitalLocationModel>();
-                //Execute Controller
-                controller_webTasks.executeGetAllLocationsTask(context, seletedDoc, hospitals,
-                                                        currentLocationJSON,googleMap,url.toString());
-
-                // Create Marker to current location
-                googleMap.addMarker(new MarkerOptions().position(new LatLng(GlobalValueModel.latitude,
-                        GlobalValueModel.longtitude)).title(context.getResources()
-                        .getString(R.string.Your_current_location))
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-                // Move camera
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(GlobalValueModel.latitude,
-                        GlobalValueModel.longtitude)));
-                // Zoom camera to the current Location
-                googleMap.animateCamera(CameraUpdateFactory.zoomTo(context.getResources()
-                        .getInteger(R.integer.zoom_into)));
             }
         });
 
@@ -137,14 +150,19 @@ public class Controller_Fragment_LocationFinding
             @Override
             public void onClick(View v) {
                 if (!RequiredFieldValidation.isEmpty(Tlocation.getText().toString())) {
-                    // Getting user input location
-                    googleMap.clear();
-                    googleMap.addMarker(new MarkerOptions().position(new LatLng(GlobalValueModel.latitude,
-                            GlobalValueModel.longtitude)).title(context.getResources()
-                            .getString(R.string.Your_current_location))
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-                    String location = Tlocation.getText().toString();
-                    controller_webTasks.executeSearchHospitalTask(context, location, googleMap);
+                    //Check internet is enabled or not
+                    if (InternetCheck.isNetworkAvailable(context)) {
+                        // Getting user input location
+                        googleMap.clear();
+                        googleMap.addMarker(new MarkerOptions().position(new LatLng(GlobalValueModel.latitude,
+                                GlobalValueModel.longtitude)).title(context.getResources()
+                                .getString(R.string.Your_current_location))
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                        String location = Tlocation.getText().toString();
+                        controller_webTasks.executeSearchHospitalTask(context, location, googleMap);
+                    } else {
+                        Toast.makeText(context, "Sorry! please turn on your internet connection", Toast.LENGTH_LONG).show();
+                    }
                 } else {
                     Tlocation.setError(context.getResources().getString(R.string.hospital_name_required));
                 }

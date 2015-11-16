@@ -21,6 +21,7 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ogaclejapan.arclayout.ArcLayout;
 
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Models.DoctorModel;
+import Services.InternetCheck;
 import WebServiceAccess.WebTask_ExecutePostRequests;
 import pack.knowyourdoctor.AnimationControllers.Animator;
 import pack.knowyourdoctor.Constants.Numbers;
@@ -198,25 +200,26 @@ public class Controller_Home extends FragmentActivity implements View.OnClickLis
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View arg0) {
-                        String baseURL = context.getResources().getString(R.string.webserviceLink);
-                        StringBuilder url = new StringBuilder(baseURL);
-                        float rating = ratingBar.getRating();
-                        String rateLevelText = getRatingTextFrom(rating);
-                        url.append(Strings.INSERT_NEW_RATING_URL);
-                        JSONObject ratingJSONObj = new JSONObject();
-                        try {
-                            ratingJSONObj.put(Strings.JSON_RATING_VALUE, rating);
-                            ratingJSONObj.put(Strings.JSON_RATING_TEXT, rateLevelText);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        //Check internet is enabled or not
+                        if (InternetCheck.isNetworkAvailable(context)) {
+                            String baseURL = context.getResources().getString(R.string.webserviceLink);
+                            StringBuilder url = new StringBuilder(baseURL);
+                            float rating = ratingBar.getRating();
+                            String rateLevelText = getRatingTextFrom(rating);
+                            url.append(Strings.INSERT_NEW_RATING_URL);
+                            JSONObject ratingJSONObj = new JSONObject();
+                            try {
+                                ratingJSONObj.put(Strings.JSON_RATING_VALUE, rating);
+                                ratingJSONObj.put(Strings.JSON_RATING_TEXT, rateLevelText);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            //Execute web task
+                            Controller_WebTasks controller_webTasks = new Controller_WebTasks();
+                            controller_webTasks.executePostRequestTaks(context, Strings.THANKING_TEXT, ratingJSONObj, url.toString());
+                        } else {
+                            Toast.makeText(context, "Sorry! please turn on your internet connection", Toast.LENGTH_LONG).show();
                         }
-
-                        WebTask_ExecutePostRequests ratingTask = new WebTask_ExecutePostRequests();
-                        ratingTask.setContext(context);
-                        ratingTask.setMessage(Strings.THANKING_TEXT);
-                        ratingTask.setjObject(ratingJSONObj);
-                        // passes values for the urls string array
-                        ratingTask.execute(url.toString());
                     }
                 });
 

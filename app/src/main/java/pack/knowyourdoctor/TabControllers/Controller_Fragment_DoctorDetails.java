@@ -1,11 +1,7 @@
 package pack.knowyourdoctor.TabControllers;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -18,15 +14,17 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import Models.DoctorModel;
+import Services.InternetCheck;
+import ValidationRules.RegNoValidation;
 import pack.knowyourdoctor.Constants.Strings;
 import pack.knowyourdoctor.ListControllers.Adapter_DoctorList;
-import Models.DoctorModel;
 import pack.knowyourdoctor.MainControllers.Controller_WebTasks;
 import pack.knowyourdoctor.R;
-import ValidationRules.RegNoValidation;
 
 //Handle search page of doctors
 public class Controller_Fragment_DoctorDetails extends Fragment {
@@ -92,62 +90,63 @@ public class Controller_Fragment_DoctorDetails extends Fragment {
                     regNoTE.setError(Strings.INVALID_REGNO);
                     return;
                 }
+                //Check internet is enabled or not
+                if (InternetCheck.isNetworkAvailable(context)) {
+                    ArrayList<String> urlList = new ArrayList<String>();
+                    for (int i = 3; i < 7; i++) {
+                        //Generate URL for four categories
+                        StringBuilder url = new StringBuilder(Strings.URL_TO_SLMC_SEARCH);
+                        //nothing selected in spinner
+                        url.append(i);
 
-                ArrayList<String> urlList = new ArrayList<String>();
-                for (int i = 3; i < 7; i++) {
-                    //Generate URL for four categories
-                    StringBuilder url = new StringBuilder(Strings.URL_TO_SLMC_SEARCH);
-                    //nothing selected in spinner
-                    url.append(i);
+                        //Generate URL
+                        url.append(Strings.INITIALS + initialsTE.getText());
+                        url.append(Strings.LASTNAME + familyNameTE.getText());
+                        url.append(Strings.OTHERNAME + otherNameTE.getText());
+                        url.append(Strings.REGNO + regNoTE.getText());
+                        url.append(Strings.NIC + nicNo.getText());
+                        url.append(Strings.PART_OF_ADDRESS + addressTE.getText());
+                        url.append(Strings.SEARCH);
+                        //replace all spaces with %20
+                        String generatedURL = url.toString().replace(Strings.STRING_WITH_SPACE,
+                                Strings.IGNORE_SPACES);
 
-                    //Generate URL
-                    url.append(Strings.INITIALS + initialsTE.getText());
-                    url.append(Strings.LASTNAME + familyNameTE.getText());
-                    url.append(Strings.OTHERNAME + otherNameTE.getText());
-                    url.append(Strings.REGNO + regNoTE.getText());
-                    url.append(Strings.NIC + nicNo.getText());
-                    url.append(Strings.PART_OF_ADDRESS + addressTE.getText());
-                    url.append(Strings.SEARCH);
-                    //replace all spaces with %20
-                    String generatedURL = url.toString().replace(Strings.STRING_WITH_SPACE,
-                            Strings.IGNORE_SPACES);
-
-                    urlList.add(generatedURL);
-                }
-
-                //Setup part for display doctor details
-                linearLayoutView = (LinearLayout) getActivity().findViewById(R.id.mainView);
-                linearLayoutView.removeAllViewsInLayout();
-                linearLayoutView.addView(View.inflate(context,
-                        R.layout.view_fragment_doctordetails_searched, null));
-                linearLayoutView.setBackgroundColor(Color.parseColor(Strings.WHITE_COLOR));
-
-                //Setup search again button
-                Button searchAgainBtn = (Button) linearLayoutView.findViewById(R.id.searchAgain);
-                searchAgainBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ViewPager pager = (ViewPager) getActivity().findViewById(R.id.fragmentViewer);
-                        Tab_Controller mAdapter;
-                        mAdapter = new Tab_Controller(getActivity().getSupportFragmentManager());
-                        pager.setAdapter(mAdapter);
-                        pager.setCurrentItem(0);
-                        searchedDoctors.clear();
+                        urlList.add(generatedURL);
                     }
-                });
 
-                //Load Searched Doctor Details
-                txt = (TextView) linearLayoutView.findViewById(R.id.displayDetails);
-                txt.setText(Strings.LOADING_ALERT);
+                    //Setup part for display doctor details
+                    linearLayoutView = (LinearLayout) getActivity().findViewById(R.id.mainView);
+                    linearLayoutView.removeAllViewsInLayout();
+                    linearLayoutView.addView(View.inflate(context,
+                            R.layout.view_fragment_doctordetails_searched, null));
+                    linearLayoutView.setBackgroundColor(Color.parseColor(Strings.WHITE_COLOR));
 
-                listView = (ExpandableListView) rootView.findViewById(R.id.expList);
+                    //Setup search again button
+                    Button searchAgainBtn = (Button) linearLayoutView.findViewById(R.id.searchAgain);
+                    searchAgainBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ViewPager pager = (ViewPager) getActivity().findViewById(R.id.fragmentViewer);
+                            Tab_Controller mAdapter;
+                            mAdapter = new Tab_Controller(getActivity().getSupportFragmentManager());
+                            pager.setAdapter(mAdapter);
+                            pager.setCurrentItem(0);
+                            searchedDoctors.clear();
+                        }
+                    });
 
-                searchedDoctors = new ArrayList<DoctorModel>();
+                    //Load Searched Doctor Details
+                    txt = (TextView) linearLayoutView.findViewById(R.id.displayDetails);
+                    txt.setText(Strings.LOADING_ALERT);
 
-                listAdapter = new Adapter_DoctorList(context, searchedDoctors);
-                listView.setAdapter(listAdapter);
+                    listView = (ExpandableListView) rootView.findViewById(R.id.expList);
 
-                if (isNetworkAvailable()) {
+                    searchedDoctors = new ArrayList<DoctorModel>();
+
+                    listAdapter = new Adapter_DoctorList(context, searchedDoctors);
+                    listView.setAdapter(listAdapter);
+
+
                     ProgressBar pBar = (ProgressBar) linearLayoutView.findViewById(R.id.progressShow);
                     //Call controller and execute relevant async task
                     Controller_WebTasks webTaskController = new Controller_WebTasks();
@@ -155,7 +154,7 @@ public class Controller_Fragment_DoctorDetails extends Fragment {
                             regNoTE, context, searchedRegNo, getActivity(), linearLayoutView, urlList);
 
                 } else {
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                    /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
                     alertDialog.setTitle(Strings.INTERNET_CONNECTION_ERROR);
                     alertDialog.setMessage(Strings.ENABLE_INTERNET_CONNECTION);
                     alertDialog.setPositiveButton(Strings.YES, new DialogInterface.OnClickListener() {
@@ -170,7 +169,8 @@ public class Controller_Fragment_DoctorDetails extends Fragment {
 
                         }
                     });
-                    alertDialog.show();
+                    alertDialog.show();*/
+                    Toast.makeText(context, "Sorry! please turn on your internet connection", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -209,13 +209,6 @@ public class Controller_Fragment_DoctorDetails extends Fragment {
             }
         });
         return rootView;
-    }
-
-    //Method to check internet connection availability
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
 

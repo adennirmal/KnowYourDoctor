@@ -72,12 +72,12 @@ public class WebTask_DoctorListLoad
     //Run in background thread - Execution of web task
     @Override
     protected String doInBackground(String... params) {
-        HttpParams httpParameters = new BasicHttpParams();
-        HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
-        HttpConnectionParams.setSoTimeout(httpParameters, 10000+12000);
+        //HttpParams httpParameters = new BasicHttpParams();
+        //HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
+        //HttpConnectionParams.setSoTimeout(httpParameters, 10000+12000);
         HttpClient httpclient = new DefaultHttpClient();
         HttpPost httppost = new HttpPost(params[0]);
-        httppost.setParams(httpParameters);
+        //httppost.setParams(httpParameters);
         try {
             httppost.setEntity(new StringEntity(jObject.toString(), Strings.TEXT_TYPE));
             HttpResponse response = httpclient.execute(httppost);

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import Services.InternetCheck;
 import WebServiceAccess.WebTask_ExecutePostRequests;
 import pack.knowyourdoctor.Constants.Strings;
 import pack.knowyourdoctor.R;
@@ -94,67 +95,73 @@ public class Controller_Fragment_ReportSend extends Fragment {
                 }*/
 
                 if (isValid) {
-                    final String reportUserName = name.getText().toString();
-                    //String reportUserNIC = nic.getText().toString();
-                    final String reportContact = contact.getText().toString();
+                    //Check internet is enabled or not
+                    if (InternetCheck.isNetworkAvailable(context)) {
+                        final String reportUserName = name.getText().toString();
+                        //String reportUserNIC = nic.getText().toString();
+                        final String reportContact = contact.getText().toString();
 
-                    final String reportDoctorRegNo = dreg.getText().toString();
-                    final String reportDoctorName = dname.getText().toString();
-                    final String reportComment = comment.getText().toString();
+                        final String reportDoctorRegNo = dreg.getText().toString();
+                        final String reportDoctorName = dname.getText().toString();
+                        final String reportComment = comment.getText().toString();
 
-                    //Send fake doctor details to webservice
-                    String baseURL = context.getResources().getString(R.string.webserviceLink);
-                    StringBuilder url = new StringBuilder(baseURL);
-                    url.append(Strings.INSERT_FAKE_DOC_DETAILS);
-                    JSONObject fakeDocJSONObj = new JSONObject();
-                    try {
-                        fakeDocJSONObj.put(Strings.JSON_FAKEDOC_ID_TEXT, reportDoctorRegNo);
-                        fakeDocJSONObj.put(Strings.JSON_FAKEDOC_NAME_TEXT, reportDoctorName);
-                        fakeDocJSONObj.put(Strings.JSON_REPORTED_PERSON_TEXT, reportUserName);
-                        fakeDocJSONObj.put(Strings.JSON_REPORTED_CONTACT_TEXT, reportContact);
-                        fakeDocJSONObj.put(Strings.JSON_COMMENT_TEXT, reportComment);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        //Send fake doctor details to webservice
+                        String baseURL = context.getResources().getString(R.string.webserviceLink);
+                        StringBuilder url = new StringBuilder(baseURL);
+                        url.append(Strings.INSERT_FAKE_DOC_DETAILS);
+                        JSONObject fakeDocJSONObj = new JSONObject();
+                        try {
+                            fakeDocJSONObj.put(Strings.JSON_FAKEDOC_ID_TEXT, reportDoctorRegNo);
+                            fakeDocJSONObj.put(Strings.JSON_FAKEDOC_NAME_TEXT, reportDoctorName);
+                            fakeDocJSONObj.put(Strings.JSON_REPORTED_PERSON_TEXT, reportUserName);
+                            fakeDocJSONObj.put(Strings.JSON_REPORTED_CONTACT_TEXT, reportContact);
+                            fakeDocJSONObj.put(Strings.JSON_COMMENT_TEXT, reportComment);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        WebTask_ExecutePostRequests ratingTask = new WebTask_ExecutePostRequests();
+                        ratingTask.setContext(context);
+                        ratingTask.setMessage(Strings.THANKING_TEXT);
+                        ratingTask.setjObject(fakeDocJSONObj);
+                        // passes values for the urls string array
+                        ratingTask.execute(url.toString());
+
+                        //Send email
+                        Intent i = new Intent(Intent.ACTION_SEND);
+                        i.setType(Strings.MSG_TYPE);
+                        i.putExtra(Intent.EXTRA_EMAIL, new String[]{Strings.RECEIVER_MAIL_ADD});
+                        i.putExtra(Intent.EXTRA_SUBJECT, Strings.EMAIL_SUBJECT);
+
+                        //Format the email body to send
+                        String newline = System.getProperty(Strings.LINE_SEPERATOR);
+                        StringBuilder emailBody = new StringBuilder(Strings.EMPTY_STRING);
+                        emailBody.append(Strings.REPORTED_USER_HEADING + newline);
+                        emailBody.append(Strings.HORIZONTAL_SEPERATOR + newline);
+                        emailBody.append(Strings.FULLNAME_TEXT + reportUserName + newline);
+                        emailBody.append(Strings.CONTACTNO_TEXT + reportContact + newline + newline);
+
+                        emailBody.append(Strings.FAKE_DOCTOR_HEADING + newline);
+                        emailBody.append(Strings.HORIZONTAL_SEPERATOR + newline);
+                        emailBody.append(Strings.FAKE_REGNO_TEXT + reportDoctorRegNo + newline);
+                        emailBody.append(Strings.FULLNAME_TEXT + reportDoctorName + newline);
+                        emailBody.append(Strings.COMMENT_TEXT + reportComment + newline);
+
+                        i.putExtra(Intent.EXTRA_TEXT, emailBody.toString());
+
+                        try {
+                            startActivity(Intent.createChooser(i, Strings.SENDING_MSG));
+                        } catch (android.content.ActivityNotFoundException ex) {
+                            Toast.makeText(context, Strings.NO_EMAIL_CLIENT_MSG, Toast.LENGTH_SHORT).show();
+                        }
+                        dreg.setText(Strings.EMPTY_STRING);
+                        name.setText(Strings.EMPTY_STRING);
+                        contact.setText(Strings.EMPTY_STRING);
+                        dname.setText(Strings.EMPTY_STRING);
+                        comment.setText(Strings.EMPTY_STRING);
+                    } else {
+                        Toast.makeText(context, "Sorry! please turn on your internet connection", Toast.LENGTH_LONG).show();
                     }
-
-                    WebTask_ExecutePostRequests ratingTask = new WebTask_ExecutePostRequests();
-                    ratingTask.setContext(context);
-                    ratingTask.setMessage(Strings.THANKING_TEXT);
-                    ratingTask.setjObject(fakeDocJSONObj);
-                    // passes values for the urls string array
-                    ratingTask.execute(url.toString());
-
-                    //Send email
-                    Intent i = new Intent(Intent.ACTION_SEND);
-                    i.setType(Strings.MSG_TYPE);
-                    i.putExtra(Intent.EXTRA_EMAIL, new String[]{Strings.RECEIVER_MAIL_ADD});
-                    i.putExtra(Intent.EXTRA_SUBJECT, Strings.EMAIL_SUBJECT);
-
-                    //Format the email body to send
-                    String newline = System.getProperty(Strings.LINE_SEPERATOR);
-                    StringBuilder emailBody = new StringBuilder(Strings.EMPTY_STRING);
-                    emailBody.append(Strings.REPORTED_USER_HEADING + newline);
-                    emailBody.append(Strings.HORIZONTAL_SEPERATOR + newline);
-                    emailBody.append(Strings.FULLNAME_TEXT + reportUserName + newline);
-                    emailBody.append(Strings.CONTACTNO_TEXT + reportContact + newline + newline);
-
-                    emailBody.append(Strings.FAKE_DOCTOR_HEADING + newline);
-                    emailBody.append(Strings.HORIZONTAL_SEPERATOR + newline);
-                    emailBody.append(Strings.FAKE_REGNO_TEXT + reportDoctorRegNo + newline);
-                    emailBody.append(Strings.FULLNAME_TEXT + reportDoctorName + newline);
-                    emailBody.append(Strings.COMMENT_TEXT + reportComment + newline);
-
-                    i.putExtra(Intent.EXTRA_TEXT, emailBody.toString());
-                    try {
-                        startActivity(Intent.createChooser(i, Strings.SENDING_MSG));
-                    } catch (android.content.ActivityNotFoundException ex) {
-                        Toast.makeText(context, Strings.NO_EMAIL_CLIENT_MSG, Toast.LENGTH_SHORT).show();
-                    }
-                    dreg.setText(Strings.EMPTY_STRING);
-                    name.setText(Strings.EMPTY_STRING);
-                    contact.setText(Strings.EMPTY_STRING);
-                    dname.setText(Strings.EMPTY_STRING);
-                    comment.setText(Strings.EMPTY_STRING);
                 }
             }
         });
