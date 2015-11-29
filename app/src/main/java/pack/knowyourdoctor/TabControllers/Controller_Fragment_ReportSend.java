@@ -15,6 +15,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import Services.InternetCheck;
+import ValidationRules.ContactNoValidation;
+import ValidationRules.NICValidation;
+import ValidationRules.NameValidation;
+import ValidationRules.RequiredFieldValidation;
 import WebServiceAccess.WebTask_ExecutePostRequests;
 import pack.knowyourdoctor.Constants.Strings;
 import pack.knowyourdoctor.R;
@@ -59,12 +63,12 @@ public class Controller_Fragment_ReportSend extends Fragment {
 
                 //Validation
                 boolean isValid = true;
-                /*if (RequiredFieldValidation.isEmpty(name.getText().toString())) {
-                    name.setError("Please enter your full name");
-                isValid = false;
+                if (!NameValidation.isValidName(name.getText().toString())) {
+                    name.setError(Strings.INVALID_REPORTER_NAME);
+                    isValid = false;
                 }
 
-                if(!NICValidation.isValidNIC(nic.getText().toString())){
+                /*if(!NICValidation.isValidNIC(nic.getText().toString())){
                     nic.setError("Please enter your NIC number");
                     isValid = false;
                 }
@@ -79,11 +83,12 @@ public class Controller_Fragment_ReportSend extends Fragment {
                     isValid = false;
                 }
 
-                /*if (RequiredFieldValidation.isEmpty(dname.getText().toString())) {
-                    dname.setError("Please enter fake doctor's name");
+                if (!NameValidation.isValidName(dname.getText().toString())) {
+                    dname.setError(Strings.INVALID_FAKE_DOC_NAME);
                     isValid = false;
                 }
 
+                /*
                 if(!NICValidation.isValidNIC(dnicno.getText().toString())){
                     dnicno.setError("Please enter fake doctor's NIC number");
                     isValid = false;

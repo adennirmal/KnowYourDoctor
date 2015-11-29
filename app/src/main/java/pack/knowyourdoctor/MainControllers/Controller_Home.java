@@ -179,6 +179,24 @@ public class Controller_Home extends FragmentActivity implements View.OnClickLis
                     }
                 });
 
+                //Display News of SLMC
+                TextView newsView = (TextView) fragmentsDialog.findViewById(R.id.slmcNEWS);
+                newsView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+
+                //Display Foreign Universities
+                TextView foreignUNIView = (TextView) fragmentsDialog.findViewById(R.id.foreignUNI);
+                foreignUNIView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+
                 fragmentsDialog.show();
                 break;
             //About Us dialog box

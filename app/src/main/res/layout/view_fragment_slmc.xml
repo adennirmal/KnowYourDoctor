@@ -45,7 +45,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/imgCredits"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="20dp"
@@ -55,10 +54,27 @@
                 android:id="@+id/slmcURL"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/imgCredits"
                 android:layout_marginLeft="30dp"
                 android:layout_centerInParent="true"
                 android:text="http://www.srilankamedicalcouncil.org" />
+
+            <TextView
+                android:id="@+id/slmcNEWS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:text="View SLMC News" />
+
+            <TextView
+                android:id="@+id/foreignUNI"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:text="View Foreign Universities" />
 
             <ImageView
                 android:layout_width="wrap_content"

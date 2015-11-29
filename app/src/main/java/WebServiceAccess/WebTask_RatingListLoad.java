@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -181,6 +182,11 @@ public class WebTask_RatingListLoad
             ratingsDialog.setTitle(Strings.REVIEWS_DOC + selectedDoctor.getFullName());
 
             ratedDocComments = (ListView) ratingsDialog.findViewById(R.id.RatedDocList);
+
+            //Hide progress bar
+            ProgressBar commentListLoadProgress = (ProgressBar) ratingsDialog.findViewById(R.id.ratingLoadProgressBar);
+            commentListLoadProgress.setVisibility(View.INVISIBLE);
+
             listAdapter = new Adapter_Comments(context, ratedDoc.getComments());
             ratedDocComments.setAdapter(listAdapter);
 
@@ -253,6 +259,7 @@ public class WebTask_RatingListLoad
                         ratingListLoad.setCommentDoctorTextView(commentDoctorTextView);
                         ratingListLoad.setListAdapter(listAdapter);
                         ratingListLoad.setNewComment(newComment);
+
                         ratingListLoad.execute(url.toString());
                     } else if (Integer.parseInt(Result[Numbers.ZERO].toString()) == -1) {
                         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);

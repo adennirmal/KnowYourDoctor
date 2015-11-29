@@ -54,8 +54,12 @@ public class Strings {
 
     //Validation texts
     public static final String INVALID_REGNO = "Invalid Registration Number";
+    public static final String INVALID_NAME = "Name cannot have special characters and numbers";
+    public static final String INVALID_NIC_NO = "Invalid NIC Number";
     public static final String INVALID_FAKE_REGNO =
             "Please enter fake doctor's registration number";
+    public static final String INVALID_REPORTER_NAME = "Please enter your name";
+    public static final String INVALID_FAKE_DOC_NAME = "Please enter fake doctor's name";
 
     //Home Controller
     public static final String SELECTED_DOC_TEXT = "SelectedDoc";
