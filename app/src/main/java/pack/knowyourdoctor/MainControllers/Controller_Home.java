@@ -19,6 +19,8 @@ import android.view.animation.AnticipateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,13 +29,15 @@ import com.ogaclejapan.arclayout.ArcLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Models.DoctorModel;
 import Services.InternetCheck;
-import WebServiceAccess.WebTask_ExecutePostRequests;
+import WebServiceAccess.WebTask_RetrieveAnnouncements;
+import WebServiceAccess.WebTask_RetrieveForeignUniversities;
 import pack.knowyourdoctor.AnimationControllers.Animator;
 import pack.knowyourdoctor.Constants.Numbers;
 import pack.knowyourdoctor.Constants.Strings;
@@ -150,6 +154,7 @@ public class Controller_Home extends FragmentActivity implements View.OnClickLis
     //Menu items selection
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        final Controller_WebTasks controller_webTasks = new Controller_WebTasks();
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             //About SLMC dialog box
@@ -179,12 +184,28 @@ public class Controller_Home extends FragmentActivity implements View.OnClickLis
                     }
                 });
 
-                //Display News of SLMC
+                //Display NEWS of SLMC
                 TextView newsView = (TextView) fragmentsDialog.findViewById(R.id.slmcNEWS);
                 newsView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (InternetCheck.isNetworkAvailable(context)) {
+                            fragmentsDialog.dismiss();
+                            Dialog newsView = new Dialog(Controller_Home.this);
+                            newsView.setTitle(Strings.NEWS_OF_SLMC);
+                            newsView.setContentView(R.layout.view_slmc_news);
+                            WebView newWebView = (WebView) newsView.findViewById(R.id.newsWebView);
+                            ProgressBar pBar = (ProgressBar) newsView.findViewById(R.id.newsLoadProgressBar);
 
+                            StringBuilder url = new StringBuilder(Strings.SLMC_SITE_URL);
+                            url.append(Strings.NEWS_PAGE);
+                            controller_webTasks.executeRetrieveAnnouncementsTask(url.toString(),
+                                    newWebView, pBar);
+                            newsView.show();
+                        } else {
+                            Toast.makeText(context, Strings.INTERNET_CONNECTION_ERROR,
+                                    Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
 
@@ -193,7 +214,24 @@ public class Controller_Home extends FragmentActivity implements View.OnClickLis
                 foreignUNIView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (InternetCheck.isNetworkAvailable(context)) {
+                            fragmentsDialog.dismiss();
+                            Dialog foreignUniView = new Dialog(Controller_Home.this);
+                            foreignUniView.setTitle(Strings.FOREIGN_UNIVERSITIES);
+                            foreignUniView.setContentView(R.layout.view_foreign_universities);
+                            TextView noOfUniTE = (TextView) foreignUniView.findViewById(R.id.noOfUniversities);
+                            ProgressBar pBar = (ProgressBar) foreignUniView.findViewById(R.id.foreignUniLoadProgressBar);
+                            ListView foreignUniListView = (ListView) foreignUniView.findViewById(R.id.foreignUniListView);
 
+                            StringBuilder url = new StringBuilder(Strings.SLMC_SITE_URL);
+                            url.append(Strings.FOREIGN_UNI_PAGE);
+                            controller_webTasks.executeRetrieveForeignUniversitiesTask(url.toString(),
+                                    foreignUniListView, context, pBar, noOfUniTE);
+                            foreignUniView.show();
+                        } else {
+                            Toast.makeText(context, Strings.INTERNET_CONNECTION_ERROR,
+                                    Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
 
@@ -233,10 +271,11 @@ public class Controller_Home extends FragmentActivity implements View.OnClickLis
                                 e.printStackTrace();
                             }
                             //Execute web task
-                            Controller_WebTasks controller_webTasks = new Controller_WebTasks();
-                            controller_webTasks.executePostRequestTaks(context, Strings.THANKING_TEXT, ratingJSONObj, url.toString());
+                            controller_webTasks.executePostRequestTaks(context,
+                                    Strings.THANKING_TEXT, ratingJSONObj, url.toString());
                         } else {
-                            Toast.makeText(context, "Sorry! please turn on your internet connection", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, Strings.INTERNET_CONNECTION_ERROR,
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
                 });

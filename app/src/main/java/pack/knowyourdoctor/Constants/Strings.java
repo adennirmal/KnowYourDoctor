@@ -44,9 +44,10 @@ public class Strings {
     public static final String NO_EMAIL_CLIENT_MSG = "There are no email clients installed.";
 
     //Dialog Messages
-    public static final String INTERNET_CONNECTION_ERROR = "Internet Connection error!!";
     public static final String ENABLE_INTERNET_CONNECTION =
             "Do you want to enable the Internet Connection?";
+    public static final String INTERNET_CONNECTION_ERROR =
+            "Sorry! please turn on your internet connection";
     public static final String YES = "YES";
     public static final String NO = "NO";
     public static final String OK = "OK";
@@ -74,6 +75,10 @@ public class Strings {
     public static final String DOC_TYPE = "text/html";
     public static final String TEXT_TYPE = "utf-8";
     public static final String SLMC_SITE_URL = "http://www.srilankamedicalcouncil.org";
+    public static final String NEWS_OF_SLMC = "NEWS of SLMC";
+    public static final String NEWS_PAGE = "/news.php#news_163";
+    public static final String FOREIGN_UNI_PAGE = "/foreignuniversity.php";
+    public static final String FOREIGN_UNIVERSITIES = "Foreign Universities";
 
     //About us menu item
     public static final String JSON_RATING_VALUE = "rating";

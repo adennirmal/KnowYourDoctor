@@ -3,6 +3,7 @@ package pack.knowyourdoctor.MainControllers;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -25,6 +26,8 @@ import WebServiceAccess.WebTask_GetDoctorLocations;
 import WebServiceAccess.WebTask_GetHTMLContent;
 import WebServiceAccess.WebTask_HospitalListLoad;
 import WebServiceAccess.WebTask_RatingListLoad;
+import WebServiceAccess.WebTask_RetrieveAnnouncements;
+import WebServiceAccess.WebTask_RetrieveForeignUniversities;
 import WebServiceAccess.WebTask_SearchHospital;
 import pack.knowyourdoctor.ListControllers.Adapter_Comments;
 import pack.knowyourdoctor.ListControllers.Adapter_DoctorList;
@@ -39,6 +42,8 @@ public class Controller_WebTasks {
     private WebTask_SearchHospital searchHospital;
     private WebTask_DoctorListLoad doctorListLoad;
     private WebTask_GetDoctorLocations getAllLocations;
+    private WebTask_RetrieveAnnouncements retrieveAnnouncements;
+    private WebTask_RetrieveForeignUniversities retrieveForeignUniversities;
 
     //Constructor
     public Controller_WebTasks() {
@@ -49,6 +54,8 @@ public class Controller_WebTasks {
         this.searchHospital = new WebTask_SearchHospital();
         this.doctorListLoad = new WebTask_DoctorListLoad();
         this.getAllLocations = new WebTask_GetDoctorLocations();
+        this.retrieveAnnouncements = new WebTask_RetrieveAnnouncements();
+        this.retrieveForeignUniversities = new WebTask_RetrieveForeignUniversities();
     }
 
     //Handler for all POST requests
@@ -131,7 +138,8 @@ public class Controller_WebTasks {
 
     //Retrieve all doctor locations
     public void executeGetAllLocationsTask(Context context, DoctorModel selectedDoctor,
-                                           ArrayList<HospitalLocationModel> hospitals, JSONObject jsonObject,GoogleMap googleMap, String url) {
+                                           ArrayList<HospitalLocationModel> hospitals,
+                                           JSONObject jsonObject, GoogleMap googleMap, String url) {
         this.getAllLocations.setContext(context);
         this.getAllLocations.setSelectedDoctor(selectedDoctor);
         this.getAllLocations.setHospitals(hospitals);
@@ -139,6 +147,25 @@ public class Controller_WebTasks {
         this.getAllLocations.setmMap(googleMap);
         this.getAllLocations.setUrl(url);
         this.getAllLocations.executeWebTask();
+    }
+
+    //Retrieve all news in SLMC
+    public void executeRetrieveAnnouncementsTask(String url, WebView webView, ProgressBar pBar) {
+        this.retrieveAnnouncements.setUrl(url);
+        this.retrieveAnnouncements.setWeb(webView);
+        this.retrieveAnnouncements.setpBar(pBar);
+        this.retrieveAnnouncements.executeWebTask();
+    }
+
+    //Retrieve all universities
+    public void executeRetrieveForeignUniversitiesTask(String url, ListView uniListView,
+                                                       Context context, ProgressBar pBar, TextView noOfUniTE) {
+        this.retrieveForeignUniversities.setUrl(url);
+        this.retrieveForeignUniversities.setListview(uniListView);
+        this.retrieveForeignUniversities.setContext(context);
+        this.retrieveForeignUniversities.setpBar(pBar);
+        this.retrieveForeignUniversities.setNoOfUniTE(noOfUniTE);
+        this.retrieveForeignUniversities.executeWebTask();
     }
 
 }
