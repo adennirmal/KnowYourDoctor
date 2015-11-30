@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import Models.DoctorModel;
 import Models.HospitalLocationModel;
 import Models.RatedDoctorModel;
+import WebServiceAccess.WebTask_SetMapPath;
 import WebServiceAccess.WebTask_DoctorListLoad;
 import WebServiceAccess.WebTask_ExecutePostRequests;
 import WebServiceAccess.WebTask_GetDoctorLocations;
@@ -44,6 +45,7 @@ public class Controller_WebTasks {
     private WebTask_GetDoctorLocations getAllLocations;
     private WebTask_RetrieveAnnouncements retrieveAnnouncements;
     private WebTask_RetrieveForeignUniversities retrieveForeignUniversities;
+    private WebTask_SetMapPath setMapPathTask;
 
     //Constructor
     public Controller_WebTasks() {
@@ -56,6 +58,7 @@ public class Controller_WebTasks {
         this.getAllLocations = new WebTask_GetDoctorLocations();
         this.retrieveAnnouncements = new WebTask_RetrieveAnnouncements();
         this.retrieveForeignUniversities = new WebTask_RetrieveForeignUniversities();
+        this.setMapPathTask = new WebTask_SetMapPath();
     }
 
     //Handler for all POST requests
@@ -168,4 +171,10 @@ public class Controller_WebTasks {
         this.retrieveForeignUniversities.executeWebTask();
     }
 
+    //Retrieve Locations of Map
+    public void executeSetMapPath(String url, GoogleMap map) {
+        this.setMapPathTask.setUrl(url);
+        this.setMapPathTask.setMap(map);
+        this.setMapPathTask.executeWebTask();
+    }
 }
