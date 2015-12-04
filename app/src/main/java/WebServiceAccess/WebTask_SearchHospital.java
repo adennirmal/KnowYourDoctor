@@ -67,7 +67,7 @@ public class WebTask_SearchHospital
     protected void onPostExecute(List<Address> addresses) {
         if (addresses == null || addresses.size() == Numbers.ZERO) {
             Toast.makeText(context, context.getResources().getString(R.string.hospital_not_located)
-                    + hospitalName, Toast.LENGTH_SHORT).show();
+                    + Strings.STRING_WITH_SPACE + hospitalName, Toast.LENGTH_SHORT).show();
         }
         //Add markerr for each matching context
         for (int i = Numbers.ZERO; i < addresses.size(); i++) {

@@ -2,6 +2,7 @@ package pack.knowyourdoctor.MainControllers;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.webkit.WebView;
 import android.widget.EditText;
@@ -122,6 +123,10 @@ public class Controller_WebTasks {
     //Retrieve location of searched hospital
     public void executeSearchHospitalTask(Context context, String hospitalName,
                                           GoogleMap googleMap) {
+        //Check web task is already running or not
+        if (this.searchHospital.getStatus() == AsyncTask.Status.FINISHED) {
+            this.searchHospital = new WebTask_SearchHospital();
+        }
         this.searchHospital.setContext(context);
         this.searchHospital.setHospitalName(hospitalName);
         this.searchHospital.setmMap(googleMap);
@@ -143,6 +148,11 @@ public class Controller_WebTasks {
     public void executeGetAllLocationsTask(Context context, DoctorModel selectedDoctor,
                                            ArrayList<HospitalLocationModel> hospitals,
                                            JSONObject jsonObject, GoogleMap googleMap, String url) {
+
+        //Check web task is already running or not
+        if (this.getAllLocations.getStatus() == AsyncTask.Status.FINISHED) {
+            this.getAllLocations = new WebTask_GetDoctorLocations();
+        }
         this.getAllLocations.setContext(context);
         this.getAllLocations.setSelectedDoctor(selectedDoctor);
         this.getAllLocations.setHospitals(hospitals);
