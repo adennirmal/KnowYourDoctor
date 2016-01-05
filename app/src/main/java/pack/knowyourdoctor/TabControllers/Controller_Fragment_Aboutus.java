@@ -63,7 +63,7 @@ public class Controller_Fragment_Aboutus extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
-                                String url = getResources().getString(R.string.server_link) + "/AppRating.php?rating=" + String.valueOf(rating);
+                                String url = getResources().getString(R.string.webserviceLink) + "/AppRating.php?rating=" + String.valueOf(rating);
                                 WebService task = new WebService();
                                 // passes values for the urls string array
                                 task.execute(url);

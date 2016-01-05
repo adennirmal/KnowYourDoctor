@@ -41,8 +41,8 @@ import pack.knowyourdoctor.MainControllers.Controller_WebTasks;
 
 //To retrieve all locations for given doctor
 public class WebTask_GetDoctorLocations
-        extends AsyncTask<String,String,String>
-        implements  WebTask_Interface{
+        extends AsyncTask<String, String, String>
+        implements WebTask_Interface {
     String jsonResult;
     private DoctorModel selectedDoctor;
     private Context context;
@@ -105,7 +105,7 @@ public class WebTask_GetDoctorLocations
     protected String doInBackground(String... params) {
         HttpParams httpParameters = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
-        HttpConnectionParams.setSoTimeout(httpParameters, 10000+12000);
+        HttpConnectionParams.setSoTimeout(httpParameters, 10000 + 12000);
         HttpClient httpclient = new DefaultHttpClient();
         HttpPost httppost = new HttpPost(params[0]);
         httppost.setParams(httpParameters);
@@ -180,21 +180,14 @@ public class WebTask_GetDoctorLocations
                 mMap.addMarker(new MarkerOptions().position(new LatLng(hospitalLatitude,
                         hospitalLongtitude))
                         .title(selectedDoctor.getFullName())
-                        .snippet("Last seen at " +hospital.getName()+ " at "+lastseenDate));
+                        .snippet("Last seen at " + hospital.getName() + " at " + lastseenDate));
 
                 //Move Camera
                 CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(new LatLng(hospitalLatitude,hospitalLongtitude))
+                        .target(new LatLng(hospitalLatitude, hospitalLongtitude))
                         .zoom(12).build();
                 mMap.animateCamera(CameraUpdateFactory
                         .newCameraPosition(cameraPosition));
-
-                /*Polyline polyline = mMap.addPolyline(new PolylineOptions()
-                        .add(new LatLng(GlobalValueModel.latitude, GlobalValueModel.longtitude),
-                                new LatLng(hospitalLatitude, hospitalLongtitude))
-                        .width(2)
-                        .color(Color.BLUE)
-                        .geodesic(true));*/
 
                 //Set source and destination
                 LatLng source = new LatLng(GlobalValueModel.latitude, GlobalValueModel.longtitude);

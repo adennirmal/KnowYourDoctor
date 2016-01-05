@@ -10,7 +10,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_report">Report</string>
-    <string name="app_id">1582179502036446</string>
+    <string name="app_id">1650836075205258</string>
     <string name="report_your_name_hint"><font size="12">Your Name</font><font size="11">\t( Optional )</font></string>
     <string name="report_contact_no_hint"><font size="12">Contact No</font><font size="11">\t( Optional )</font></string>
     <string name="location_doc_hint"><font size="12">Doctor\'s Name</font></string>
@@ -33,15 +33,14 @@
     <string name="warning_body_rule_two_a">we won’t accept reviews that contain bad language or</string>
     <string name="warning_body_rule_two_b">defamatory comments</string>
 
-    <string name="server_link">http://sepandroidmobile.esy.es</string>
     <string name="webserviceLink">http://sltravelbook.com/knowyourdoctor/index.php/</string>
     <string name="slmc_url">http://www.srilankamedicalcouncil.org/registry.php?registry=&amp;initials=&amp;last_name=&amp;other_name=&amp;reg_no=&amp;nic=&amp;part_of_address=&amp;search=Search</string>
 
     <string name="fb_dialog_name">Know Your Doctor</string>
     <string name="fb_dialog_caption">SLMC</string>
     <string name="fb_dialog_description">Find about your doctor</string>
-    <string name="fb_dialog_link">"http://www.srilankamedicalcouncil.org/</string>
-    <string name="fb_dialog_picture">http://oi61.tinypic.com/2wozz3t.jpg</string>
+    <string name="fb_dialog_link">https://play.google.com/store/apps/details?id=pack.knowyourdoctor</string>
+    <string name="fb_dialog_picture">http://sltravelbook.com/knowyourdoctor/img/icon.png</string>
     <string name="fb_share_dialog_error">Error.. Could not open Share Dialog Box!</string>
     <string name="fb_message_dialog_error">Error.. Could not open Message Dialog Box!</string>
     <string name="fb_log">View_Facebook_Login</string>
@@ -95,5 +94,7 @@
 
     <string name="nearest_doctors"><font size="12">  Nearest Doctors  </font></string>
     <string name="nearest_hospitals"><font size="12">  Nearest Hospitals  </font></string>
+
+    <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">AIzaSyDCTMwxjSIYIiZVimSz61t9HePArxlOeBA</string>
 
 </resources>

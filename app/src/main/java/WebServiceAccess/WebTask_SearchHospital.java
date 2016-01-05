@@ -15,8 +15,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.List;
 
+import Models.GlobalValueModel;
 import pack.knowyourdoctor.Constants.Numbers;
 import pack.knowyourdoctor.Constants.Strings;
+import pack.knowyourdoctor.MainControllers.Controller_WebTasks;
 import pack.knowyourdoctor.R;
 
 //Retrieve all hospitals
@@ -73,8 +75,10 @@ public class WebTask_SearchHospital
         for (int i = Numbers.ZERO; i < addresses.size(); i++) {
             Address address = addresses.get(i);
 
+            double hospitalLat = address.getLatitude();
+            double hospitalLang = address.getLongitude();
             // Creating an instance of GeoPoint, to display in Google Map
-            LatLng latLng2 = new LatLng(address.getLatitude(), address.getLongitude());
+            LatLng latLng2 = new LatLng(hospitalLat, hospitalLang);
 
             String addressText = String.format(Strings.STRING_FORMAT,
                     address.getMaxAddressLineIndex() > Numbers.ZERO ?
@@ -97,8 +101,38 @@ public class WebTask_SearchHospital
                         .zoom(12).build();
                 mMap.animateCamera(CameraUpdateFactory
                         .newCameraPosition(cameraPosition));
+
+                //Set source and destination
+                LatLng source = new LatLng(GlobalValueModel.latitude, GlobalValueModel.longtitude);
+                LatLng destination = new LatLng(hospitalLat, hospitalLang);
+                String url = getDirectionsUrl(source, destination);
+
+                Controller_WebTasks controller_webTasks = new Controller_WebTasks();
+                controller_webTasks.executeSetMapPath(url, mMap);
             }
         }
+    }
+
+    private String getDirectionsUrl(LatLng origin, LatLng dest) {
+        // Origin of route
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+
+        // Destination of route
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+
+        // Sensor enabled
+        String sensor = "sensor=false";
+
+        // Building the parameters to the web service
+        String parameters = str_origin + "&" + str_dest + "&" + sensor;
+
+        // Output format
+        String output = "json";
+
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
+
+        return url;
     }
 
     //Method to start execution of current web task
